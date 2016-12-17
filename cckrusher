@@ -1,11 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
-import logging
-from pycipher import *
-
-CAESER_MIN_KEY = 1
-CAESER_MAX_KEY = 25
+from cckrypto import Caesar
 
 def parse_args():
     parser = argparse.ArgumentParser(description="classic crypto crusher")
@@ -14,23 +10,13 @@ def parse_args():
 
     return parser.parse_args()
 
-def crack_caeser(ciphertext):
-    for key in range(CAESER_MIN_KEY, CAESER_MAX_KEY + 1):
-        plaintext = Caesar(key).decipher(ciphertext, True)
-        # Assess plaintext's fitness
-        # Need to log this info for verbose mode
-
-    # Need to return the best match
-    return plaintext
-
 def main(args):
     try:
         ciphertext = open(args.file, 'r').read()
     except Exception:
         print("Cannot open " + args.datafile)
-        return
 
-    print(crack_caeser(ciphertext))
+    #print(Caesar.crack(ciphertext))
 
 if __name__ == "__main__":
     main(parse_args())
