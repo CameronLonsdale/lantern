@@ -1,4 +1,6 @@
+import os
 from math import log10
+
 
 class NgramScore():
     def __init__(self, ngramfile, sep=' '):
@@ -28,3 +30,18 @@ class NgramScore():
                 # Push bad solutions down
                 score += self.floor
         return score
+
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+QUINTGRAM_FILE = os.path.join(dir_path, 'english_quintgrams.txt')
+QUAGRAM_FILE = os.path.join(dir_path, 'english_quadgrams.txt')
+TRIGRAM_FILE = os.path.join(dir_path, 'english_trigrams.txt')
+BIGRAM_FILE = os.path.join(dir_path, 'english_bigrams.txt')
+MONOGRAM_FILE = os.path.join(dir_path, 'english_monograms.txt')
+
+QUINTGRAM_SCORE = NgramScore(QUINTGRAM_FILE)
+QUADGRAM_SCORE = NgramScore(QUAGRAM_FILE)
+TRIGRAM_SCORE = NgramScore(TRIGRAM_FILE)
+BIGRAM_SCORE = NgramScore(BIGRAM_FILE)
+BIGRAM_SCORE = NgramScore(MONOGRAM_FILE)
