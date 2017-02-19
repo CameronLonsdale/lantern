@@ -3,9 +3,10 @@
 cckrypto is a cryptanalysis framework to assist in the automated identification and breaking of ciphertexts.
 
 ## Installation
-
-`git clone git@github.com:CameronLonsdale/cckrypto.git`
-`pip install -e ./cckrypto`
+```
+git clone git@github.com:CameronLonsdale/cckrypto.git
+pip install -e ./cckrypto
+```
 
 ## Usage
 
@@ -18,7 +19,3 @@ cckrypto's usage is for it's modules to be imported into custom scripts written 
 3. Commit your changes: `git commit -am 'Add some feature'`.
 4. Push to the branch: `git push origin my-new-feature`.
 5. Submit a pull request.
-
-## Credits
-
-Cameron Lonsdale
