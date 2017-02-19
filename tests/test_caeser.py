@@ -24,7 +24,17 @@ def test_defend_castle_wall():
     assert best_decryption == "defend the east wall of the castle"
 
 
-# Aim for correct decryption in the top 10 decryptions."""
+def test_buzz_buzz_buzz():
+    """Testing buzz buzz buzz."""
+    plaintext = "buzz buzz buzz"
+    ciphertext = pycipher.Caesar(3).encipher(plaintext, keep_punct=True)
+
+    decryptions = caesar.crack(ciphertext, quadgram_score)
+    best_decryption = decryptions[0][0].lower()
+    assert best_decryption == plaintext
+
+
+# Aim for correct decryption in the top 10 decryptions.
 def test_entire_bee_movie_quadgrams():
     """Testing the entire bee move script."""
     dir_path = os.path.dirname(os.path.realpath(__file__))
