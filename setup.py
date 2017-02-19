@@ -1,8 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
-from setuptools import setup
+from distutils.core import setup
+
 setup(
-    name='cckrypto', packages=['cckrypto'],
-    setup_requires=['pytest-runner'],
-    tests_require=['pytest']
+    name='cckrypto',
+    version='0.0',
+    description='Automated Cryptanalysis',
+    author='Cameron Lonsdale',
+    author_email='cameron.lonsdale@gmail.com',
+    url='https://github.com/CameronLonsdale/cckrypto',
 )

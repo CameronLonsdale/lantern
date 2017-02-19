@@ -1,10 +1,17 @@
+"""Fitness scoring using ngram frequency."""
 import os
 from math import log10
 
 
 class NgramScore():
+    """
+    NgramScorer.
+
+    Computes the score of a text by using the calculated probabilities from a loaded ngramfile.
+    """
+
     def __init__(self, ngramfile, sep=' '):
-        """ Load file with ngram counts and calucalte probailities """
+        """Load file with ngram counts and calucalte probailities."""
         self.ngrams = dict()
         with open(ngramfile) as f:
             for line in f:
@@ -32,7 +39,10 @@ class NgramScore():
         return score
 
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
+dir_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)),
+    'english_ngrams'
+)
 
 QUINTGRAM_FILE = os.path.join(dir_path, 'english_quintgrams.txt')
 QUAGRAM_FILE = os.path.join(dir_path, 'english_quadgrams.txt')
@@ -40,8 +50,8 @@ TRIGRAM_FILE = os.path.join(dir_path, 'english_trigrams.txt')
 BIGRAM_FILE = os.path.join(dir_path, 'english_bigrams.txt')
 MONOGRAM_FILE = os.path.join(dir_path, 'english_monograms.txt')
 
-QUINTGRAM_SCORE = NgramScore(QUINTGRAM_FILE)
-QUADGRAM_SCORE = NgramScore(QUAGRAM_FILE)
-TRIGRAM_SCORE = NgramScore(TRIGRAM_FILE)
-BIGRAM_SCORE = NgramScore(BIGRAM_FILE)
-BIGRAM_SCORE = NgramScore(MONOGRAM_FILE)
+quintgram_score = NgramScore(QUINTGRAM_FILE)
+quadgram_score = NgramScore(QUAGRAM_FILE)
+trigram_score = NgramScore(TRIGRAM_FILE)
+bigram_score = NgramScore(BIGRAM_FILE)
+monogram_score = NgramScore(MONOGRAM_FILE)
