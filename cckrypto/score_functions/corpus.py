@@ -16,22 +16,20 @@ class Corpus():
         self.floor = log10(0.01 / len(self.words))
 
     def score(self, text, whitespace_hint):
-        """Score based on number of words no in the corpus."""
+        """Score based on number of words not in the corpus."""
         if whitespace_hint:
             text = remove_punctuation(text)
-            text_words = text.split()
+            words = text.split()
         else:
             text = remove_punct_and_whitespace(text)
-            raise NotImplemented()
+            raise NotImplementedError()
+
+        # n_incorrect_words = sum(1 for word in (word for word in words if word not in self.words))
 
         n_incorrect_words = 0
-        for word in text_words:
+        for word in words:
             if word and word.lower() not in self.words:
-                # print(word + ' in words? ' + str(word in WORDS))
                 n_incorrect_words += 1
-
-        if n_incorrect_words == 0:
-            return 0
 
         return n_incorrect_words * self.floor
 
