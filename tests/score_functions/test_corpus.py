@@ -1,19 +1,36 @@
 """Testing the corpus score fuction."""
 from cckrypto.score_functions.corpus import Corpus
-from nltk.corpus import words
+import nltk.corpus
 from math import log10
 
 
-def test_corpus_constructor():
-    """Test corpus constructor is correct."""
-    english = Corpus(words.words())
-    assert english.words == words.words()
-    assert english.floor == log10(0.01 / len(words.words()))
+def _test_corpus_constructor(words):
+    english = Corpus(words)
+    assert english.words == words
+    assert english.floor == log10(0.01 / len(words))
+
+
+def test_corpus_constructor_with_set():
+    """Test corpus constructor with set."""
+    words = set(["hello", "other", "english", "words"])
+    _test_corpus_constructor(words)
+
+
+def test_corpus_constructor_with_list():
+    """Test corpus constructor with list."""
+    words = ["hello", "other", "english", "words"]
+    _test_corpus_constructor(words)
+
+
+def test_corpus_constructor_with_corpus():
+    """Test corpus constructor with nltk corpus."""
+    words = nltk.corpus.words.words()
+    _test_corpus_constructor(words)
 
 
 def test_corpus_all_english_one_word():
     """Test english words returns 0 score."""
-    english = Corpus(words.words())
+    english = Corpus(set(["hello", "other", "english", "words"]))
     plaintext = "Hello"
     assert english.score(
         plaintext,
@@ -23,7 +40,7 @@ def test_corpus_all_english_one_word():
 
 def test_corpus_one_non_english():
     """Test incorrect words get assisgned floor value."""
-    english = Corpus(words.words())
+    english = Corpus(set(["hello", "other", "english", "words"]))
     plaintext = "jiugyfti"
     assert english.score(
         plaintext,
@@ -33,7 +50,7 @@ def test_corpus_one_non_english():
 
 def test_corpus_multiple_non_english():
     """Test incorrect scores compound."""
-    english = Corpus(words.words())
+    english = Corpus(set(["hello", "other", "english", "words"]))
     plaintext = "jiugyfti ikomoipa"
     assert english.score(
         plaintext,
@@ -43,7 +60,7 @@ def test_corpus_multiple_non_english():
 
 def test_corpus_english_no_whitespace_hint():
     """Test whitespace infered with option."""
-    english = Corpus(words.words())
+    english = Corpus(set(["hello", "friend", "other", "english", "words"]))
     plaintext = "Hellofriend."
     assert english.score(
         plaintext,

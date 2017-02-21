@@ -2,25 +2,40 @@
 import pycipher
 import os
 import random
-import string
+
+from functools import partial
 
 from cckrypto.score_functions import (
     ngram, corpus
 )
+
 from cckrypto.modules import caesar
-from cckrypto.util import remove
+from cckrypto.util import remove_punct_and_whitespace
 
 
-def _test_caesar(plaintext, score_functions, key=3):
+def _test_caesar(plaintext, score_functions, key=3, top_n=1):
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
     decryptions = caesar.crack(
         ciphertext=ciphertext,
         score_functions=score_functions
     )
 
-    print(decryptions)
-    best_decryption = decryptions[0][0].upper()
-    assert best_decryption == plaintext
+    # Top N decryptions by score, not position
+    top_decryptions = []
+    index = 0
+    next_score = 0
+
+    while top_n > 0 and index < len(decryptions) - 1:
+        if decryptions[index][1] < next_score:
+            top_n -= 1
+
+        top_decryptions.append(decryptions[index])
+        next_score = decryptions[index + 1][1]
+        index += 1
+
+    print("Decryptions: " + str(decryptions))
+    print("Top Decryptions: " + str(top_decryptions))
+    assert any(plaintext.upper() == d[0].upper() for d in top_decryptions)
 
 
 def test_quick_brown_fox():
@@ -35,104 +50,97 @@ def test_defend_castle_wall():
     _test_caesar(plaintext, score_functions=[ngram.quadgram.score])
 
 
-# def test_buzz_buzz_buzz():
-#     """Testing buzz buzz buzz."""
-#     plaintext = "BUZZ BUZZ BUZZ"
-#     _test_caesar(
-#         plaintext,
-#         score_functions=[
-#             ngram.quadgram.score,
-#             dictionary.score
-#         ]
-#     )
+def test_buzz_buzz_buzz():
+    """
+    Testing buzz buzz buzz in top 3 results.
 
-# def test_bye():
-#     """Testing buzz buzz buzz."""
-#     plaintext = "- BYE!"
-#     _test_caesar(
-#         plaintext,
-#         score_functions=[
-#             ngram.quadgram.score,
-#             dictionary.score
-#         ]
-#     )
+    haff haff haff beats it because of a better freqency distribution and its also a word.
 
-# def test_oh_my():
-#     """Testing buzz buzz buzz."""
-#     plaintext = "- OH, MY!"
-#     _test_caesar(
-#         plaintext,
-#         score_functions=[
-#             ngram.quadgram.score,
-#             dictionary.score
-#         ]
-#     )
-
-# def test_ok():
-#     """Testing buzz buzz buzz."""
-#     plaintext = "- OK."
-#     _test_caesar(
-#         plaintext,
-#         score_functions=[
-#             ngram.quadgram.score,
-#             dictionary.score
-#         ]
-#     )
+    Way to correct this would be to use a more specialised corpus.
+    """
+    plaintext = "BUZZ BUZZ BUZZ"
+    _test_caesar(
+        plaintext,
+        score_functions=[
+            ngram.quadgram.score,
+            partial(corpus.english_words.score, whitespace_hint=True)
+        ],
+        top_n=3
+    )
 
 
-# # Aim for correct decryption in the top 10 decryptions with only quadram.
-# def test_entire_bee_movie_quadgrams():
-#     """Testing the entire bee move script."""
+def test_bye():
+    """Testing Bye has top score."""
+    plaintext = "- BYE!"
+    _test_caesar(
+        plaintext,
+        score_functions=[
+            ngram.quadgram.score,
+            partial(corpus.english_words.score, whitespace_hint=True)
+        ]
+    )
+
+
+def test_oh_my():
+    """
+    Testing oh my in top 2 positions.
+
+    un se as a decryption beats out oh my.
+    Can be fixed with better corpus.
+    """
+    plaintext = "- OH, MY!"
+    _test_caesar(
+        plaintext,
+        score_functions=[
+            ngram.quadgram.score,
+            partial(corpus.english_words.score, whitespace_hint=True)
+        ],
+        top_n=2
+    )
+
+
+def test_ok():
+    """Testing ok."""
+    plaintext = "- OK."
+    _test_caesar(
+        plaintext,
+        score_functions=[
+            ngram.quadgram.score,
+            partial(corpus.english_words.score, whitespace_hint=True)
+        ]
+    )
+
+
+def test_entire_bee_movie_quadgrams():
+    """
+    Encrpyt and decrypt bee movie script only using ngram analysis.
+
+    Correct decryption in top 2 rankings.
+    """
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(dir_path, '../util', 'beemoviescript.txt')) as bee:
+        for line in bee:
+            _test_caesar(
+                line.rstrip().upper(),
+                score_functions=[ngram.quadgram.score],
+                top_n=2
+            )
+
+
+# def test_entire_bee_movie_quadgrams_and_corpus():
+#     """
+#     Encrpyt and decrypt bee movie script using ngram and corpus analysis.
+
+#     Correct decryption 1st rank every time.
+#     """
 #     dir_path = os.path.dirname(os.path.realpath(__file__))
-#     with open(os.path.join(dir_path, 'beemoviescript.txt')) as bee:
+#     with open(os.path.join(dir_path, '../util', 'beemoviescript.txt')) as bee:
 #         for line in bee:
-#             plaintext = line.rstrip().upper()
-
-#             # Skip lines which are too short
-#             if len(remove(plaintext, string.punctuation + string.whitespace)) < 4:
-#                 continue
-
-#             # Encipher line using random Caesar cipher
-#             ciphertext = pycipher.Caesar(
-#                 random.randint(caesar.MIN_KEY, caesar.MAX_KEY)
-#             ).encipher(plaintext, keep_punct=True)
-
-#             # Use cckrypto to break it
-#             decryptions = caesar.crack(
-#                 ciphertext,
-#                 score_functions=[ngram.quadgram.score]
-#             )
-#             top_ten = decryptions[0:10]
-#             assert any(plaintext == d[0] for d in top_ten)
-
-
-#Aim for correct decryption in the top 3 decryptions with quadgrams and dictionary
-# def test_entire_bee_movie_dictionary():
-#     """Testing the entire bee move script."""
-#     dir_path = os.path.dirname(os.path.realpath(__file__))
-#     with open(os.path.join(dir_path, 'beemoviescript.txt')) as bee:
-#         for line in bee:
-#             plaintext = line.rstrip().upper()
-
-#             # Encipher line using random Caesar cipher
-#             cipher = pycipher.Caesar(
-#                 random.randint(caesar.MIN_KEY, caesar.MAX_KEY)
-#             )
-#             ciphertext = cipher.encipher(plaintext, keep_punct=True)
-
-#             # Use cckrypto to break it
-#             decryptions = caesar.crack(
-#                 ciphertext,
+#             _test_caesar(
+#                 line.rstrip().upper(),
 #                 score_functions=[
 #                     ngram.quadgram.score,
-#                     corpus.english_words.score
-#                 ]
+#                     partial(corpus.english_words.score, whitespace_hint=True)
+#                 ],
+#                 top_n=1
 #             )
-#             top_three = decryptions[0:3]
-#             if not any(plaintext == d[0] for d in top_three):
-#                 print(plaintext)
-#                 print(decryptions)
-#                 # import sys
-#                 # sys.exit()
-
-#     assert 1 == 2

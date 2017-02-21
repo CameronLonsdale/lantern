@@ -24,13 +24,7 @@ class Corpus():
             text = remove_punct_and_whitespace(text)
             raise NotImplementedError()
 
-        # n_incorrect_words = sum(1 for word in (word for word in words if word not in self.words))
-
-        n_incorrect_words = 0
-        for word in words:
-            if word and word.lower() not in self.words:
-                n_incorrect_words += 1
-
-        return n_incorrect_words * self.floor
+        invalid_words = filter(lambda word: word and word.lower() not in self.words, words)
+        return len(invalid_words) * self.floor
 
 english_words = Corpus(nltk.corpus.words.words())
