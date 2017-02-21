@@ -2,6 +2,18 @@
 
 cckrypto is a cryptanalysis framework to assist in the automated identification and breaking of ciphertexts.
 
+## Goal
+
+One click identify and decrypt a piece of ciphertext
+
+## Future plans
+
+- [ ] Adaptive scoring to speed up decryption.
+- [ ] Identification process for ciphertext.
+- [ ] Multithreading.
+- [ ] Support for more Classical Ciphers.
+- [ ] Support for Modern Cryptographic Ciphers.
+
 ## Installation
 ```
 git clone git@github.com:CameronLonsdale/cckrypto.git
