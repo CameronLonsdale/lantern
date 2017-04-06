@@ -1,4 +1,4 @@
-"""Tests for the Caeser module."""
+"""Tests for the Caeser module"""
 import pycipher
 import os
 import random
@@ -39,13 +39,13 @@ def _test_caesar(plaintext, score_functions, key=3, top_n=1):
 
 
 def test_quick_brown_fox():
-    """Testing quick brown fox."""
+    """Testing quick brown fox"""
     plaintext = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"
     _test_caesar(plaintext, score_functions=[ngram.quadgram])
 
 
 def test_defend_castle_wall():
-    """Testing defend castle wall."""
+    """Testing defend castle wall"""
     plaintext = "DEFEND THE EAST WALL OF THE CASTLE"
     _test_caesar(plaintext, score_functions=[ngram.quadgram])
 
@@ -70,7 +70,7 @@ def test_buzz_buzz_buzz():
 
 
 def test_bye():
-    """Testing Bye has top score."""
+    """Testing Bye has top score"""
     plaintext = "- BYE!"
     _test_caesar(
         plaintext,
@@ -100,7 +100,7 @@ def test_oh_my():
 
 
 def test_ok():
-    """Testing ok."""
+    """Testing ok"""
     plaintext = "- OK."
     _test_caesar(
         plaintext,

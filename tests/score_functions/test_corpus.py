@@ -1,4 +1,4 @@
-"""Testing the corpus score fuction."""
+"""Testing the corpus score fuction"""
 from cckrypto.score_functions.corpus import Corpus
 import nltk.corpus
 from math import log10
@@ -11,25 +11,25 @@ def _test_corpus_constructor(words):
 
 
 def test_corpus_constructor_with_set():
-    """Test corpus constructor with set."""
+    """Test corpus constructor with set"""
     words = set(["hello", "other", "english", "words"])
     _test_corpus_constructor(words)
 
 
 def test_corpus_constructor_with_list():
-    """Test corpus constructor with list."""
+    """Test corpus constructor with list"""
     words = ["hello", "other", "english", "words"]
     _test_corpus_constructor(words)
 
 
 def test_corpus_constructor_with_corpus():
-    """Test corpus constructor with nltk corpus."""
+    """Test corpus constructor with nltk corpus"""
     words = nltk.corpus.words.words()
     _test_corpus_constructor(words)
 
 
 def test_corpus_all_english_one_word():
-    """Test english words returns 0 score."""
+    """Test english words returns 0 score"""
     english_scorer = Corpus(set(["hello", "other", "english", "words"]))
     plaintext = "Hello"
     assert english_scorer(
@@ -39,7 +39,7 @@ def test_corpus_all_english_one_word():
 
 
 def test_corpus_one_non_english():
-    """Test incorrect words get assisgned floor value."""
+    """Test incorrect words get assisgned floor value"""
     english_scorer = Corpus(set(["hello", "other", "english", "words"]))
     plaintext = "jiugyfti"
     assert english_scorer(
@@ -49,7 +49,7 @@ def test_corpus_one_non_english():
 
 
 def test_corpus_multiple_non_english():
-    """Test incorrect scores compound."""
+    """Test incorrect scores compound"""
     english_scorer = Corpus(set(["hello", "other", "english", "words"]))
     plaintext = "jiugyfti ikomoipa"
     assert english_scorer(

@@ -1,6 +1,7 @@
 """Fitness scoring using pattern matching."""
 import re
 
+
 class PatternMatch():
     """Computes the score of a text by determing if a pattern matches."""
 

@@ -1,4 +1,4 @@
-"""Test utility functions."""
+"""Test utility functions"""
 
 from cckrypto.util import (
     remove_punctuation, remove_whitespace,
@@ -7,7 +7,7 @@ from cckrypto.util import (
 
 
 def test_remove_punctuation():
-    """Test punctuation removed."""
+    """Test punctuation removed"""
     plaintext = "Don't worry my friends."
     assert remove_punctuation(
         plaintext
@@ -15,7 +15,7 @@ def test_remove_punctuation():
 
 
 def test_remove_whitespace():
-    """Test whitespace removed."""
+    """Test whitespace removed"""
     plaintext = "Don't worry my friends."
     assert remove_whitespace(
         plaintext
@@ -23,7 +23,7 @@ def test_remove_whitespace():
 
 
 def test_remove_punct_and_whitespace():
-    """Test punctuation and whitespace removal."""
+    """Test punctuation and whitespace removal"""
     plaintext = "Don't worry my friends."
     assert remove_punct_and_whitespace(
         plaintext

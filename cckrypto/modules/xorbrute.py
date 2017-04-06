@@ -17,7 +17,7 @@ def xor(input_bytes, key):
 def crack(hex_string, num_bytes, fitness):
     decryptions = list()
     binarray = bytes.fromhex(hex_string)
-    
+
     for key in range(2**(num_bytes*8)):
         plaintext = ''.join(map(chr, xor(binarray, key)))
 

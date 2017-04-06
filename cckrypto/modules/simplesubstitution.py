@@ -3,11 +3,12 @@ import random
 import re
 import math
 
+
 def crack(ciphertext, fitness):
     max_key = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
     max_score = -math.inf
     parent_score, parent_key = max_score, max_key
-  
+
     iteration = 0
     unicity = 500
     while iteration < unicity:
