@@ -15,7 +15,7 @@ class Corpus():
         self.words = corpus
         self.floor = log10(0.01 / len(self.words))
 
-    def score(self, text, whitespace_hint):
+    def __call__(self, text, whitespace_hint):
         """Score based on number of words not in the corpus."""
         if whitespace_hint:
             text = remove_punctuation(text)
@@ -24,7 +24,7 @@ class Corpus():
             text = remove_punct_and_whitespace(text)
             raise NotImplementedError()
 
-        invalid_words = filter(lambda word: word and word.lower() not in self.words, words)
+        invalid_words = list(filter(lambda word: word and word.lower() not in self.words, words))
         return len(invalid_words) * self.floor
 
 english_words = Corpus(nltk.corpus.words.words())

@@ -8,6 +8,6 @@ class PatternMatch():
         """Accept a regex as a pattern to match text on."""
         self.pattern = re.compile(regex)
 
-    def score(self, text):
+    def __call__(self, text):
         """Score text based on whether a match is found in the text."""
         return -1 if self.pattern.search(text) is None else 0

@@ -25,7 +25,7 @@ class NgramScore():
         }
         self.floor = log10(0.01 / self.total)
 
-    def score(self, text):
+    def __call__(self, text):
         """Compute the probability of text being a valid string in the source language."""
         text = remove_punct_and_whitespace(text)
         score = 0
