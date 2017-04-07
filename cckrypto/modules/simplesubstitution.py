@@ -1,16 +1,20 @@
 """Automated breaking of the Simple Substitution cipher"""
 import random
-import math
 import string
 
-from pycipher import SimpleSubstitution
 from cckrypto.score import score
 
 
+def _decipher(key, ciphertext):
+    rev_map = {v: k for k, v in zip(key, string.ascii_uppercase)}
+    return ''.join((rev_map[char] if char in rev_map else char for char in ciphertext))
+
+
 def crack(ciphertext, score_functions, nswaps=3000, ntrials=30):
-    key = list(string.ascii_lowercase)
+    ciphertext = ciphertext.upper()
+    key = list(string.ascii_uppercase)
     decryptions = []
-    best_score = -99e9
+    best_score = -99e9  # TODO: I Don't like this magic number
 
     # Find global maximums
     for iteration in range(ntrials):
@@ -21,10 +25,10 @@ def crack(ciphertext, score_functions, nswaps=3000, ntrials=30):
             new_key = key[:]
 
             # Swap 2 characters in the key
-            a, b = random.sample(range(26), 2)
+            a, b = random.sample(range(26), 2)  # TODO: More magic numbers :(
             new_key[a], new_key[b] = new_key[b], new_key[a]
 
-            plaintext = SimpleSubstitution(new_key).decipher(ciphertext, keep_punct=True)
+            plaintext = _decipher(new_key, ciphertext)
             new_score = score(plaintext, score_functions)
 
             # Keep track of best score for a single trial
@@ -37,7 +41,7 @@ def crack(ciphertext, score_functions, nswaps=3000, ntrials=30):
             best_key = key[:]
             best_score = best_trial_score
             decryptions.append(
-                (SimpleSubstitution(best_key).decipher(ciphertext, keep_punct=True), best_score)
+                (_decipher(best_key, ciphertext), best_score)
             )
 
     return sorted(decryptions, key=lambda x: x[1], reverse=True)
