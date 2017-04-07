@@ -5,12 +5,11 @@ import random
 
 from functools import partial
 
+from cckrypto.modules import caesar
+
 from cckrypto.score_functions import (
     ngram, corpus
 )
-
-from cckrypto.modules import caesar
-from cckrypto.util import remove_punct_and_whitespace
 
 
 def _test_caesar(plaintext, score_functions, key=3, top_n=1):
