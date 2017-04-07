@@ -1,47 +1,43 @@
-from pycipher import SimpleSubstitution
+"""Automated breaking of the Simple Substitution cipher"""
 import random
-import re
 import math
+import string
+
+from pycipher import SimpleSubstitution
+from cckrypto.score import score
 
 
-def crack(ciphertext, fitness):
-    max_key = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-    max_score = -math.inf
-    parent_score, parent_key = max_score, max_key
+def crack(ciphertext, score_functions, nswaps=3000, ntrials=30):
+    key = list(string.ascii_lowercase)
+    decryptions = []
+    best_score = -99e9
 
-    iteration = 0
-    unicity = 500
-    while iteration < unicity:
-        iteration += 1
+    # Find global maximums
+    for iteration in range(ntrials):
+        random.shuffle(key)
+        best_trial_score = -99e9
 
-        random.shuffle(parent_key)
-        plaintext = SimpleSubstitution(parent_key).decipher(ciphertext)
-        parent_score = fitness.score(plaintext)
+        for swap in range(nswaps):
+            new_key = key[:]
 
-        # Find local maximum
-        step = 0
-        while step < 100:
-            a = random.randint(0, 25)
-            b = random.randint(0, 25)
+            # Swap 2 characters in the key
+            a, b = random.sample(range(26), 2)
+            new_key[a], new_key[b] = new_key[b], new_key[a]
 
-            child_key = parent_key
+            plaintext = SimpleSubstitution(new_key).decipher(ciphertext, keep_punct=True)
+            new_score = score(plaintext, score_functions)
 
-            # Swap two characters in the child
-            child_key[a], child_key[b] = child_key[b], child_key[a]
-            plaintext = SimpleSubstitution(child_key).decipher(ciphertext)
-            score = fitness.score(plaintext)
+            # Keep track of best score for a single trial
+            if new_score > best_trial_score:
+                key = new_key[:]
+                best_trial_score = new_score
 
-            # if the child was better, replace the parent with it
-            if score > parent_score:
-                parent_score = score
-                parent_key = child_key
-                step = 0
-            step += 1
+        # Keep track of the best score over all trials
+        if best_trial_score > best_score:
+            best_key = key[:]
+            best_score = best_trial_score
+            decryptions.append(
+                (SimpleSubstitution(best_key).decipher(ciphertext, keep_punct=True), best_score)
+            )
 
-        # keep track of best score seen so far
-        if parent_score > max_score:
-            max_score, max_key = parent_score, parent_key
-            print("Best score " + str(max_score))
-            print("decrypt " + SimpleSubstitution(max_key).decipher(ciphertext, True))
-
-    return SimpleSubstitution(max_key).decipher(ciphertext, True)
+    return sorted(decryptions, key=lambda x: x[1], reverse=True)
