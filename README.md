@@ -38,7 +38,7 @@ TODO: Why doesnt this actually work? It should.
 
 Use `py.test` to run tests using your current working environment
 
-Use `tox -r` to build a new environment for each python version and run all unit tests
+Use `tox -r` to build a new environment for each python version and run all tests
 
 ## Contributing
 
