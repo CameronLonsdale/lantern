@@ -1,6 +1,6 @@
 """Test utility functions"""
 
-from cckrypto.util import (
+from lantern.util import (
     remove_punctuation, remove_whitespace,
     remove_punct_and_whitespace
 )

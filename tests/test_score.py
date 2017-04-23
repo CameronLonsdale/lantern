@@ -1,6 +1,6 @@
 """Testing the scoring algorithm"""
 
-from cckrypto.score import score
+from lantern.score import score
 
 
 def test_score_with_multiple_functions():

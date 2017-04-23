@@ -3,9 +3,9 @@ import pycipher
 import random
 import string
 
-from cckrypto.modules import simplesubstitution
+from lantern.modules import simplesubstitution
 
-from cckrypto.score_functions import (
+from lantern.score_functions import (
     ngram, corpus
 )
 
@@ -60,7 +60,7 @@ def _test_simplesubstitution(plaintext, score_functions, key, top_n=1):
 #     random.shuffle(key)
 #     _test_simplesubstitution(
 #         plaintext.upper(),
-#         score_functions=[ngram.quadgram],
+#         score_functions=[ngram.quadgram()],
 #         key=key
 #     )
 
@@ -73,19 +73,19 @@ def test_250_character_text():
     random.shuffle(key)
     _test_simplesubstitution(
         plaintext,
-        score_functions=[ngram.quadgram],
+        score_functions=[ngram.quadgram()],
         key=key
     )
 
 
-# def test_500_character_text():
-#     """Testing text of length ~500"""
-#     plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
+def test_500_character_text():
+    """Testing text of length ~500"""
+    plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
 
-#     key = list(string.ascii_uppercase)
-#     random.shuffle(key)
-#     _test_simplesubstitution(
-#         plaintext.upper(),
-#         score_functions=[ngram.quadgram],
-#         key=key
-#     )
+    key = list(string.ascii_uppercase)
+    random.shuffle(key)
+    _test_simplesubstitution(
+        plaintext.upper(),
+        score_functions=[ngram.quadgram()],
+        key=key
+    )

@@ -46,10 +46,45 @@ QUINTGRAM_FILE = os.path.join(dir_path, 'english_quintgrams.txt')
 QUAGRAM_FILE = os.path.join(dir_path, 'english_quadgrams.txt')
 TRIGRAM_FILE = os.path.join(dir_path, 'english_trigrams.txt')
 BIGRAM_FILE = os.path.join(dir_path, 'english_bigrams.txt')
-MONOGRAM_FILE = os.path.join(dir_path, 'english_monograms.txt')
+UNIGRAM_FILE = os.path.join(dir_path, 'english_unigrams.txt')
 
-#quintgram = NgramScore(QUINTGRAM_FILE)
-quadgram = NgramScore(QUAGRAM_FILE)
-#trigram = NgramScore(TRIGRAM_FILE)
-#bigram = NgramScore(BIGRAM_FILE)
-#monogram = NgramScore(MONOGRAM_FILE)
+_quintgram = None
+_quadgram = None
+_trigram = None
+_bigram = None
+_unigram = None
+
+
+def quintgram():
+    global _quintgram
+    if _quintgram is None:
+        _quintgram = NgramScore(QUINTGRAM_FILE)
+    return _quintgram
+
+
+def quadgram():
+    global _quadgram
+    if _quadgram is None:
+        _quadgram = NgramScore(QUAGRAM_FILE)
+    return _quadgram
+
+
+def trigram():
+    global _trigram
+    if _trigram is None:
+        _trigram = NgramScore(TRIGRAM_FILE)
+    return _trigram
+
+
+def bigram():
+    global _bigram
+    if _bigram is None:
+        _bigram = NgramScore(BIGRAM_FILE)
+    return _bigram
+
+
+def unigram():
+    global _unigram
+    if _unigram is None:
+        _unigram = NgramScore(UNIGRAM_FILE)
+    return _unigram

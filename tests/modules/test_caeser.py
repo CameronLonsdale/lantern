@@ -5,9 +5,9 @@ import random
 
 from functools import partial
 
-from cckrypto.modules import caesar
+from lantern.modules import caesar
 
-from cckrypto.score_functions import (
+from lantern.score_functions import (
     ngram, corpus
 )
 
@@ -40,13 +40,13 @@ def _test_caesar(plaintext, score_functions, key=3, top_n=1):
 def test_quick_brown_fox():
     """Testing quick brown fox"""
     plaintext = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"
-    _test_caesar(plaintext, score_functions=[ngram.quadgram])
+    _test_caesar(plaintext, score_functions=[ngram.quadgram()])
 
 
 def test_defend_castle_wall():
     """Testing defend castle wall"""
     plaintext = "DEFEND THE EAST WALL OF THE CASTLE"
-    _test_caesar(plaintext, score_functions=[ngram.quadgram])
+    _test_caesar(plaintext, score_functions=[ngram.quadgram()])
 
 
 def test_buzz_buzz_buzz():
@@ -61,7 +61,7 @@ def test_buzz_buzz_buzz():
     _test_caesar(
         plaintext,
         score_functions=[
-            ngram.quadgram,
+            ngram.quadgram(),
             partial(corpus.english_words, whitespace_hint=True)
         ],
         top_n=3
@@ -74,7 +74,7 @@ def test_bye():
     _test_caesar(
         plaintext,
         score_functions=[
-            ngram.quadgram,
+            ngram.quadgram(),
             partial(corpus.english_words, whitespace_hint=True)
         ]
     )
@@ -91,7 +91,7 @@ def test_oh_my():
     _test_caesar(
         plaintext,
         score_functions=[
-            ngram.quadgram,
+            ngram.quadgram(),
             partial(corpus.english_words, whitespace_hint=True)
         ],
         top_n=2
@@ -104,7 +104,7 @@ def test_ok():
     _test_caesar(
         plaintext,
         score_functions=[
-            ngram.quadgram,
+            ngram.quadgram(),
             partial(corpus.english_words, whitespace_hint=True)
         ]
     )
@@ -121,7 +121,7 @@ def test_entire_bee_movie_quadgrams():
         for line in bee:
             _test_caesar(
                 line.rstrip().upper(),
-                score_functions=[ngram.quadgram],
+                score_functions=[ngram.quadgram()],
                 top_n=2
             )
 

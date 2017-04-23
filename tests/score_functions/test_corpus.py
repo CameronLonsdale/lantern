@@ -1,5 +1,5 @@
 """Testing the corpus score fuction"""
-from cckrypto.score_functions.corpus import Corpus
+from lantern.score_functions.corpus import Corpus
 import nltk.corpus
 from math import log10
 

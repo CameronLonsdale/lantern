@@ -1,5 +1,5 @@
 """Testing the pattern match score fuction"""
-from cckrypto.score_functions.patternmatch import PatternMatch
+from lantern.score_functions.patternmatch import PatternMatch
 
 
 def test_patternmatch_with_word_found():
