@@ -2,7 +2,7 @@
 import nltk.corpus
 from math import log10
 
-from cckrypto.util import (
+from lantern.util import (
     remove_punctuation, remove_punct_and_whitespace
 )
 

@@ -2,7 +2,7 @@
 import os
 from math import log10
 
-from cckrypto.util import remove_punct_and_whitespace
+from lantern.util import remove_punct_and_whitespace
 
 
 class NgramScore():
@@ -48,8 +48,8 @@ TRIGRAM_FILE = os.path.join(dir_path, 'english_trigrams.txt')
 BIGRAM_FILE = os.path.join(dir_path, 'english_bigrams.txt')
 MONOGRAM_FILE = os.path.join(dir_path, 'english_monograms.txt')
 
-quintgram = NgramScore(QUINTGRAM_FILE)
+#quintgram = NgramScore(QUINTGRAM_FILE)
 quadgram = NgramScore(QUAGRAM_FILE)
-trigram = NgramScore(TRIGRAM_FILE)
-bigram = NgramScore(BIGRAM_FILE)
-monogram = NgramScore(MONOGRAM_FILE)
+#trigram = NgramScore(TRIGRAM_FILE)
+#bigram = NgramScore(BIGRAM_FILE)
+#monogram = NgramScore(MONOGRAM_FILE)

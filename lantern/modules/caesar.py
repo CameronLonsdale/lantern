@@ -1,6 +1,6 @@
 """Automated breaking of the Caesar cipher."""
 from pycipher import Caesar
-from cckrypto.score import score
+from lantern.score import score
 
 MIN_KEY = 1
 MAX_KEY = 25

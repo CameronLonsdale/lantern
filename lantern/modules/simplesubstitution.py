@@ -41,7 +41,7 @@ def crack(ciphertext, score_functions, nswaps=3000, ntrials=30):
             best_key = key[:]
             best_score = best_trial_score
             decryptions.append(
-                (_decipher(best_key, ciphertext), best_score)
+                (_decipher(best_key, ciphertext), best_score, ''.join(best_key))
             )
 
     return sorted(decryptions, key=lambda x: x[1], reverse=True)
