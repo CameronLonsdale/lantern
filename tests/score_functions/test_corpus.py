@@ -1,6 +1,5 @@
 """Testing the corpus score fuction"""
 from lantern.score_functions.corpus import Corpus
-import nltk.corpus
 from math import log10
 
 
@@ -22,10 +21,10 @@ def test_corpus_constructor_with_list():
     _test_corpus_constructor(words)
 
 
-def test_corpus_constructor_with_corpus():
-    """Test corpus constructor with nltk corpus"""
-    words = nltk.corpus.words.words()
-    _test_corpus_constructor(words)
+# def test_corpus_constructor_with_corpus():
+#     """Test corpus constructor with nltk corpus"""
+#     words = nltk.corpus.words.words()
+#     _test_corpus_constructor(words)
 
 
 def test_corpus_all_english_one_word():

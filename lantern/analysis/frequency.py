@@ -1,25 +1,27 @@
-import os
 from collections import defaultdict
 
-def frequency_analyze(ciphertext):
+
+def frequency_analyze(text, n=1):
+    # TODO: work with different sized ngrams
     frequency = defaultdict(lambda: 0, {})
-    for symbol in ciphertext:
+    for symbol in text:
         frequency[symbol] += 1
 
     return frequency
 
 
-def ioc_calculator(frequency_map, N):
-    return float(sum((frequency_map[n] * (frequency_map[n] - 1)) for n in frequency_map)) / (N * (N - 1))
+def frequency_to_probability(frequency_map, decorator=lambda f: f):
+    total = sum(frequency_map.values())
+    return {k: decorator(float(v) / total) for k, v in frequency_map.items()}
 
 
-def index_of_coincidence(ciphertext):
-    frequency = frequency_analyze(ciphertext)
-    N = len(ciphertext)
-    return ioc_calculator(frequency, N)
+def index_of_coincidence(text):
+    frequency = frequency_analyze(text)
+    N = len(text)
+    return _calculate_ioc(frequency, N)
 
 
-def average_ic(texts):
+def avg_index_of_coincidence(texts):
     average = 0
     for text in texts:
         average += index_of_coincidence(text)
@@ -31,34 +33,10 @@ def chi_squared(source_frequency, target_frequency):
     body = lambda n: (source_frequency[n] - source_len * target_frequency[n])**2 / (source_len * target_frequency[n])
     return sum(body(n) for n in source_frequency)
 
+
 ENGLISH_IC = 0.066
 
-dir_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'english_ngrams'
-)
 
-UNIGRAM_FILE = os.path.join(dir_path, 'english_unigrams')
-
-_english_unigram = None
-
-
-def english_unigram():
-    global _english_unigram
-    if _english_unigram is None:
-        _english_unigram = build_ngram_frequencies(UNIGRAM_FILE)
-    return _english_unigram
-
-
-def build_ngram_frequencies(ngramfile, sep=" "):
-    ngrams = {}
-    with open(ngramfile) as f:
-        for line in f:
-            ngram, count = line.split(sep)
-            ngrams[ngram.upper()] = int(count)
-
-    length = len(ngram)
-    total = sum(ngrams.values())
-
-    # Calculate the log probability
-    return {k: (float(v) / total) for k, v in ngrams.items()}
+def _calculate_ioc(frequency_map, N):
+    coms_of_letters = sum((frequency_map[n] * (frequency_map[n] - 1)) for n in frequency_map)
+    return float(coms_of_letters) / (N * (N - 1))

@@ -4,19 +4,16 @@ from math import log10
 
 from lantern.util import remove_punct_and_whitespace
 
+from lantern.analysis import (
+    frequency_from_file, english_frequency
+)
+
 
 class NgramScore():
-    """Computes the score of a text by using the calculated probabilities from a loaded ngramfile."""
-
-    def __init__(self, ngramfile, sep=' '):
-        """Load file with ngrams and calculate log probailities."""
-        self.ngrams = {}
-        with open(ngramfile) as f:
-            for line in f:
-                ngram, count = line.split(sep)
-                self.ngrams[ngram.upper()] = int(count)
-
-        self.length = len(ngram)
+    """Computes the score of a text by using the frequencies of ngrams."""
+    def __init__(self, frequency_map):
+        self.ngrams = frequency_map
+        self.length = len(list(self.ngrams.keys())[0])
         self.total = sum(self.ngrams.values())
 
         # Calculate the log probability
@@ -24,6 +21,11 @@ class NgramScore():
             k: log10(float(v) / self.total) for k, v in self.ngrams.items()
         }
         self.floor = log10(0.01 / self.total)
+
+    @classmethod
+    def from_file(cls, file, sep=' '):
+        """Load file with ngrams and calculate log probailities."""
+        cls(frequency_from_file(file, sep))
 
     def __call__(self, text):
         """Compute the probability of text being a valid string in the source language."""
@@ -37,54 +39,40 @@ class NgramScore():
         return score
 
 
-dir_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'english_ngrams'
-)
+class LanguageNGrams:
+    def __init__(self, frequency_maps):
+        self.frequency_maps = frequency_maps
+        self._unigrams = None
+        self._bigrams = None
+        self._trigrams = None
+        self._quadgrams = None
 
-QUINTGRAM_FILE = os.path.join(dir_path, 'english_quintgrams.txt')
-QUAGRAM_FILE = os.path.join(dir_path, 'english_quadgrams.txt')
-TRIGRAM_FILE = os.path.join(dir_path, 'english_trigrams.txt')
-BIGRAM_FILE = os.path.join(dir_path, 'english_bigrams.txt')
-UNIGRAM_FILE = os.path.join(dir_path, 'english_unigrams.txt')
+    def unigrams(self):
+        if self._unigrams is None:
+            self._unigrams = NgramScore(self.frequency_maps['unigrams']())
+        return self._unigrams
 
-_quintgram = None
-_quadgram = None
-_trigram = None
-_bigram = None
-_unigram = None
+    def bigrams(self):
+        if self._bigrams is None:
+            self._bigrams = NgramScore(self.frequency_maps['bigrams']())
+        return self._bigrams
 
+    def trigrams(self):
+        if self._trigrams is None:
+            self._trigrams = NgramScore(self.frequency_maps['trigrams']())
+        return self._trigrams
 
-def quintgram():
-    global _quintgram
-    if _quintgram is None:
-        _quintgram = NgramScore(QUINTGRAM_FILE)
-    return _quintgram
-
-
-def quadgram():
-    global _quadgram
-    if _quadgram is None:
-        _quadgram = NgramScore(QUAGRAM_FILE)
-    return _quadgram
+    def quadgrams(self):
+        if self._quadgrams is None:
+            self._quadgrams = NgramScore(self.frequency_maps['quadgrams']())
+        return self._quadgrams
 
 
-def trigram():
-    global _trigram
-    if _trigram is None:
-        _trigram = NgramScore(TRIGRAM_FILE)
-    return _trigram
+english_ngram_to_frequency_lambda_map = {
+    'unigrams': english_frequency.unigrams,
+    'bigrams': english_frequency.bigrams,
+    'trigrams': english_frequency.trigrams,
+    'quadgrams': english_frequency.quadgrams
+}
 
-
-def bigram():
-    global _bigram
-    if _bigram is None:
-        _bigram = NgramScore(BIGRAM_FILE)
-    return _bigram
-
-
-def unigram():
-    global _unigram
-    if _unigram is None:
-        _unigram = NgramScore(UNIGRAM_FILE)
-    return _unigram
+english_scorer = LanguageNGrams(english_ngram_to_frequency_lambda_map)

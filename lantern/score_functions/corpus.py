@@ -1,5 +1,4 @@
-"""Score plaintext based on number of words identified are in the ."""
-import nltk.corpus
+"""Score plaintext based on number of words identified are in the corpus"""
 from math import log10
 
 from lantern.util import (
@@ -26,5 +25,3 @@ class Corpus():
 
         invalid_words = list(filter(lambda word: word and word.lower() not in self.words, words))
         return len(invalid_words) * self.floor
-
-english_words = Corpus(nltk.corpus.words.words())

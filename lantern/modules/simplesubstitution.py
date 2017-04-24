@@ -3,7 +3,7 @@ import random
 import string
 
 from lantern.score import score
-from lantern.decryption import Decryption
+from lantern.structures import Decryption
 
 INF = 99e9
 

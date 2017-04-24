@@ -6,7 +6,7 @@ import string
 from lantern.modules import simplesubstitution
 
 from lantern.score_functions import (
-    ngram, corpus
+    english_scorer, corpus
 )
 
 
@@ -73,7 +73,7 @@ def test_250_character_text():
     random.shuffle(key)
     _test_simplesubstitution(
         plaintext,
-        score_functions=[ngram.quadgram()],
+        score_functions=[english_scorer.quadgrams()],
         key=key
     )
 
@@ -86,6 +86,6 @@ def test_500_character_text():
     random.shuffle(key)
     _test_simplesubstitution(
         plaintext.upper(),
-        score_functions=[ngram.quadgram()],
+        score_functions=[english_scorer.quadgrams()],
         key=key
     )
