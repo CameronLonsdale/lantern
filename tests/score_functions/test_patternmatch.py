@@ -1,5 +1,8 @@
-"""Testing the pattern match score fuction"""
-from lantern.score_functions.patternmatch import PatternMatch
+"""Test the pattern match score fuction"""
+
+from lantern.score_functions.patternmatch import (
+    PatternMatch
+)
 
 
 def test_patternmatch_with_word_found():
@@ -23,7 +26,7 @@ def test_patternmatch_with_regex_found():
     assert match_scorer("flag{l33tH4ck0r}") == 0
 
 
-def test_patternmatch_with_regex_found():
+def test_patternmatch_with_regex_not_found():
     """Test pattern match using regular expression - fails"""
     match_scorer = PatternMatch("flag{.*}")
     assert match_scorer("This is a flag") == -1
