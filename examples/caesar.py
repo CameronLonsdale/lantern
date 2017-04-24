@@ -3,4 +3,6 @@ from lantern.score_functions import ngram
 
 ciphertext = """iodj{EuxwhIrufhLvEhvwIrufh}"""
 
-print(caesar.crack(ciphertext, [ngram.quadgram()])[0])
+decryptions = caesar.crack(ciphertext, [ngram.quadgram()])
+best_decryption = decryptions[0]
+print(best_decryption.plaintext)

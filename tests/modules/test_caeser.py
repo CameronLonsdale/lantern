@@ -25,16 +25,16 @@ def _test_caesar(plaintext, score_functions, key=3, top_n=1):
     next_score = 0
 
     while top_n > 0 and index < len(decryptions) - 1:
-        if decryptions[index][1] < next_score:
+        if decryptions[index].score < next_score:
             top_n -= 1
 
         top_decryptions.append(decryptions[index])
-        next_score = decryptions[index + 1][1]
+        next_score = decryptions[index + 1].score
         index += 1
 
     print("Decryptions: " + str(decryptions))
     print("Top Decryptions: " + str(top_decryptions))
-    assert any(plaintext.upper() == d[0].upper() for d in top_decryptions)
+    assert any(plaintext.upper() == d.plaintext.upper() for d in top_decryptions)
 
 
 def test_quick_brown_fox():

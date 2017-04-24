@@ -2,8 +2,9 @@
 import string
 
 from lantern.score import score
+from lantern.decryption import Decryption
 
-MIN_KEY = 1
+MIN_KEY = 0
 MAX_KEY = 26
 
 
@@ -20,8 +21,7 @@ def crack(ciphertext, score_functions):
 
     for key in range(MIN_KEY, MAX_KEY):
         plaintext = _decrypt(key, ciphertext)
-
-        decryption = (plaintext, score(plaintext, score_functions))
+        decryption = Decryption(plaintext, key, score(plaintext, score_functions))
         decryptions.append(decryption)
 
-    return sorted(decryptions, key=lambda x: x[1], reverse=True)
+    return sorted(decryptions, key=lambda x: x.score, reverse=True)

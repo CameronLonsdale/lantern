@@ -3,6 +3,9 @@ import random
 import string
 
 from lantern.score import score
+from lantern.decryption import Decryption
+
+INF = 99e9
 
 
 def _decrypt(key, ciphertext):
@@ -14,18 +17,18 @@ def crack(ciphertext, score_functions, nswaps=3000, ntrials=30):
     ciphertext = ciphertext.upper()
     key = list(string.ascii_uppercase)
     decryptions = []
-    best_score = -99e9  # TODO: I Don't like this magic number
+    best_score = -INF
 
     # Find global maximums
     for iteration in range(ntrials):
         random.shuffle(key)
-        best_trial_score = -99e9
+        best_trial_score = -INF
 
         for swap in range(nswaps):
             new_key = key[:]
 
             # Swap 2 characters in the key
-            a, b = random.sample(range(26), 2)  # TODO: More magic numbers :(
+            a, b = random.sample(range(26), 2)
             new_key[a], new_key[b] = new_key[b], new_key[a]
 
             plaintext = _decrypt(new_key, ciphertext)
@@ -40,8 +43,7 @@ def crack(ciphertext, score_functions, nswaps=3000, ntrials=30):
         if best_trial_score > best_score:
             best_key = key[:]
             best_score = best_trial_score
-            decryptions.append(
-                (_decrypt(best_key, ciphertext), best_score, ''.join(best_key))
-            )
+            decryption = Decryption(_decrypt(best_key, ciphertext), ''.join(best_key), best_score)
+            decryptions.append(decryption)
 
-    return sorted(decryptions, key=lambda x: x[1], reverse=True)
+    return sorted(decryptions, key=lambda x: x.score, reverse=True)
