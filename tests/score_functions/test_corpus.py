@@ -1,6 +1,8 @@
 """Testing the corpus score fuction"""
-from lantern.score_functions.corpus import Corpus
+
 from math import log10
+
+from lantern.score_functions import Corpus
 
 
 def _test_corpus_constructor(words):
@@ -21,12 +23,6 @@ def test_corpus_constructor_with_list():
     _test_corpus_constructor(words)
 
 
-# def test_corpus_constructor_with_corpus():
-#     """Test corpus constructor with nltk corpus"""
-#     words = nltk.corpus.words.words()
-#     _test_corpus_constructor(words)
-
-
 def test_corpus_all_english_one_word():
     """Test english words returns 0 score"""
     english_scorer = Corpus(set(["hello", "other", "english", "words"]))
@@ -38,7 +34,7 @@ def test_corpus_all_english_one_word():
 
 
 def test_corpus_one_non_english():
-    """Test incorrect words get assisgned floor value"""
+    """Test incorrect words get assigned floor value"""
     english_scorer = Corpus(set(["hello", "other", "english", "words"]))
     plaintext = "jiugyfti"
     assert english_scorer(
