@@ -6,9 +6,9 @@ from lantern.score_functions import Corpus
 
 
 def _test_corpus_constructor(words):
-    english = Corpus(words)
-    assert english.words == words
-    assert english.floor == log10(0.01 / len(words))
+    corpus = Corpus(words)
+    assert corpus.words == words
+    assert corpus.floor == log10(0.01 / len(words))
 
 
 def test_corpus_constructor_with_set():
