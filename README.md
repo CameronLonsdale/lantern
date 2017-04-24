@@ -34,7 +34,16 @@ TODO: Proper documentation for the library
 
 ### Testing
 
-TODO: Why doesnt this actually work? It should.
+Setup a virtual environment with your favourite version of python
+
+```
+virtualenv -p python3.5 venv
+source ./venv/bin/activate
+```
+
+Install testing requirements
+
+`pip install -r test_requirements`
 
 Use `py.test` to run tests using your current working environment
 
