@@ -1,4 +1,4 @@
-"""Testing the scoring algorithm"""
+"""Test the scoring algorithm"""
 
 from lantern.score import score
 
@@ -34,6 +34,6 @@ def test_score_is_averaged_positive_and_negative():
         plaintext,
         scoring_functions=[
             lambda x: -10,
-            lambda y: 0
+            lambda y: 2
         ]
-    ) == -5
+    ) == -4
