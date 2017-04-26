@@ -1,0 +1,19 @@
+language: python
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "pypy"
+
+# command to install dependencies
+install: 
+  - "pip install coveralls"
+
+# command to run tests
+script: 
+  "coverage run --source lantern -m py.test"
+
+after_success:
+  coveralls
