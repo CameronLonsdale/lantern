@@ -1,12 +1,8 @@
 # lantern
 
 [![Inline docs](https://readthedocs.org/projects/crypto-lantern/badge/?version=latest)](https://crypto-lantern.readthedocs.io/en/latest/)
-
-TODO: Logo
-
-TODO: Jenkins auto builds
-
-TODO: Coveralls
+[![Build Status](https://travis-ci.org/CameronLonsdale/lantern.svg?branch=master)](https://travis-ci.org/CameronLonsdale/lantern)
+[![Coverage Status](https://coveralls.io/repos/github/CameronLonsdale/lantern/badge.svg?branch=master)](https://coveralls.io/github/CameronLonsdale/lantern?branch=master)
 
 **lantern** is a cryptanalysis library to assist with the identification and breaking of classical ciphers. The library provides general purpose analysis tools, aswell as premade modules to break well known classic ciphers.
 
