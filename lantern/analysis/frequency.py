@@ -1,9 +1,17 @@
 from collections import defaultdict
 
+
 # TODO: Am I handling stripping away punctuation here? Should that be default or optional?
-# I think punction should be kept by default. If a user wants to take the frequency with all punctuation characters remove they can either use the keep_punct flag or strip it themselves
+# I think punction should be kept by default.
+# If a user wants to take the frequency with all punctuation characters remove they can either use the keep_punct flag or strip it themselves
+# TODO: work with different sized ngrams
 def frequency_analyze(text, n=1, keep_punct=True):
-    # TODO: work with different sized ngrams
+    """
+    Analyze the frequency of ngrams for a piece of text
+
+    :param str text: the text to analyze
+    :rtype: dictionary of symbols to frequency
+    """
     frequency = defaultdict(lambda: 0, {})
     for symbol in text:
         frequency[symbol] += 1
@@ -28,8 +36,9 @@ def avg_index_of_coincidence(texts):
         average += index_of_coincidence(text)
     return average / len(texts)
 
-## TODO: SOLVE THE KEY ERROR PROBLEM
-## IF a key is not present in the target frequency then its expected value is 0
+
+# TODO: SOLVE THE KEY ERROR PROBLEM
+# IF a key is not present in the target frequency then its expected value is 0
 def chi_squared(source_frequency, target_frequency):
     target_prob = frequency_to_probability(target_frequency)
     source_len = sum(source_frequency.values())

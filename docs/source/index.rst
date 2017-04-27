@@ -1,5 +1,6 @@
+********************************
 lantern: automated cryptanalysis
-================================
+********************************
 
 **lantern** is a cryptanalysis library to assist with the identification and breaking of classical ciphers. The library provides general purpose analysis tools, aswell as premade modules to break well known classic ciphers. ::
 
@@ -19,21 +20,24 @@ In short, lantern can be used to:
 * **Analyze** ciphertext to assist in the breaking of custom crypto systems
 
 Install
-*******
+=======
 .. code-block:: bash
 
-	git clone git@github.com:CameronLonsdale/lantern.git
-	pip install -e ./lantern
+    git clone git@github.com:CameronLonsdale/lantern.git
+    pip install -e ./lantern
 
 Guide
-*****
+=====
 Coming Soon
 
 
 API Reference
-*************
-Coming Soon
-
+=============
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   lantern.modules
+   lantern.analysis
+   lantern.score_functions
+   lantern.structures
+   lantern
