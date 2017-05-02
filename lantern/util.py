@@ -21,3 +21,11 @@ def remove_punctuation(text):
 def remove_whitespace(text):
     """Remove whitespace from text."""
     return remove(text, string.whitespace)
+
+
+def break_columns(ciphertext, key_length):
+    return [ciphertext[i::key_length] for i in range(key_length)]
+
+
+def combine_columns(columns):
+    return ''.join(x for zipped in zip(*columns) for x in zipped)

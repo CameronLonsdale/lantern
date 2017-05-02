@@ -8,6 +8,10 @@ from lantern.analysis.frequency import (
 
 from lantern.structures import Decryption
 
+from lantern.util import (
+    break_columns, combine_columns
+)
+
 
 # TODO: maybe add finding keyperiods as a parameter because people might want to use kasiski
 def crack(ciphertext, score_functions, max_key_period):
@@ -22,14 +26,6 @@ def crack(ciphertext, score_functions, max_key_period):
         best_decryptions.append(decryptions[0].plaintext)
 
     return Decryption(combine_columns(best_decryptions), "need key", 0)
-
-
-def break_columns(ciphertext, key_length):
-    return [ciphertext[i::key_length] for i in range(key_length)]
-
-
-def combine_columns(columns):
-    return ''.join(x for zipped in zip(*columns) for x in zipped)
 
 
 # Name should be different, say youre finding key periods through IC.

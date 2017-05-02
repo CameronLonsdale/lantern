@@ -3,8 +3,6 @@ Scoring algorithm to return probability of correct decryption.
 Output Range depends on the score functions used.
 """
 
-import collections
-
 
 def score(plaintext, scoring_functions):
     """
