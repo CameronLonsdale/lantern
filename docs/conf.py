@@ -82,7 +82,7 @@ html_sidebars = {
 
 html_theme_options = {
     'logo': 'lantern_logo.png',
-    'description': 'A light to reveal whats hidden',
+    'description': 'A light to reveal what\'s hidden',
     'github_user': 'CameronLonsdale',
     'github_repo': 'lantern',
     'github_type': 'star',
