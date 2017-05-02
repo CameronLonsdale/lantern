@@ -3,8 +3,7 @@
 from lantern.modules import simplesubstitution
 from lantern import fitness
 
-ciphertext = """
-Tmlk fqp oaiazpa, qda kluai oabafuar kazo tkfuaopzi zbbizfj.
+ciphertext = """Tmlk fqp oaiazpa, qda kluai oabafuar kazo tkfuaopzi zbbizfj.
 Ziqdltcd Rfbhakp' blkqajmlozox Qdljzp Bzoixia oasaooar ql fq rfpmzozcfkcix zp qdzq "Mfm klkpakpa,"
 da kauaoqdaiapp oazbqar ql azbd soapd fkpqzijakq vfqd "olzop ls iztcdqao.
 "Izqao, Caloca Eaokzor Pdzv mozfpar qda kluai, zp "Zii ls lka mfaba zkr blkpfpqakqix qotqdsti."
