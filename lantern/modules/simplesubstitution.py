@@ -44,10 +44,10 @@ def crack(ciphertext, score_functions, ntrials=30, nswaps=3000):
 def decrypt(key, ciphertext):
     key = ''.join(key)
     alphabet = string.ascii_letters
-    reversed = key.lower() + key.upper()
+    reversed_alphabet = key.lower() + key.upper()
 
     try:
-        table = str.maketrans(reversed, alphabet)
+        table = str.maketrans(reversed_alphabet, alphabet)
     except AttributeError:
-        table = string.maketrans(reversed, alphabet)
+        table = string.maketrans(reversed_alphabet, alphabet)
     return ciphertext.translate(table)

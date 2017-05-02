@@ -4,9 +4,7 @@ from math import log10
 
 from lantern.util import remove_punct_and_whitespace
 
-from lantern.analysis import (
-    frequency_from_file, english_frequency
-)
+from lantern.analysis import frequency
 
 
 class NgramScore():
@@ -21,11 +19,6 @@ class NgramScore():
             k: log10(float(v) / self.total) for k, v in self.ngrams.items()
         }
         self.floor = log10(0.01 / self.total)
-
-    @classmethod
-    def from_file(cls, file, sep=' '):
-        """Load file with ngrams and calculate log probailities."""
-        cls(frequency_from_file(file, sep))
 
     def __call__(self, text):
         """Compute the probability of text being a valid string in the source language."""
@@ -74,10 +67,10 @@ class LanguageNGrams:
 
 
 english_ngram_to_frequency_lambda_map = {
-    'unigrams': english_frequency.unigrams,
-    'bigrams': english_frequency.bigrams,
-    'trigrams': english_frequency.trigrams,
-    'quadgrams': english_frequency.quadgrams
+    'unigrams': lambda: frequency.english.unigrams,
+    'bigrams': lambda: frequency.english.bigrams,
+    'trigrams': lambda: frequency.english.trigrams,
+    'quadgrams': lambda: frequency.english.quadgrams
 }
 
 english = LanguageNGrams(english_ngram_to_frequency_lambda_map)

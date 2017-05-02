@@ -1,6 +1,6 @@
 """Chi Squared Scoring function"""
 
-from lantern.analysis import (
+from lantern.analysis.frequency import (
     frequency_analyze, chi_squared
 )
 

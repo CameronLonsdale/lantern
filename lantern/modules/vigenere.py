@@ -1,7 +1,11 @@
 from collections import defaultdict
 
 from lantern.modules import caesar
-from lantern.analysis import avg_index_of_coincidence, ENGLISH_IC
+
+from lantern.analysis.frequency import (
+    avg_index_of_coincidence, ENGLISH_IC
+)
+
 from lantern.structures import Decryption
 
 
