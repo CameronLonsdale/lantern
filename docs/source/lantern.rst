@@ -1,14 +1,9 @@
 lantern 
 =======
 
-score
------
+.. autofunction:: lantern.score
 
-.. automodule:: lantern.score
-    :members:
-    :undoc-members:
-
-util
+Util
 ----
 
 .. automodule:: lantern.util
