@@ -2,18 +2,13 @@
 import random
 import string
 
-from lantern.score import score
+from lantern import score
 from lantern.structures import Decryption
 
 INF = 99e9
 
 
-def _decrypt(key, ciphertext):
-    rev_map = {v: k for k, v in zip(key, string.ascii_uppercase)}
-    return ''.join((rev_map[char] if char in rev_map else char for char in ciphertext))
-
-
-def crack(ciphertext, score_functions, nswaps=3000, ntrials=30):
+def crack(ciphertext, score_functions, ntrials=30, nswaps=3000):
     ciphertext = ciphertext.upper()
     key = list(string.ascii_uppercase)
     decryptions = []
@@ -47,3 +42,8 @@ def crack(ciphertext, score_functions, nswaps=3000, ntrials=30):
             decryptions.append(decryption)
 
     return sorted(decryptions, key=lambda x: x.score, reverse=True)
+
+
+def _decrypt(key, ciphertext):
+    rev_map = {v: k for k, v in zip(key, string.ascii_uppercase)}
+    return ''.join((rev_map[char] if char in rev_map else char for char in ciphertext))

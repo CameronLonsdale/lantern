@@ -6,10 +6,7 @@ import random
 from functools import partial
 
 from lantern.modules import caesar
-
-from lantern.score_functions import (
-    english_scorer, corpus
-)
+from lantern import fitness
 
 
 def _test_caesar(plaintext, score_functions, key=3, top_n=1):
@@ -40,13 +37,13 @@ def _test_caesar(plaintext, score_functions, key=3, top_n=1):
 def test_quick_brown_fox():
     """Testing quick brown fox"""
     plaintext = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"
-    _test_caesar(plaintext, score_functions=[english_scorer.quadgrams()])
+    _test_caesar(plaintext, fitness.english.quadgrams)
 
 
 def test_defend_castle_wall():
     """Testing defend castle wall"""
     plaintext = "DEFEND THE EAST WALL OF THE CASTLE"
-    _test_caesar(plaintext, score_functions=[english_scorer.quadgrams()])
+    _test_caesar(plaintext, fitness.english.quadgrams)
 
 
 # def test_buzz_buzz_buzz():
@@ -61,7 +58,7 @@ def test_defend_castle_wall():
 #     _test_caesar(
 #         plaintext,
 #         score_functions=[
-#             english_scorer.quadgrams(),
+#             fitness.english.quadgrams,
 #             partial(corpus.english_words, whitespace_hint=True)
 #         ],
 #         top_n=3
@@ -74,7 +71,7 @@ def test_defend_castle_wall():
 #     _test_caesar(
 #         plaintext,
 #         score_functions=[
-#             english_scorer.quadgrams(),
+#             fitness.english.quadgrams,
 #             partial(corpus.english_words, whitespace_hint=True)
 #         ]
 #     )
@@ -91,7 +88,7 @@ def test_defend_castle_wall():
 #     _test_caesar(
 #         plaintext,
 #         score_functions=[
-#             english_scorer.quadgrams(),
+#             fitness.english.quadgrams,
 #             partial(corpus.english_words, whitespace_hint=True)
 #         ],
 #         top_n=2
@@ -104,7 +101,7 @@ def test_defend_castle_wall():
 #     _test_caesar(
 #         plaintext,
 #         score_functions=[
-#             english_scorer.quadgrams(),
+#             fitness.english.quadgrams,
 #             partial(corpus.english_words, whitespace_hint=True)
 #         ]
 #     )
@@ -121,7 +118,7 @@ def test_entire_bee_movie_quadgrams():
         for line in bee:
             _test_caesar(
                 line.rstrip().upper(),
-                score_functions=[english_scorer.quadgrams()],
+                score_functions=[fitness.english.quadgrams],
                 top_n=2
             )
 

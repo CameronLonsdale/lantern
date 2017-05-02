@@ -29,6 +29,7 @@ class NgramScore():
 
     def __call__(self, text):
         """Compute the probability of text being a valid string in the source language."""
+        text = text.upper()
         text = remove_punct_and_whitespace(text)
         score = 0
 
@@ -47,21 +48,25 @@ class LanguageNGrams:
         self._trigrams = None
         self._quadgrams = None
 
+    @property
     def unigrams(self):
         if self._unigrams is None:
             self._unigrams = NgramScore(self.frequency_maps['unigrams']())
         return self._unigrams
 
+    @property
     def bigrams(self):
         if self._bigrams is None:
             self._bigrams = NgramScore(self.frequency_maps['bigrams']())
         return self._bigrams
 
+    @property
     def trigrams(self):
         if self._trigrams is None:
             self._trigrams = NgramScore(self.frequency_maps['trigrams']())
         return self._trigrams
 
+    @property
     def quadgrams(self):
         if self._quadgrams is None:
             self._quadgrams = NgramScore(self.frequency_maps['quadgrams']())
@@ -75,4 +80,4 @@ english_ngram_to_frequency_lambda_map = {
     'quadgrams': english_frequency.quadgrams
 }
 
-english_scorer = LanguageNGrams(english_ngram_to_frequency_lambda_map)
+english = LanguageNGrams(english_ngram_to_frequency_lambda_map)

@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lantern &#8212; lantern 0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Structures" href="lantern.structures.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="lantern">
+<h1>lantern<a class="headerlink" href="#lantern" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-lantern.score">
+<span id="score"></span><h2>score<a class="headerlink" href="#module-lantern.score" title="Permalink to this headline">¶</a></h2>
+<p>Scoring algorithm to return probability of correct decryption.</p>
+<p>Scores range from -inf to 0 due to log probability.</p>
+<p>A score of 0 indicates correct plaintext.</p>
+<dl class="function">
+<dt id="lantern.score.score">
+<code class="descclassname">lantern.score.</code><code class="descname">score</code><span class="sig-paren">(</span><em>plaintext</em>, <em>scoring_functions</em><span class="sig-paren">)</span><a class="headerlink" href="#lantern.score.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Score plaintext using scoring_functions.</p>
+<p>Final result is a weighted mean.
+TODO: Support custom weights?</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lantern.util">
+<span id="util"></span><h2>util<a class="headerlink" href="#module-lantern.util" title="Permalink to this headline">¶</a></h2>
+<p>Utility functions.</p>
+<dl class="function">
+<dt id="lantern.util.remove">
+<code class="descclassname">lantern.util.</code><code class="descname">remove</code><span class="sig-paren">(</span><em>text</em>, <em>exclude</em><span class="sig-paren">)</span><a class="headerlink" href="#lantern.util.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove letters from exclude in text.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lantern.util.remove_punct_and_whitespace">
+<code class="descclassname">lantern.util.</code><code class="descname">remove_punct_and_whitespace</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#lantern.util.remove_punct_and_whitespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove punctuation and whitespace from a string.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lantern.util.remove_punctuation">
+<code class="descclassname">lantern.util.</code><code class="descname">remove_punctuation</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#lantern.util.remove_punctuation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove punctuation and whitespace.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lantern.util.remove_whitespace">
+<code class="descclassname">lantern.util.</code><code class="descname">remove_whitespace</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#lantern.util.remove_whitespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove whitespace from text.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">lantern</a><ul>
+<li><a class="reference internal" href="#module-lantern.score">score</a></li>
+<li><a class="reference internal" href="#module-lantern.util">util</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="lantern.structures.html" title="previous chapter">Structures</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Cameron Lonsdale.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

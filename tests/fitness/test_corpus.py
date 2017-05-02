@@ -2,7 +2,7 @@
 
 from math import log10
 
-from lantern.score_functions import Corpus
+from lantern.fitness import Corpus
 
 
 def _test_corpus_constructor(words):

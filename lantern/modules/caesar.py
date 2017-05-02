@@ -1,27 +1,33 @@
 """Automated breaking of the Caesar cipher."""
 import string
 
-from lantern.score import score
+from lantern import score
 from lantern.structures import Decryption
 
-MIN_KEY = 0
-MAX_KEY = 26
 
-
-def crack(ciphertext, score_functions, min_key=MIN_KEY, max_key=MAX_KEY):
+def crack(ciphertext, score_functions, min_key=0, max_key=26):
     """Break Casear cipher encryption by enumeration all keys in the keyspace."""
     decryptions = []
-    ciphertext = ciphertext.upper()
 
     for key in range(min_key, max_key):
-        plaintext = _decrypt(key, ciphertext)
+        plaintext = decrypt(key, ciphertext)
         decryption = Decryption(plaintext, key, score(plaintext, score_functions))
         decryptions.append(decryption)
 
-    return sorted(decryptions, key=lambda x: x.score, reverse=True)
+    return sorted(decryptions, reverse=True)
 
 
-def _decrypt(key, ciphertext):
-    shifted = string.ascii_uppercase[key:] + string.ascii_uppercase[:key]
-    rev_map = {v: k for k, v in zip(shifted, string.ascii_uppercase)}
-    return ''.join((rev_map[char] if char in rev_map else char for char in ciphertext))
+# TODO:
+# make decrypt a colsure which decrypts based on a certain source language
+# because right now it is hard coded to english
+def decrypt(key, ciphertext):
+    alphabet = string.ascii_letters
+    shifted_lower = string.ascii_lowercase[key:] + string.ascii_lowercase[:key]
+    shifted_upper = string.ascii_uppercase[key:] + string.ascii_uppercase[:key]
+    shifted = shifted_lower + shifted_upper
+
+    try:
+        table = str.maketrans(alphabet, shifted)
+    except AttributeError:
+        table = string.maketrans(alphabet, shifted)
+    return ciphertext.translate(table)

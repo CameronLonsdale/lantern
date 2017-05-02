@@ -1,8 +1,6 @@
 """Test the pattern match score fuction"""
 
-from lantern.score_functions.patternmatch import (
-    PatternMatch
-)
+from lantern.fitness import PatternMatch
 
 
 def test_patternmatch_with_word_found():

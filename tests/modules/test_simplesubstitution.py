@@ -4,10 +4,7 @@ import random
 import string
 
 from lantern.modules import simplesubstitution
-
-from lantern.score_functions import (
-    english_scorer, corpus
-)
+from lantern import fitness
 
 
 def _test_simplesubstitution(plaintext, score_functions, key, top_n=1):
@@ -73,7 +70,7 @@ def test_250_character_text():
     random.shuffle(key)
     _test_simplesubstitution(
         plaintext,
-        score_functions=[english_scorer.quadgrams()],
+        score_functions=fitness.english.quadgrams,
         key=key
     )
 
@@ -86,6 +83,6 @@ def test_500_character_text():
     random.shuffle(key)
     _test_simplesubstitution(
         plaintext.upper(),
-        score_functions=[english_scorer.quadgrams()],
+        score_functions=fitness.english.quadgrams,
         key=key
     )

@@ -4,7 +4,7 @@ from lantern.analysis import (
     english_frequency, frequency_to_probability,
     chi_squared, frequency_analyze
 )
-from lantern.score_functions import ChiSquared
+from lantern.fitness import ChiSquared
 
 
 def test_chisquared_english_unigrams():
