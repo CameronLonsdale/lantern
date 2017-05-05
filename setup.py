@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import (
+    setup, find_packages
+)
+
 
 setup(
     name='lantern',
@@ -9,4 +12,6 @@ setup(
     author='Cameron Lonsdale',
     author_email='cameron.lonsdale@gmail.com',
     url='https://github.com/CameronLonsdale/lantern',
+    license='MIT',
+    packages=find_packages()
 )
