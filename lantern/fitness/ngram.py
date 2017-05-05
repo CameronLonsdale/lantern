@@ -1,8 +1,9 @@
 """Fitness scoring using ngram frequency."""
 import os
+import string
 from math import log10
 
-from lantern.util import remove_punct_and_whitespace
+from lantern.util import remove
 
 from lantern.analysis import frequency
 
@@ -23,7 +24,7 @@ class NgramScore():
     def __call__(self, text):
         """Compute the probability of text being a valid string in the source language."""
         text = text.upper()
-        text = remove_punct_and_whitespace(text)
+        text = remove(text, string.whitespace + string.punctuation)
         score = 0
 
         for i in range(len(text) - self.length + 1):

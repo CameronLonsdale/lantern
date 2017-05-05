@@ -1,9 +1,9 @@
 """Score plaintext based on number of words identified are in the corpus"""
 from math import log10
 
-from lantern.util import (
-    remove_punctuation, remove_punct_and_whitespace
-)
+import string
+
+from lantern.util import remove
 
 
 class Corpus():
@@ -17,10 +17,10 @@ class Corpus():
     def __call__(self, text, whitespace_hint):
         """Score based on number of words not in the corpus."""
         if whitespace_hint:
-            text = remove_punctuation(text)
+            text = remove(text, string.punctuation)
             words = text.split()
         else:
-            text = remove_punct_and_whitespace(text)
+            text = remove(text, string.punctuation + string.whitespace)
             raise NotImplementedError()
 
         invalid_words = list(filter(lambda word: word and word.lower() not in self.words, words))

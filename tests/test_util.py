@@ -1,30 +1,23 @@
 """Test utility functions"""
 
+import string
+
 from lantern.util import (
-    remove_punctuation, remove_whitespace,
-    remove_punct_and_whitespace
+    remove, split_columns, combine_columns
 )
 
 
-def test_remove_punctuation():
+def test_remove_with_punctuation():
     """Test punctuation removed"""
     plaintext = "Don't worry my friends."
-    assert remove_punctuation(
-        plaintext
+    assert remove(
+        plaintext, string.punctuation
     ) == "Dont worry my friends"
 
 
-def test_remove_whitespace():
+def test_remove_with_whitespace():
     """Test whitespace removed"""
     plaintext = "Don't worry my friends."
-    assert remove_whitespace(
-        plaintext
+    assert remove(
+        plaintext, string.whitespace
     ) == "Don'tworrymyfriends."
-
-
-def test_remove_punct_and_whitespace():
-    """Test punctuation and whitespace removal"""
-    plaintext = "Don't worry my friends."
-    assert remove_punct_and_whitespace(
-        plaintext
-    ) == "Dontworrymyfriends"

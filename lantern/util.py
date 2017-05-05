@@ -4,27 +4,15 @@ import string
 
 
 def remove(text, exclude):
-    """Remove letters from exclude in text."""
-    return ''.join(ch for ch in text if ch not in exclude).rstrip()
+    """Remove exclude symbols from text."""
+    try:
+        return text.translate(None, exclude)
+    except TypeError:
+        return text.translate(str.maketrans('', '', exclude))
 
 
-def remove_punct_and_whitespace(text):
-    """Remove punctuation and whitespace from a string."""
-    return remove(text, string.punctuation + string.whitespace)
-
-
-def remove_punctuation(text):
-    """Remove punctuation and whitespace."""
-    return remove(text, string.punctuation)
-
-
-def remove_whitespace(text):
-    """Remove whitespace from text."""
-    return remove(text, string.whitespace)
-
-
-def break_columns(ciphertext, key_length):
-    return [ciphertext[i::key_length] for i in range(key_length)]
+def split_columns(text, n_cols):
+    return [text[i::n_cols] for i in range(n_cols)]
 
 
 def combine_columns(columns):

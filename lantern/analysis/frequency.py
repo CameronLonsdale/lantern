@@ -1,4 +1,4 @@
-import os
+import importlib
 
 from collections import defaultdict
 
@@ -60,9 +60,8 @@ def _calculate_chi_squared(source_frequency, target_prob, source_len, n):
 
 
 class LanguageFrequency:
-    def __init__(self, ngram_files, seperator=" "):
-        self.sep = seperator
-        self.files = ngram_files
+    def __init__(self, ngram_builders):
+        self.ngram_builders = ngram_builders
         self._unigrams = None
         self._bigrams = None
         self._trigrams = None
@@ -71,29 +70,25 @@ class LanguageFrequency:
     @property
     def unigrams(self):
         if self._unigrams is None:
-            file = self.files['unigrams']
-            self._unigrams = frequency_from_file(file, self.sep)
+            self._unigrams = self.ngram_builders['unigrams']()
         return self._unigrams
 
     @property
     def bigrams(self):
         if self._bigrams is None:
-            file = self.files['bigrams']
-            self._bigrams = frequency_from_file(file, self.sep)
+            self._bigrams = self.ngram_builders['bigrams']()
         return self._bigrams
 
     @property
     def trigrams(self):
         if self._trigrams is None:
-            file = self.files['trigrams']
-            self._trigrams = frequency_from_file(file, self.sep)
+            self._trigrams = self.ngram_builders['trigrams']()
         return self._trigrams
 
     @property
     def quadgrams(self):
         if self._quadgrams is None:
-            file = self.files['quadgrams']
-            self._quadgrams = frequency_from_file(file, self.sep)
+            self._quadgrams = self.ngram_builders['quadgrams']()
         return self._quadgrams
 
 
@@ -108,20 +103,15 @@ def frequency_from_file(file, sep=" "):
     total = sum(ngrams.values())
     return ngrams
 
-dir_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    'english_ngrams'
-)
 
-UNIGRAM_FILE = os.path.join(dir_path, 'english_unigrams')
-BIGRAM_FILE = os.path.join(dir_path, 'english_bigrams')
-TRIGRAM_FILE = os.path.join(dir_path, 'english_trigrams')
-QUADGRAM_FILE = os.path.join(dir_path, 'english_quadgrams')
+def _load_ngram(name):
+    module = importlib.import_module('lantern.analysis.english_ngrams.{}'.format(name))
+    return getattr(module, name)
 
-english_ngrams_to_file = {
-    'unigrams': UNIGRAM_FILE,
-    'bigrams': BIGRAM_FILE,
-    'trigrams': TRIGRAM_FILE,
-    'quadgrams': QUADGRAM_FILE
+ngram_builders = {
+    'unigrams': (lambda: _load_ngram('unigrams')),
+    'bigrams': (lambda: _load_ngram('bigrams')),
+    'trigrams': (lambda: _load_ngram('trigrams')),
+    'quadgrams': (lambda: _load_ngram('quadgrams'))
 }
-english = LanguageFrequency(english_ngrams_to_file)
+english = LanguageFrequency(ngram_builders)
