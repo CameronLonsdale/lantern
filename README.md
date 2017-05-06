@@ -1,6 +1,6 @@
 # lantern
 
-[![Inline docs](https://readthedocs.org/projects/crypto-lantern/badge/?version=latest)](https://crypto-lantern.readthedocs.io/en/latest/)
+[![Documentation Status](https://readthedocs.org/projects/lantern-crypto/badge/?version=latest)](http://lantern-crypto.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.org/CameronLonsdale/lantern.svg?branch=master)](https://travis-ci.org/CameronLonsdale/lantern)
 [![Coverage Status](https://coveralls.io/repos/github/CameronLonsdale/lantern/badge.svg?branch=master)](https://coveralls.io/github/CameronLonsdale/lantern?branch=master)
 
@@ -31,7 +31,7 @@ pip install -e ./lantern
 
 ## Documentation
 
-Full documentation available at [https://crypto-lantern.readthedocs.io/](https://crypto-lantern.readthedocs.io/en/latest/)
+Full documentation available at [lantern-crypto.readthedocs.io](https://lantern-crypto.readthedocs.io)
 
 ## Requirements
 
