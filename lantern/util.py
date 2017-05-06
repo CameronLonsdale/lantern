@@ -2,7 +2,7 @@
 Utility functions to format and marshal data.
 """
 
-from itertools import zip_longest
+import itertools
 
 
 def remove(text, exclude):
@@ -14,9 +14,11 @@ def remove(text, exclude):
         remove("example text", string.whitespace) == "exampletext"
 
     :param str text: The text to modify
-    :param str exclude: String of symbols to exclude
-    :return: text without symbols in exclude
+    :param iterable exclude: symbols to exclude
+    :return: text with exclude symbols removed
     """
+    exclude = ''.join(str(symbol) for symbol in exclude)
+
     try:
         return text.translate(None, exclude)
     except TypeError:
@@ -44,13 +46,18 @@ def split_columns(text, n_cols):
 
 def combine_columns(columns):
     """
-    combine iterable of ``columns`` into a single string
+    combine ``columns`` into a single string
 
     Example: ::
 
         combine_columns(['eape', 'xml']) == "example"
 
-    :param iterable columns: ordered iterable of columns
+    :param iterable columns: ordered columns to combine
     :return: string of combined columns
     """
-    return ''.join(x for zipped in zip_longest(*columns) for x in zipped if x is not None)
+    try:
+        columns_zipped = itertools.zip_longest(*columns) 
+    except AttributeError:
+        columns_zipped = itertools.izip_longest(*columns) 
+    
+    return ''.join(x for zipped in columns_zipped for x in zipped if x)

@@ -12,17 +12,20 @@ from lantern.util import (
 def test_remove_with_punctuation():
     """Test punctuation removed"""
     plaintext = "Don't worry my friends."
-    assert remove(
-        plaintext, string.punctuation
-    ) == "Dont worry my friends"
+    assert remove(plaintext, string.punctuation) == "Dont worry my friends"
 
 
 def test_remove_with_whitespace():
     """Test whitespace removed"""
     plaintext = "Don't worry my friends."
-    assert remove(
-        plaintext, string.whitespace
-    ) == "Don'tworrymyfriends."
+    assert remove(plaintext, string.whitespace) == "Don'tworrymyfriends."
+
+
+def test_remove_with_list_and_set():
+    """Test remove with list and set excludes"""
+    plaintext = "example"
+    assert remove(plaintext, ['e', 'x']) == "ampl"
+    assert remove(plaintext, set(['e', 'x'])) == "ampl"
 
 
 def test_columns_same_length():
@@ -65,14 +68,14 @@ def test_columns_lower_length():
 def test_split_columns_invalid_values():
     """Testing split columns with invalid lengths to check for ValueErrors"""
     text = "example"
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         split_columns(text, -1)
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         split_columns(text, -200)
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         split_columns(text, 0)
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         split_columns(text, 200)
