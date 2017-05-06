@@ -1,9 +1,12 @@
 """Chi Squared Scoring function"""
 
+import string
+
 from lantern.analysis.frequency import (
     frequency_analyze, chi_squared
 )
 
+from lantern.util import remove
 
 class ChiSquared:
     """Score a text by comparing its frequency distribution against another."""

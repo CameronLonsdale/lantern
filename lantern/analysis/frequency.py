@@ -56,6 +56,9 @@ def _calculate_ioc(frequency_map, N):
 
 
 def _calculate_chi_squared(source_frequency, target_prob, source_len, n):
+    if n not in target_prob:
+        return 0
+
     return (source_frequency[n] - source_len * target_prob[n])**2 / (source_len * target_prob[n])
 
 

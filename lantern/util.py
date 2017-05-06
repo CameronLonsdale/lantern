@@ -36,11 +36,8 @@ def split_columns(text, n_cols):
     :param str text: The text to split
     :param int n_cols: number of columns
     :return: list of columns
-    :raises ValueError: if n_cols is <= 0 or > len(text)
     """
-    if n_cols <= 0 or n_cols > len(text):
-        raise ValueError("Invalid argument n_cols {}".format(n_cols))
-
+    n_cols = max(1, min(len(text), n_cols))
     return [text[i::n_cols] for i in range(n_cols)]
 
 

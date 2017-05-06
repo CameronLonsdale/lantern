@@ -66,16 +66,9 @@ def test_columns_lower_length():
 
 
 def test_split_columns_invalid_values():
-    """Testing split columns with invalid lengths to check for ValueErrors"""
+    """Testing split columns with invalid lengths are clamped between 1 and len(text)"""
     text = "example"
-    with pytest.raises(ValueError):
-        split_columns(text, -1)
-
-    with pytest.raises(ValueError):
-        split_columns(text, -200)
-
-    with pytest.raises(ValueError):
-        split_columns(text, 0)
-
-    with pytest.raises(ValueError):
-        split_columns(text, 200)
+    assert split_columns(text, -1) == [text]
+    assert split_columns(text, -200) == [text]
+    assert split_columns(text, 0) == [text]
+    assert split_columns(text, 200) == list(text) 
