@@ -6,4 +6,4 @@ Decryption
 
 .. autoclass:: lantern.structures.Decryption
     :members:
-    :undoc-members:
+    :special-members: __lt__,__str__
