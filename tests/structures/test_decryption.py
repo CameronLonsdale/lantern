@@ -25,8 +25,8 @@ def test_str():
     assert str(decryption) == "plaintext"
 
 
-def test_ltr():
-    """test lt compares with score"""
+def test_lt():
+    """test __lt__ compares with score"""
     decryption1 = Decryption("plaintext1", "key1", 0)
     decryption2 = Decryption("plaintext2", "key2", -1)
     assert decryption2 < decryption1

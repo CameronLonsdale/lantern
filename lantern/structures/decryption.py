@@ -3,7 +3,7 @@
 
 class Decryption():
     """
-    A decryption object, composed of plaintext, a score and the key
+    A decryption object, composed of plaintext, a score and the key.
 
     Example: ::
 
@@ -24,7 +24,7 @@ class Decryption():
 
     def __str__(self):
         """
-        Return the plaintext as the string representation for the object
+        Return the plaintext as the string representation for the object.
 
         :return: self.plaintext
         """
@@ -32,7 +32,7 @@ class Decryption():
 
     def __lt__(self, other):
         """
-        Compare decryptions with other decryptions by score
+        Compare decryptions with other decryptions by score.
 
         :param object other: object to compare with
         :return: True or False
