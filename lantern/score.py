@@ -6,7 +6,7 @@ Output range depends on the score functions used.
 
 def score(text, scoring_functions):
     """
-    Score ``text`` using ``scoring_functions``
+    Score ``text`` using ``scoring_functions``.
 
     Example: ::
 
@@ -15,7 +15,7 @@ def score(text, scoring_functions):
 
     :param str text: The text to score
     :param scoring_functions: Function(s) to score text with
-    :type scoring_functions: Function or list of functions
+    :type scoring_functions: Function or iterable of functions
     :return: Mean of scores
     """
     if not hasattr(scoring_functions, '__iter__'):

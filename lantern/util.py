@@ -7,7 +7,7 @@ import itertools
 
 def remove(text, exclude):
     """
-    Remove ``exclude`` symbols from ``text``
+    Remove ``exclude`` symbols from ``text``.
 
     Example: ::
 
@@ -27,7 +27,8 @@ def remove(text, exclude):
 
 def split_columns(text, n_cols):
     """
-    split ``text`` into ``n_cols`` number of columns
+    Split ``text`` into ``n_cols`` number of columns.
+    Negative ``n_cols`` or a value greater than length of ``text`` are clamped.
 
     Example: ::
 
@@ -43,7 +44,7 @@ def split_columns(text, n_cols):
 
 def combine_columns(columns):
     """
-    combine ``columns`` into a single string
+    Combine ``columns`` into a single string.
 
     Example: ::
 
@@ -53,8 +54,8 @@ def combine_columns(columns):
     :return: string of combined columns
     """
     try:
-        columns_zipped = itertools.zip_longest(*columns) 
+        columns_zipped = itertools.zip_longest(*columns)
     except AttributeError:
-        columns_zipped = itertools.izip_longest(*columns) 
-    
+        columns_zipped = itertools.izip_longest(*columns)
+
     return ''.join(x for zipped in columns_zipped for x in zipped if x)
