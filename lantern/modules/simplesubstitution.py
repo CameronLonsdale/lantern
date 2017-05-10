@@ -7,6 +7,24 @@ from lantern.structures import Decryption
 
 
 def crack(ciphertext, score_functions, ntrials=30, nswaps=3000):
+    """
+    Break ``ciphertext`` using a hill climbing algorithm.
+
+    Example: ::
+
+        crack(ciphertext, fitness.english.quadgrams)
+
+    :param str ciphertext: The text to decrypt
+    :param scoring_functions: Function(s) to score decryptions with
+    :param int ntrials: The number of times to run the hillclimbing algorithm
+    :param int nswaps: The number of rounds to find a local maximum
+    :type scoring_functions: Function or iterable of functions
+    :return: Sorted list of decryptions
+    :raises ValueError: If nswaps or ntrials are less than or equal to 0
+    """
+    if ntrials <= 0 or nswaps <= 0:
+        raise ValueError("ntrials and nswaps must be positive integers")
+
     key = list(string.ascii_uppercase)
     decryptions = []
     best_score = -float('inf')
@@ -42,6 +60,17 @@ def crack(ciphertext, score_functions, ntrials=30, nswaps=3000):
 
 
 def decrypt(key, ciphertext):
+    """
+    Decrypt Simple Substitution encrypted ``ciphertext`` using ``key``.
+
+    Example: ::
+
+        decrypt("PQSTUVWXYZCODEBRAKINGFHJLM", "XUOOB") == "HELLO"
+
+    :param iterable key: The key to use
+    :param str ciphertext: The text to decrypt
+    :return: plaintext
+    """
     key = ''.join(key)
     alphabet = string.ascii_letters
     reversed_alphabet = key.lower() + key.upper()
