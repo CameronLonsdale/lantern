@@ -55,14 +55,14 @@ def build_key(keys):
 
 def decrypt(key, ciphertext):
     decrypted_columns = []
-    key = key.upper()
+    key = ''.join(key).upper()
 
     index = 0
     for col in split_columns(ciphertext, len(key)):
         print(col)
         letter = key[index]
         shift = int(string.ascii_uppercase.index(letter))
-        decrypted_columns.append(caesar.decrypt(-shift, col))
+        decrypted_columns.append(caesar.decrypt(shift, col))
         index = (index + 1) % len(key)
 
     return ''.join(combine_columns(decrypted_columns))
