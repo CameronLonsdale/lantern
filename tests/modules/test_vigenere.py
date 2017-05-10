@@ -148,7 +148,19 @@ def test_500_character_text_all_periods_known():
         )
 
 
-# TEST VIGENERE INVALID PERIOD
+def test_invalid_key_period():
+    """Testing invalid values of key_period and max_key_period"""
+    with pytest.raises(ValueError):
+        vigenere.crack("abc", None, key_period=0)
+
+    with pytest.raises(ValueError):
+        vigenere.crack("abc", None, key_period=-1)
+
+    with pytest.raises(ValueError):
+        vigenere.crack("abc", None, max_key_period=0)
+
+    with pytest.raises(ValueError):
+        vigenere.crack("abc", None, max_key_period=-1)
 
 
 def test_decrypt():
