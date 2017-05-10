@@ -14,7 +14,7 @@ def crack(ciphertext, score_functions, min_key=0, max_key=26):
         crack(ciphertext, fitness.english.quadgrams)
 
     :param str ciphertext: The text to decrypt
-    :param scoring_functions: Function(s) to score text with
+    :param scoring_functions: Function(s) to score decryptions with
     :param int min_key: Key to start with
     :param int max_key: Key to stop at
     :type scoring_functions: Function or iterable of functions

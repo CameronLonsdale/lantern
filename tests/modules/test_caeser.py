@@ -7,6 +7,27 @@ from lantern.modules import caesar
 from lantern import fitness
 
 
+def get_top_decryptions(decryptions, n):
+    """Top N decryptions by score, not position"""
+    top_decryptions = []
+    index = 0
+    next_score = 0
+
+    while n > 0 and index <= len(decryptions) - 1:
+        if decryptions[index].score < next_score:
+            n -= 1
+
+        top_decryptions.append(decryptions[index])
+        index += 1
+
+        if index >= len(decryptions):
+            break
+
+        next_score = decryptions[index].score
+
+    return top_decryptions
+
+
 def _test_caesar(plaintext, score_functions, key=3, top_n=1):
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
     decryptions = caesar.crack(
@@ -14,22 +35,23 @@ def _test_caesar(plaintext, score_functions, key=3, top_n=1):
         score_functions=score_functions
     )
 
-    # Top N decryptions by score, not position
-    top_decryptions = []
-    index = 0
-    next_score = 0
+    top_decryptions = get_top_decryptions(decryptions, top_n)
 
-    while top_n > 0 and index < len(decryptions) - 1:
-        if decryptions[index].score < next_score:
-            top_n -= 1
+    print("Decryptions: ")
+    for decrypt in decryptions:
+        print(decrypt)
+    print("Top Decryptions: ")
+    for decrypt in top_decryptions:
+        print(decrypt)
 
-        top_decryptions.append(decryptions[index])
-        next_score = decryptions[index + 1].score
-        index += 1
+    match = None
+    for decrypt in top_decryptions:
+        if decrypt.plaintext.upper() == plaintext.upper():
+            match = decrypt
+            break
 
-    print("Decryptions: " + str(decryptions))
-    print("Top Decryptions: " + str(top_decryptions))
-    assert any(plaintext.upper() == d.plaintext.upper() for d in top_decryptions)
+    assert match is not None
+    assert match.key == key
 
 
 def test_quick_brown_fox_unigrams():
