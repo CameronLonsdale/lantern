@@ -38,7 +38,8 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
-   lantern
+   lantern.score
+   lantern.util
    lantern.modules
    lantern.analysis
    lantern.fitness
