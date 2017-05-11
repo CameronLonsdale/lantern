@@ -1,5 +1,7 @@
 """Tests for the frequency module in analysis"""
 
+import pytest
+
 from lantern.analysis import frequency
 
 
@@ -52,3 +54,11 @@ def test_chi_squared():
 # def test_chi_squared_different_symbols():
 #     """Test matching frequency distributions have chi squared of 0"""
 #     assert frequency.chi_squared({'c': 1, 'd':2}, {'a':1, 'b':2}) == 0
+
+
+def test_LanguageFrequency_attribute_access():
+    """Correct attributes are found, incorrect attributes raise AttributeErrors"""
+    frequency.english.unigrams
+
+    with pytest.raises(AttributeError):
+        frequency.english.invalid

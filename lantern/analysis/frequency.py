@@ -1,3 +1,5 @@
+"""General purpose frequency analysis tools"""
+
 import importlib
 
 from collections import defaultdict
@@ -119,35 +121,56 @@ def _calculate_chi_squared(source_frequency, target_prob, source_len, n):
 
 
 class LanguageFrequency:
+    """
+    A LanguageFrequency object, to hold frequency distributions for a language.
+    On Attribute access, if the ngram does not exist, it is built using a given builder.
+    Any subsequent accesses then use the existing frequney map
+
+    Example: ::
+
+        english = LanguageFrequency({
+            'unigrams': (lambda: _load_ngram('unigrams')),
+            'bigrams': (lambda: _load_ngram('bigrams')),
+            'trigrams': (lambda: _load_ngram('trigrams')),
+            'quadgrams': (lambda: _load_ngram('quadgrams'))
+        })
+
+    :param dict ngram_builders: A dictionary of attribute name to attribute builder
+    """
+
     def __init__(self, ngram_builders):
         self.ngram_builders = ngram_builders
 
     def __getattr__(self, name):
-        ngram_map = self.ngram_builders[name]()
-        setattr(self, name, ngram_map)
-        return ngram_map
+        try:
+            ngram_map = self.ngram_builders[name]()
+        except KeyError:
+            raise AttributeError("'LanguageFrequency' object has no attribute '{}'".format(name))
+        else:
+            setattr(self, name, ngram_map)
+            return ngram_map
 
 
-def frequency_from_file(file, sep=" "):
-    ngrams = {}
-    with open(file) as f:
-        for line in f:
-            ngram, count = line.split(sep)
-            ngrams[ngram.upper()] = int(count)
+# FUNCTION IS CURRENTLY UNUSED. NOT SURE IF WORTH KEEPING OR NOT.
+# def frequency_from_file(file, sep=" "):
+#     ngrams = {}
+#     with open(file) as f:
+#         for line in f:
+#             ngram, count = line.split(sep)
+#             ngrams[ngram.upper()] = int(count)
 
-    length = len(ngram)
-    total = sum(ngrams.values())
-    return ngrams
+#     length = len(ngram)
+#     total = sum(ngrams.values())
+#     return ngrams
 
 
 def _load_ngram(name):
     module = importlib.import_module('lantern.analysis.english_ngrams.{}'.format(name))
     return getattr(module, name)
 
-ngram_builders = {
+english = LanguageFrequency({
     'unigrams': (lambda: _load_ngram('unigrams')),
     'bigrams': (lambda: _load_ngram('bigrams')),
     'trigrams': (lambda: _load_ngram('trigrams')),
     'quadgrams': (lambda: _load_ngram('quadgrams'))
-}
-english = LanguageFrequency(ngram_builders)
+})
