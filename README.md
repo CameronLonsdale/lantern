@@ -25,8 +25,7 @@ In short, lantern can be used to:
 ## Installation
 
 ```
-git clone git@github.com:CameronLonsdale/lantern.git
-pip install -e ./lantern
+pip install lantern
 ```
 
 ## Documentation
