@@ -55,8 +55,7 @@ def _test_vigenere(plaintext, score_functions, key, period=None, top_n=1):
             break
 
     assert match is not None
-    # assert match.key == ''.join(key)
-    # TODO I THINK THIS IS BROKEN
+    assert ''.join(key) in match.key
 
 
 # def test_50_character_text():

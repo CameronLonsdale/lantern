@@ -83,7 +83,7 @@ def key_periods(ciphertext, max_key_period):
 
 
 def _build_key(keys):
-    return ''.join([string.ascii_uppercase[(26 - key) % 26] for key in keys])
+    return ''.join([string.ascii_uppercase[(key) % 26] for key in keys])
 
 
 def decrypt(key, ciphertext):
