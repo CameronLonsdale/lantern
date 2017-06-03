@@ -13,7 +13,7 @@ from lantern.analysis.frequency import (
 )
 
 from lantern.util import (
-    split_columns, combine_columns
+    split_columns, combine_columns, remove
 )
 
 
@@ -25,7 +25,7 @@ def crack(ciphertext, score_functions, key_period=None, max_key_period=30):
 
     Example: ::
 
-        crack(ciphertext, fitness.ChiSquared(analysis.frequency.english.unigrams)
+        crack(ciphertext, fitness.ChiSquared(analysis.frequency.english.unigrams))
 
     :param str ciphertext: The text to decrypt
     :param scoring_functions: Function(s) to score decryptions with
@@ -37,10 +37,9 @@ def crack(ciphertext, score_functions, key_period=None, max_key_period=30):
     if max_key_period <= 0 or (key_period is not None and key_period <= 0):
         raise ValueError("Period values must be positive integers")
 
-    if key_period is None:
-        periods = key_periods(ciphertext, max_key_period)
-    else:
-        periods = [(int(key_period), 0)]
+    original_text = ciphertext
+    ciphertext = remove(ciphertext, string.punctuation + string.whitespace)
+    periods = [(int(key_period), 0)] if key_period else key_periods(ciphertext, max_key_period)
 
     period_decryptions = []
     for period, _ in filter(lambda p: p[0] <= len(ciphertext), periods):
@@ -49,8 +48,8 @@ def crack(ciphertext, score_functions, key_period=None, max_key_period=30):
             decryptions = caesar.crack(col, score_functions)
             column_decryptions.append(decryptions[0])
 
-        plaintext = combine_columns(decrypt.plaintext for decrypt in column_decryptions)
         key = _build_key(decrypt.key for decrypt in column_decryptions)
+        plaintext = decrypt(key, original_text)
         period_decryptions.append(Decryption(plaintext, key, score(plaintext, score_functions)))
 
     return sorted(period_decryptions, reverse=True)
@@ -98,15 +97,16 @@ def decrypt(key, ciphertext):
     :param str ciphertext: The text to decrypt
     :return: plaintext
     """
-    decrypted_columns = []
-    key = ''.join(key).upper()
+    decrypted = ""
+    key = ''.join(key)
 
     index = 0
-    for col in split_columns(ciphertext, len(key)):
-        print(col)
-        letter = key[index]
-        shift = int(string.ascii_uppercase.index(letter))
-        decrypted_columns.append(caesar.decrypt(shift, col))
-        index = (index + 1) % len(key)
+    for char in ciphertext:
+        if char not in string.punctuation + string.whitespace:
+            alphabet = string.ascii_uppercase if key[index].isupper() else string.ascii_lowercase
+            char = caesar.decrypt(int(alphabet.index(key[index])), char)
+            index = (index + 1) % len(key)
+        decrypted += char
 
-    return ''.join(combine_columns(decrypted_columns))
+
+    return ''.join(decrypted)

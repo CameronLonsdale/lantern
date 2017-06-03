@@ -57,31 +57,6 @@ def _test_vigenere(plaintext, score_functions, key, period=None, top_n=1):
     assert match is not None
     assert ''.join(key) in match.key
 
-
-# def test_50_character_text():
-#     """Testing text of length ~50"""
-#     plaintext = """Compute the probability of text being a valid string"""
-
-#     key = list(string.ascii_uppercase)
-#     random.shuffle(key)
-#     _test_simplesubstitution(
-#         plaintext.upper(),
-#         score_functions=[ngram.quadgram],
-#         key=key
-#     )
-
-# ITS ALMOST AT 100% accurancy, but sometimes doesnt work so I should try testing if its correct by using a hamming distance and make sure its below a certain threshold?
-# Ie. 1 or 2 letters wrong would be sufficient. Maximum 4.
-# def test_100_character_text():
-#     """Testing text of length ~100"""
-#     plaintext = """I think importance of talking about what you know is a moral obligation to fill the space with knowledge"""
-#     _test_simplesubstitution(
-#         plaintext,
-#         [fitness.english.bigrams, fitness.english.quadgrams],
-#         ntrials=100
-#     )
-
-
 def test_250_character_text_periods_unknown():
     """Testing text of length ~25, many different periods, none given to cracker"""
     plaintext = """Almost all of the game's cut-scenes are done in a stick puppet style. The game begins with the narrator (voiced by Will Stamper) telling the adventures of the hundreds of friends aboard the S.S. Friendship, as well as Hatty Hattington, who is known as "best friend to one and all"."""
@@ -96,7 +71,6 @@ def test_250_character_text_periods_unknown():
              fitness.english.quadgrams],
             key=key,
         )
-
 
 def test_250_character_text_periods_known():
     """Testing text of length ~25, many different periods, none given to cracker"""
@@ -114,7 +88,6 @@ def test_250_character_text_periods_known():
             period=period
         )
 
-
 def test_500_character_text_all_periods_unknown():
     """Testing text of length ~500, many different periods, none given to cracker"""
     plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
@@ -130,6 +103,11 @@ def test_500_character_text_all_periods_unknown():
             key=key
         )
 
+def test_250_character_text_with_punctuation_and_mixed_case():
+    """Testing text of length ~25, many different periods, none given to cracker"""
+    ciphertext = """YYICS jizib AGYYX RIEWV IXAFN JOOVQ QVHDL CRKLB SSLYX RIQYI IOXQT WXRIC RVVKP BHZXI YLYZP DLCDI IKGFJ UXRIP TFQGL CWVXR IEZRV NMYSF JDLCL RXOWJ NMINX FNJSP JGHVV ERJTT OOHRM VMBWN JTXKG JJJXY TSYKL OQZFT OSRFN JKBIY YSSHE LIKLO RFJGS VMRJC CYTCS VHDLC LRXOJ MWFYB JPNVR NWUMZ GRVMF UPOEB XKSDL CBZGU IBBZX MLMKK LOACX KECOC IUSBS RMPXR IPJZW XSPTR HKRQB VVOHR MVKEE PIZEX SDYYI QERJJ RYSLJ VZOVU NJLOW RTXSD LYYNE ILMBK LORYW VAOXM KZRNL CWZRA YGWVH DLCLZ VVXFF KASPJ GVIKW WWVTV MCIKL OQYSW SBAFJ EWRII SFACC MZRVO MLYYI MSSSK VISDY YIGML PZICW FJNMV PDNEH ISSFE HWEIJ PSEEJ QYIBW JFMIC TCWYE ZWLTK WKMBY YICGY WVGBS UKFVG IKJRR DSBJJ XBSWM VVYLR MRXSW BNWJO VCSKW KMBYY IQYYW UMKRM KKLOK YYVWX SMSVL KWCAV VNIQY ISIIB MVVLI DTIIC SGSRX EVYQC CDLMZ XLDWF JNSEP BRROO WJFMI CSDDF YKWQM VLKWM KKLOV CXKFE XRFBI MEPJW SBWFJ ZWGMA PVHKR BKZIB GCFEH WEWSF XKPJT NCYYR TUICX PTPLO VIJVT DSRMV AOWRB YIBIR MVWER QJKWK RBDFY MELSF XPEGQ KSPML IYIBX FJPXR ELPVH RMKFE HLEBJ YMWKM TUFII YSUXE VLJUX YAYWU XRIUJ JXGEJ PZRQS TJIJS IJIJS PWMKK KBEQX USDXC IYIBI YSUXR IPJNM DLBFZ WSIQF EHLYR YVVMY NXUSB SRMPW DMJQN SBIRM VTBIR YPWSP IIIIC WQMVL KHNZK SXMLY YIZEJ FTILY RSFAD SFJIW EVNWZ WOWFJ WSERB NKAKW LTCSX KCWXV OILGL XZYPJ NLSXC YYIBM ZGFRK VMZEH DSRTJ ROGIM RHKPQ TCSCX GYJKB ICSTS VSPFE HGEQF JARMR JRWNS PTKLI WBWVW CXFJV QOVYQ UGSXW BRWCS MSCIP XDFIF OLGSU ECXFJ PENZY STINX FJXVY YLISI MEKJI SEKFJ IEXHF NCPSI PKFVD LCWVA OVCSF JKVKX ESBLM ZJICM LYYMC GMZEX BCMKK LOACX KEXHR MVKBS SSUAK WSSKM VPCIZ RDLCF WXOVL TFRDL CXLRC LMSVL YXGSK LOMPK RGOWD TIXRI PJNIB ILTKV OIQYF SPJCW KLOQQ MRHOW MYYED FCKFV ORGLY XNSPT KLIEL IKSDS YSUXR IJNFR GIPJK MBIBF EHVEW IFAXY NTEXR IEWRW CELIW IVPYX CIOTU NKLDL CBFSN QYSRR NXFJJ GKVCH ISGOC JGMXK UFKGR"""
+    decryptions = vigenere.crack(ciphertext, fitness.ChiSquared(analysis.frequency.english.unigrams))
+    assert "FREKEY" in decryptions[0].key
 
 def test_500_character_text_all_periods_known():
     """Testing text of length ~500, many different periods, none given to cracker"""
@@ -166,7 +144,18 @@ def test_decrypt():
     """Test decrypt successfully decrypts ciphertext enciphered with the same key"""
     assert vigenere.decrypt("KEY", "RIJVS") == "HELLO"
 
+def test_decrypt_with_punctuation():
+    """Test decrypt skips punctuation characters"""
+    assert vigenere.decrypt("SECRETS", "A PQMI VJQTVFPHYQ") == "I LOVE CRYPTOLOGY"
 
-def test_decrypt_as_list():
-    """Test decrypt successfully decrypts ciphertext enciphered with the same key"""
-    assert vigenere.decrypt(list("KEY"), "RIJVS") == "HELLO"
+def test_decrypt_lower_case():
+    """Test decrypt skips punctuation characters"""
+    assert vigenere.decrypt("secrets", "a pqmi vjqtvfphyq") == "i love cryptology"
+
+def test_decrypt_mixed_case():
+    """Test decrypt skips punctuation characters"""
+    assert vigenere.decrypt("sEcReTs", "A pQmI vJqTvFpHyQ") == "I lOvE cRyPtOlOgY"
+
+# def test_decrypt_as_list():
+#     """Test decrypt successfully decrypts ciphertext enciphered with the same key"""
+#     assert vigenere.decrypt(list("KEY"), "RIJVS") == "HELLO"
