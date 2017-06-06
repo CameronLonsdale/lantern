@@ -8,15 +8,17 @@ def score(text, scoring_functions):
     """
     Score ``text`` using ``scoring_functions``.
 
-    Example: ::
+    Examples: ::
 
         score("abc", function_a)
         score("abc", [function_a, function_b])
 
-    :param str text: The text to score
-    :param scoring_functions: Function(s) to score text with
-    :type scoring_functions: Function or iterable of functions
-    :return: Mean of scores
+    Parameters:
+        text (str): The text to score
+        scoring_functions (Function or iterable of functions): Function(s) to score text with
+    
+    Return:
+        Arithmetic mean of scores
     """
     if not hasattr(scoring_functions, '__iter__'):
         scoring_functions = [scoring_functions]

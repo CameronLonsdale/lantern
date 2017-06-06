@@ -13,9 +13,12 @@ def remove(text, exclude):
 
         remove("example text", string.whitespace) == "exampletext"
 
-    :param str text: The text to modify
-    :param iterable exclude: symbols to exclude
-    :return: text with exclude symbols removed
+    Parameters:
+        text (str): The text to modify
+        exclude (iterable): The symbols to exclude
+
+    Return:
+        text with exclude symbols removed
     """
     exclude = ''.join(str(symbol) for symbol in exclude)
 
@@ -34,9 +37,12 @@ def split_columns(text, n_cols):
 
         split_columns("example", 2) == ['eape', 'xml']
 
-    :param str text: The text to split
-    :param int n_cols: number of columns
-    :return: list of columns
+    Parameters:
+        text (str): The text to split
+        n_cols (int): The number of columns to create
+
+    Return:
+        list of columns
     """
     n_cols = max(1, min(len(text), n_cols))
     return [text[i::n_cols] for i in range(n_cols)]
@@ -49,9 +55,12 @@ def combine_columns(columns):
     Example: ::
 
         combine_columns(['eape', 'xml']) == "example"
+    
+    Parameters:
+        columns (iterable): Ordered iterable of columns to combine
 
-    :param iterable columns: ordered columns to combine
-    :return: string of combined columns
+    Return:
+        string of combined columns
     """
     try:
         columns_zipped = itertools.zip_longest(*columns)
