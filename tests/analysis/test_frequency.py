@@ -18,7 +18,7 @@ def test_frequency_analyze_empty_string():
 def test_frequency_to_probability():
     """Test frequency map is converted to probability distribution succesfully"""
     frequency_map = {'a': 1, 'b': 2}
-    assert frequency.frequency_to_probability(frequency_map) == {'a': 1.0/3, 'b':2.0/3}
+    assert frequency.frequency_to_probability(frequency_map) == {'a': 1.0 / 3, 'b': 2.0 / 3}
 
 
 def test_frequency_to_probability_empty():
@@ -38,17 +38,18 @@ def test_index_of_coincidence_empty():
 
 def test_delta_index_of_coincidence():
     """Test delta index of coincidence for texts"""
-    assert frequency.delta_index_of_coincidence(["aabbc", "abbcc"]) == 0.2
+    assert frequency.delta_index_of_coincidence("aabbc", "abbcc") == 0.2
 
 
 def test_delta_index_of_coincidence_empty():
     """Test delta index of coincidence for texts"""
-    assert frequency.delta_index_of_coincidence([]) == 0
+    with pytest.raises(ValueError):
+        frequency.delta_index_of_coincidence()
 
 
 def test_chi_squared():
     """Test matching frequency distributions have chi squared of 0"""
-    assert frequency.chi_squared({'a': 2, 'b':3}, {'a':1, 'b':2}) == 0.1
+    assert frequency.chi_squared({'a': 2, 'b': 3}, {'a': 1, 'b': 2}) == 0.1
 
 
 # def test_chi_squared_different_symbols():
@@ -56,7 +57,7 @@ def test_chi_squared():
 #     assert frequency.chi_squared({'c': 1, 'd':2}, {'a':1, 'b':2}) == 0
 
 
-def test_LanguageFrequency_attribute_access():
+def test_languagefrequency_attribute_access():
     """Correct attributes are found, incorrect attributes raise AttributeErrors"""
     frequency.english.unigrams
 

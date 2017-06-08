@@ -7,7 +7,8 @@ from collections import defaultdict
 
 # TODO: Am I handling stripping away punctuation here? Should that be default or optional?
 # I think punction should be kept by default.
-# If a user wants to take the frequency with all punctuation characters remove they can either use the keep_punct flag or strip it themselves
+# If a user wants to take the frequency with all punctuation characters remove they
+# can either use the keep_punct flag or strip it themselves
 # TODO: work with different sized ngrams
 def frequency_analyze(text, n=1):
     """
@@ -17,8 +18,11 @@ def frequency_analyze(text, n=1):
 
         frequency_analyze("abb") == {'a': 1, 'b': 2}
 
-    :param str text: The text to analyze
-    :return: Dictionary of symbols to frequency
+    Parameters:
+        text (str): The text to analyze
+
+    Return:
+        Dictionary of symbols to frequency
     """
     frequency = defaultdict(lambda: 0, {})
     for symbol in text:
@@ -35,9 +39,12 @@ def frequency_to_probability(frequency_map, decorator=lambda f: f):
 
         frequency_to_probability({'a': 1, 'b': 2}) == {'a': 1/3, 'b': 2/3}
 
-    :param dict frequency_map: The dictionary to transform
-    :param lambda decorator: A function to manipulate the probability
-    :return: Dictionary of symbols to probability
+    Parameters:
+        frequency_map (dict): The dictionary to transform
+        decorator (lambda): A function to manipulate the probability
+
+    Return:
+        Dictionary of symbols to probability
     """
     total = sum(frequency_map.values())
     return {k: decorator(float(v) / total) for k, v in frequency_map.items()}
@@ -51,34 +58,34 @@ def index_of_coincidence(text):
 
         index_of_coincidence("aabbc") == 0.2
 
-    :param str text: The text to analyze
-    :return: Decimal value of the index of coincidence
+    Parameters:
+        text (str): The text to analyze
+
+    Return:
+        Decimal value of the index of coincidence
     """
-    frequency = frequency_analyze(text)
-    N = len(text)
-    return _calculate_ioc(frequency, N)
+    return _calculate_ioc(frequency_analyze(text), len(text))
 
 
-def delta_index_of_coincidence(texts):
+def delta_index_of_coincidence(*texts):
     """
     Calculate the delta index of coincidence for several ``texts``
 
     Example: ::
 
-        delta_index_of_coincidence(["aabbc", "abbcc"]) == 0.2
+        delta_index_of_coincidence("aabbc", "abbcc") == 0.2
 
-    :param iterable texts: The texts to analyze
-    :return: Decimal value of the average index of coincidence
+    Parameters:
+        texts (variable length arg list): The texts to analyze
+
+    Return:
+        Decimal value of the average index of coincidence
     """
-    average = 0
-    for text in texts:
-        average += index_of_coincidence(text)
-
-    # TODO: Not sure if best approach
+    average = sum(index_of_coincidence(text) for text in texts)
     try:
         return average / len(texts)
     except ZeroDivisionError:
-        return 0
+        raise ValueError("texts must not be empty")
 
 
 # TODO: SOLVE THE KEY ERROR PROBLEM
@@ -91,9 +98,12 @@ def chi_squared(source_frequency, target_frequency):
 
         chi_squared({'a': 2, 'b':3}, {'a':1, 'b':2}) == 0.1
 
-    :param dict source_frequency: Frequency map of the text you are analyzing
-    :param dict target_frequency: Frequency map of target language to compare with
-    :return: Decimal value of the Chi Squared Statistic
+    Parameters
+        source_frequency (dict): Frequency map of the text you are analyzing
+        target_frequency (dict): Frequency map of the target language to compare with
+
+    Return:
+        Decimal value of the chi-squared statistic
     """
     target_prob = frequency_to_probability(target_frequency)
     source_len = sum(source_frequency.values())
@@ -103,11 +113,11 @@ def chi_squared(source_frequency, target_frequency):
 ENGLISH_IC = 0.066
 
 
-def _calculate_ioc(frequency_map, N):
-    coms_of_letters = sum((frequency_map[n] * (frequency_map[n] - 1)) for n in frequency_map)
+def _calculate_ioc(frequency_map, length):
+    coms_of_letters = sum((frequency_map[symbol] * (frequency_map[symbol] - 1)) for symbol in frequency_map)
     # TODO: NOT SURE IF BEST APPROACH
     try:
-        return float(coms_of_letters) / (N * (N - 1))
+        return float(coms_of_letters) / (length * (length - 1))
     except ZeroDivisionError:
         return 0
 
@@ -129,13 +139,12 @@ class LanguageFrequency:
     Example: ::
 
         english = LanguageFrequency({
-            'unigrams': (lambda: _load_ngram('unigrams')),
-            'bigrams': (lambda: _load_ngram('bigrams')),
-            'trigrams': (lambda: _load_ngram('trigrams')),
-            'quadgrams': (lambda: _load_ngram('quadgrams'))
+            'unigrams': (lambda: _load_ngram('unigrams'))
         })
+        english.unigrams
 
-    :param dict ngram_builders: A dictionary of attribute name to attribute builder
+    Parameters:
+        ngrams_builders (dict): A dictionary of attribute name to attribute builder
     """
 
     def __init__(self, ngram_builders):
@@ -149,19 +158,6 @@ class LanguageFrequency:
         else:
             setattr(self, name, ngram_map)
             return ngram_map
-
-
-# FUNCTION IS CURRENTLY UNUSED. NOT SURE IF WORTH KEEPING OR NOT.
-# def frequency_from_file(file, sep=" "):
-#     ngrams = {}
-#     with open(file) as f:
-#         for line in f:
-#             ngram, count = line.split(sep)
-#             ngrams[ngram.upper()] = int(count)
-
-#     length = len(ngram)
-#     total = sum(ngrams.values())
-#     return ngrams
 
 
 def _load_ngram(name):

@@ -77,7 +77,7 @@ def key_periods(ciphertext, max_key_period):
     key_scores = []
     for period in range(1, max_key_period + 1):
         cols = split_columns(ciphertext, period)
-        score = abs(ENGLISH_IC - delta_index_of_coincidence(cols))
+        score = abs(ENGLISH_IC - delta_index_of_coincidence(*cols))
         key_scores.append((period, score))
 
     return sorted(key_scores, key=lambda x: x[1])
