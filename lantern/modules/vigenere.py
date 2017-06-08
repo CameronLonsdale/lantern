@@ -2,37 +2,34 @@
 
 import string
 
-import itertools
-
 from lantern import score
 from lantern.modules import caesar
 from lantern.structures import Decryption
 
-from lantern.analysis.frequency import (
-    delta_index_of_coincidence, ENGLISH_IC
-)
-
-from lantern.util import (
-    split_columns, combine_columns, remove
-)
+from lantern.analysis.frequency import delta_index_of_coincidence, ENGLISH_IC
+from lantern.util import split_columns, remove
 
 
 # TODO: maybe add finding keyperiods as a parameter because people might want to use kasiski
 def crack(ciphertext, score_functions, key_period=None, max_key_period=30):
     """
-    Break ``ciphertext`` by finding (or using the given) key_period then breaking 
-    ``key_period`` many Caesar ciphers.
+    Break ``ciphertext`` by finding (or using the given) key_period then breaking ``key_period`` many Caesar ciphers.
 
     Example: ::
 
         crack(ciphertext, fitness.ChiSquared(analysis.frequency.english.unigrams))
 
-    :param str ciphertext: The text to decrypt
-    :param scoring_functions: Function(s) to score decryptions with
-    :param int key_period: The period of the key
-    :param int max_key_period: The maximum period the key could be
-    :return: Sorted list of decryptions
-    :raises ValueError: If ``key_period`` or ``max_key_period`` are less than or equal to 0
+    Parameters:
+        ciphertext (str): The text to decrypt
+        scoring_functions (Function or iterable of functions): Function(s) to score decryptions with
+        key_period (int): The period of the key
+        max_key_period (int): The maximum period the key could be
+
+    Return:
+        Sorted list of decryptions
+
+    Raises:
+        ValueError: If key_period or max_key_period are less than or equal to 0
     """
     if max_key_period <= 0 or (key_period is not None and key_period <= 0):
         raise ValueError("Period values must be positive integers")
@@ -64,10 +61,15 @@ def key_periods(ciphertext, max_key_period):
 
         key_periods(ciphertext, 30)
 
-    :param str ciphertext: The text to analyze
-    :param int max_key_period: The maximum period the key could be
-    :return: Sorted list of keys, ordered from most likely to least likely
-    :raises ValueError: If max_key_period is less than or equal to 0
+    Parameters:
+        ciphertext (str): The text to analyze
+        max_key_period (int): The maximum period the key could be
+
+    Return:
+        Sorted list of keys
+
+    Raises:
+        ValueError: If max_key_period is less than or equal to 0
     """
     if max_key_period <= 0:
         raise ValueError("max_key_period must be a positive integer")
@@ -93,9 +95,12 @@ def decrypt(key, ciphertext):
 
         decrypt("KEY", "RIJVS") == "HELLO"
 
-    :param iterable key: The key to use
-    :param str ciphertext: The text to decrypt
-    :return: plaintext
+    Parameters:
+        key (iterable): The key to use
+        ciphertext (str): The text to decrypt
+
+    Return:
+        plaintext
     """
     decrypted = ""
     key = ''.join(key)
@@ -107,6 +112,5 @@ def decrypt(key, ciphertext):
             char = caesar.decrypt(int(alphabet.index(key[index])), char)
             index = (index + 1) % len(key)
         decrypted += char
-
 
     return ''.join(decrypted)
