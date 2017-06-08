@@ -38,8 +38,7 @@ def crack(ciphertext, score_functions, min_key=0, max_key=26):
     return sorted(decryptions, reverse=True)
 
 
-# TODO:
-# make decrypt a closure which decrypts based on a certain source language
+# TODO: make decrypt a closure which decrypts based on a certain source language
 # because right now it is hard coded to english
 def decrypt(key, ciphertext):
     """
@@ -62,8 +61,4 @@ def decrypt(key, ciphertext):
     shifted_upper = string.ascii_uppercase[key:] + string.ascii_uppercase[:key]
     shifted = shifted_lower + shifted_upper
 
-    try:
-        table = str.maketrans(shifted, alphabet)
-    except AttributeError:
-        table = string.maketrans(shifted, alphabet)
-    return ciphertext.translate(table)
+    return ciphertext.translate(str.maketrans(shifted, alphabet))
