@@ -20,13 +20,13 @@ def test_args():
 
 
 def test_str():
-    """test string rep returns plaintext"""
+    """test string typecast returns plaintext"""
     decryption = Decryption("plaintext", "key", 0)
     assert str(decryption) == "plaintext"
 
 
 def test_lt():
-    """test __lt__ compares with score"""
+    """test __lt__ compares using score"""
     decryption1 = Decryption("plaintext1", "key1", 0)
     decryption2 = Decryption("plaintext2", "key2", -1)
     assert decryption2 < decryption1
