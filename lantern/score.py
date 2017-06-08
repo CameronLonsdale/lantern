@@ -16,7 +16,7 @@ def score(text, scoring_functions):
     Parameters:
         text (str): The text to score
         scoring_functions (Function or iterable of functions): Function(s) to score text with
-    
+
     Return:
         Arithmetic mean of scores
     """

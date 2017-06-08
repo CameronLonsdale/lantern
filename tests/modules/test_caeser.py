@@ -1,7 +1,8 @@
 """Tests for the Caeser module"""
-import pytest
 
 import pycipher
+
+import pytest
 
 from lantern.modules import caesar
 from lantern import fitness
@@ -30,19 +31,9 @@ def get_top_decryptions(decryptions, n):
 
 def _test_caesar(plaintext, score_functions, key=3, top_n=1):
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
-    decryptions = caesar.crack(
-        ciphertext=ciphertext,
-        score_functions=score_functions
-    )
+    decryptions = caesar.crack(ciphertext, score_functions)
 
     top_decryptions = get_top_decryptions(decryptions, top_n)
-
-    print("Decryptions: ")
-    for decrypt in decryptions:
-        print(decrypt)
-    print("Top Decryptions: ")
-    for decrypt in top_decryptions:
-        print(decrypt)
 
     match = None
     for decrypt in top_decryptions:
@@ -102,25 +93,14 @@ def test_quick_brown_fox_no_whitespace_upper():
     _test_caesar(plaintext, fitness.english.quadgrams)
 
 
-def test_defend_castle_wall():
-    """Testing defend castle wall"""
-    plaintext = "DEFEND THE EAST WALL OF THE CASTLE"
-    _test_caesar(plaintext, fitness.english.quadgrams)
-
-
 def test_buzz_buzz_buzz_quadgrams():
     """
     Testing buzz buzz buzz in top 2 results.
+
     haff haff haff beats it because it has a better freqency distribution.
     """
     plaintext = "BUZZ BUZZ BUZZ"
-    _test_caesar(
-        plaintext,
-        score_functions=[
-            fitness.english.quadgrams,
-        ],
-        top_n=2
-    )
+    _test_caesar(plaintext, fitness.english.quadgrams, top_n=2)
 
 
 def test_narrow_key_range():
@@ -214,39 +194,3 @@ def test_decrypt_large_key_wrapped():
 #             partial(corpus.english_words, whitespace_hint=True)
 #         ]
 #     )
-
-
-# TODO: DO I NEED THIS TEST ANYMORE? NOT REALLY A UNIT TEST....
-# def test_entire_bee_movie_quadgrams():
-#     """
-#     Encrpyt and decrypt bee movie script only using ngram analysis.
-
-#     Correct decryption in top 2 rankings.
-#     """
-#     dir_path = os.path.dirname(os.path.realpath(__file__))
-#     with open(os.path.join(dir_path, '../util', 'beemoviescript.txt')) as bee:
-#         for line in bee:
-#             _test_caesar(
-#                 line.rstrip().upper(),
-#                 score_functions=[fitness.english.quadgrams],
-#                 top_n=2
-#             )
-
-
-# def test_entire_bee_movie_quadgrams_and_corpus():
-#     """
-#     Encrpyt and decrypt bee movie script using ngram and corpus analysis.
-
-#     Correct decryption 1st rank every time.
-#     """
-#     dir_path = os.path.dirname(os.path.realpath(__file__))
-#     with open(os.path.join(dir_path, '../util', 'beemoviescript.txt')) as bee:
-#         for line in bee:
-#             _test_caesar(
-#                 line.rstrip().upper(),
-#                 score_functions=[
-#                     ngram.quadgram,
-#                     partial(corpus.english_words, whitespace_hint=True)
-#                 ],
-#                 top_n=1
-#             )

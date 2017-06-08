@@ -1,4 +1,5 @@
-"""Automated breaking of the Caesar cipher."""
+"""Automated breaking of the Caesar Cipher"""
+
 import string
 
 from lantern import score
@@ -13,13 +14,17 @@ def crack(ciphertext, score_functions, min_key=0, max_key=26):
 
         crack(ciphertext, fitness.english.quadgrams)
 
-    :param str ciphertext: The text to decrypt
-    :param scoring_functions: Function(s) to score decryptions with
-    :param int min_key: Key to start with
-    :param int max_key: Key to stop at
-    :type scoring_functions: Function or iterable of functions
-    :return: Sorted list of decryptions
-    :raises ValueError: If min_key exceeds max_key
+    Parameters:
+        ciphertext (str): The text to decrypt
+        scoring_functions (Function or iterable of functions): Function(s) to score decryptions with
+        min_key (int): Key to start with
+        max_key (int): Key to stop at
+
+    Return:
+        Sorted list of decryptions
+
+    Raises:
+        ValueError: If min_key exceeds max_key
     """
     if min_key >= max_key:
         raise ValueError("min_key cannot exceed max_key")
@@ -28,8 +33,7 @@ def crack(ciphertext, score_functions, min_key=0, max_key=26):
 
     for key in range(min_key, max_key):
         plaintext = decrypt(key, ciphertext)
-        decryption = Decryption(plaintext, key, score(plaintext, score_functions))
-        decryptions.append(decryption)
+        decryptions.append(Decryption(plaintext, key, score(plaintext, score_functions)))
 
     return sorted(decryptions, reverse=True)
 
@@ -37,7 +41,6 @@ def crack(ciphertext, score_functions, min_key=0, max_key=26):
 # TODO:
 # make decrypt a closure which decrypts based on a certain source language
 # because right now it is hard coded to english
-
 def decrypt(key, ciphertext):
     """
     Decrypt Caesar encrypted ``ciphertext`` using ``key``.
@@ -46,9 +49,12 @@ def decrypt(key, ciphertext):
 
         decrypt(3, "KHOOR") == "HELLO"
 
-    :param int key: The shift to use
-    :param str ciphertext: The text to decrypt
-    :return: plaintext
+    Parameters:
+        key (int): The shift to use
+        ciphertext (str): The text to decrypt
+
+    Return:
+        plaintext
     """
     alphabet = string.ascii_letters
     key %= len(string.ascii_lowercase)

@@ -1,7 +1,5 @@
 """Test utility functions"""
 
-import pytest
-
 import string
 
 from lantern.util import (
@@ -29,12 +27,12 @@ def test_remove_with_list_and_set():
 
 
 def test_columns_same_length():
-    """testing split and combine where n_cols = len(text)"""
+    """Testing split and combine where n_cols = len(text)"""
     text = "example"
     split = split_columns(text, len(text))
 
     assert split == list(text)
-    assert combine_columns(split) == text
+    assert combine_columns(*split) == text
 
 
 def test_columns_lower_length():
@@ -43,27 +41,27 @@ def test_columns_lower_length():
 
     split = split_columns(text, 1)
     assert split == ['example']
-    assert combine_columns(split) == 'example'
+    assert combine_columns(*split) == 'example'
 
     split = split_columns(text, 2)
     assert split == ['eape', 'xml']
-    assert combine_columns(split) == 'example'
+    assert combine_columns(*split) == 'example'
 
     split = split_columns(text, 3)
     assert split == ['eme', 'xp', 'al']
-    assert combine_columns(split) == 'example'
+    assert combine_columns(*split) == 'example'
 
     split = split_columns(text, 4)
     assert split == ['ep', 'xl', 'ae', 'm']
-    assert combine_columns(split) == 'example'
+    assert combine_columns(*split) == 'example'
 
     split = split_columns(text, 5)
     assert split == ['el', 'xe', 'a', 'm', 'p']
-    assert combine_columns(split) == 'example'
+    assert combine_columns(*split) == 'example'
 
     split = split_columns(text, 6)
     assert split == ['ee', 'x', 'a', 'm', 'p', 'l']
-    assert combine_columns(split) == 'example'
+    assert combine_columns(*split) == 'example'
 
 
 def test_split_columns_invalid_values_are_clamped():
@@ -74,3 +72,8 @@ def test_split_columns_invalid_values_are_clamped():
     assert split_columns(text, -200) == [text]
     assert split_columns(text, 0) == [text]
     assert split_columns(text, 200) == list(text)
+
+
+def test_combine_columns_args_expansion():
+    """Testing that multiple args work with combine_columns"""
+    assert combine_columns('eape', 'xml') == "example"

@@ -1,6 +1,4 @@
-"""
-Utility functions to format and marshal data.
-"""
+"""Utility functions to format and marshal data."""
 
 import itertools
 
@@ -48,16 +46,16 @@ def split_columns(text, n_cols):
     return [text[i::n_cols] for i in range(n_cols)]
 
 
-def combine_columns(columns):
+def combine_columns(*columns):
     """
     Combine ``columns`` into a single string.
 
     Example: ::
 
-        combine_columns(['eape', 'xml']) == "example"
-    
+        combine_columns('eape', 'xml') == "example"
+
     Parameters:
-        columns (iterable): Ordered iterable of columns to combine
+        columns (variable length arg list): Ordered iterable of columns to combine
 
     Return:
         string of combined columns
