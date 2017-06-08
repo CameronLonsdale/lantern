@@ -19,11 +19,7 @@ def remove(text, exclude):
         text with exclude symbols removed
     """
     exclude = ''.join(str(symbol) for symbol in exclude)
-
-    try:
-        return text.translate(None, exclude)
-    except TypeError:
-        return text.translate(str.maketrans('', '', exclude))
+    return text.translate(str.maketrans('', '', exclude))
 
 
 def split_columns(text, n_cols):
@@ -60,9 +56,5 @@ def combine_columns(*columns):
     Return:
         string of combined columns
     """
-    try:
-        columns_zipped = itertools.zip_longest(*columns)
-    except AttributeError:
-        columns_zipped = itertools.izip_longest(*columns)
-
+    columns_zipped = itertools.zip_longest(*columns)
     return ''.join(x for zipped in columns_zipped for x in zipped if x)
