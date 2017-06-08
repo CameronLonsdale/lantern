@@ -12,9 +12,10 @@ class Decryption():
         decryption.key == "key"
         decryption.score == -10
 
-    :param object plaintext: The decrypted ciphertext
-    :param object key: The key which resulted in this decryption
-    :param number score: The score of this decryption
+    Parameters:
+        plaintext (str): The decrypted ciphertext
+        key (object): The key which resulted in this decryption
+        score (object): The score of this decryption
     """
 
     def __init__(self, plaintext, key, score):
@@ -26,7 +27,8 @@ class Decryption():
         """
         Return the plaintext as the string representation for the object.
 
-        :return: self.plaintext
+        Return:
+            self.plaintext
         """
         return self.plaintext
 
@@ -34,7 +36,10 @@ class Decryption():
         """
         Compare decryptions with other decryptions by score.
 
-        :param object other: object to compare with
-        :return: True or False
+        Parameters:
+            other (object): Object to compare with
+
+        Return:
+            True or False
         """
         return self.score < other.score
