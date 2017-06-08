@@ -1,34 +1,14 @@
 """Tests for the Simple Substitution module"""
 
-import pytest
-
 import pycipher
 import random
 import string
 
+import pytest
+from tests.util import get_top_decryptions
+
 from lantern.modules import simplesubstitution
 from lantern import fitness
-
-
-def get_top_decryptions(decryptions, n):
-    """Top N decryptions by score, not position"""
-    top_decryptions = []
-    index = 0
-    next_score = 0
-
-    while n > 0 and index <= len(decryptions) - 1:
-        if decryptions[index].score < next_score:
-            n -= 1
-
-        top_decryptions.append(decryptions[index])
-        index += 1
-
-        if index >= len(decryptions):
-            break
-
-        next_score = decryptions[index].score
-
-    return top_decryptions
 
 
 def _test_simplesubstitution(plaintext, score_functions, key=None, ntrials=30, top_n=1):
