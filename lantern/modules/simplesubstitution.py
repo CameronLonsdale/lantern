@@ -81,9 +81,4 @@ def decrypt(key, ciphertext):
     key = ''.join(key)
     alphabet = string.ascii_letters
     reversed_alphabet = key.lower() + key.upper()
-
-    try:
-        table = str.maketrans(reversed_alphabet, alphabet)
-    except AttributeError:
-        table = string.maketrans(reversed_alphabet, alphabet)
-    return ciphertext.translate(table)
+    return ciphertext.translate(str.maketrans(reversed_alphabet, alphabet))
