@@ -1,4 +1,5 @@
 """Automated breaking of the Simple Substitution cipher"""
+
 import random
 import string
 
@@ -14,13 +15,17 @@ def crack(ciphertext, score_functions, ntrials=30, nswaps=3000):
 
         crack(ciphertext, fitness.english.quadgrams)
 
-    :param str ciphertext: The text to decrypt
-    :param scoring_functions: Function(s) to score decryptions with
-    :param int ntrials: The number of times to run the hillclimbing algorithm
-    :param int nswaps: The number of rounds to find a local maximum
-    :type scoring_functions: Function or iterable of functions
-    :return: Sorted list of decryptions
-    :raises ValueError: If nswaps or ntrials are less than or equal to 0
+    Parameters:
+        ciphertext (str): The text to decrypt
+        scoring_functions (Function or iterable of functions): Function(s) to score decryptions with
+        ntrials (int): The number of times to run the hill climbing algorithm
+        nswaps (int): The number of rounds to find a local maximum
+
+    Return:
+        Sorted list of decryptions
+
+    Raises:
+        ValueError: If nswaps or ntrails are not positive integers
     """
     if ntrials <= 0 or nswaps <= 0:
         raise ValueError("ntrials and nswaps must be positive integers")
@@ -53,8 +58,7 @@ def crack(ciphertext, score_functions, ntrials=30, nswaps=3000):
         if best_trial_score > best_score:
             best_key = key[:]
             best_score = best_trial_score
-            decryption = Decryption(decrypt(best_key, ciphertext), ''.join(best_key), best_score)
-            decryptions.append(decryption)
+            decryptions.append(Decryption(decrypt(best_key, ciphertext), ''.join(best_key), best_score))
 
     return sorted(decryptions, reverse=True)
 
@@ -67,9 +71,12 @@ def decrypt(key, ciphertext):
 
         decrypt("PQSTUVWXYZCODEBRAKINGFHJLM", "XUOOB") == "HELLO"
 
-    :param iterable key: The key to use
-    :param str ciphertext: The text to decrypt
-    :return: plaintext
+    Parameters:
+        key (iterable): The key to use
+        ciphertext (str): The text to decrypt
+
+    Return:
+        plaintext
     """
     key = ''.join(key)
     alphabet = string.ascii_letters

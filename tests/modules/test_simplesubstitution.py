@@ -1,4 +1,5 @@
 """Tests for the Simple Substitution module"""
+
 import pytest
 
 import pycipher
@@ -36,26 +37,18 @@ def _test_simplesubstitution(plaintext, score_functions, key=None, ntrials=30, t
         random.shuffle(key)
 
     ciphertext = pycipher.SimpleSubstitution(key).encipher(plaintext, keep_punct=True)
-    decryptions = simplesubstitution.crack(
-        ciphertext=ciphertext,
-        score_functions=score_functions,
-        ntrials=ntrials
-    )
+    decryptions = simplesubstitution.crack(ciphertext, score_functions, ntrials)
 
     top_decryptions = get_top_decryptions(decryptions, top_n)
-
-    print("Decryptions: ")
-    for decrypt in decryptions:
-        print(decrypt)
-    print("Top Decryptions: ")
-    for decrypt in top_decryptions:
-        print(decrypt)
 
     match = None
     for decrypt in top_decryptions:
         if decrypt.plaintext.upper() == plaintext.upper():
             match = decrypt
             break
+
+    for decrypt in decryptions:
+        print(decrypt)
 
     assert match is not None
 
@@ -64,68 +57,28 @@ def _test_simplesubstitution(plaintext, score_functions, key=None, ntrials=30, t
     # assert ''.join(match.key) == ''.join(key)
 
 
-# def test_50_character_text():
-#     """Testing text of length ~50"""
-#     plaintext = """Compute the probability of text being a valid string"""
-
-#     key = list(string.ascii_uppercase)
-#     random.shuffle(key)
-#     _test_simplesubstitution(
-#         plaintext.upper(),
-#         score_functions=[ngram.quadgram],
-#         key=key
-#     )
-
-# ITS ALMOST AT 100% accurancy, but sometimes doesnt work so I should try testing if its correct by using a hamming distance and make sure its below a certain threshold?
-# Ie. 1 or 2 letters wrong would be sufficient. Maximum 4.
-# def test_100_character_text():
-#     """Testing text of length ~100"""
-#     plaintext = """I think importance of talking about what you know is a moral obligation to fill the space with knowledge"""
-#     _test_simplesubstitution(
-#         plaintext,
-#         [fitness.english.bigrams, fitness.english.quadgrams],
-#         ntrials=100
-#     )
-
-
 def test_250_character_text():
     """Testing text of length ~250"""
     plaintext = """Almost all of the game's cut-scenes are done in a stick puppet style. The game begins with the narrator (voiced by Will Stamper) telling the adventures of the hundreds of friends aboard the S.S. Friendship, as well as Hatty Hattington, who is known as "best friend to one and all"."""
-    _test_simplesubstitution(
-        plaintext,
-        fitness.english.quadgrams,
-        ntrials=12
-    )
+    _test_simplesubstitution(plaintext, fitness.english.quadgrams, ntrials=15)
 
 
 def test_500_character_text_quadgrams():
     """Testing text of length ~500"""
     plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
-    _test_simplesubstitution(
-        plaintext,
-        fitness.english.quadgrams,
-        ntrials=8
-    )
+    _test_simplesubstitution(plaintext, fitness.english.quadgrams, ntrials=8)
 
 
 def test_500_character_text_trigrams():
     """Testing text of length ~500"""
     plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
-    _test_simplesubstitution(
-        plaintext,
-        fitness.english.trigrams,
-        ntrials=8
-    )
+    _test_simplesubstitution(plaintext, fitness.english.trigrams, ntrials=8)
 
 
 def test_500_character_text_bigrams():
     """Testing text of length ~500"""
     plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
-    _test_simplesubstitution(
-        plaintext,
-        fitness.english.bigrams,
-        ntrials=8
-    )
+    _test_simplesubstitution(plaintext, fitness.english.bigrams, ntrials=8)
 
 
 def test_substution_invalid_ntrials_and_nswaps():
