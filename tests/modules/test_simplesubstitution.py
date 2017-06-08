@@ -27,9 +27,6 @@ def _test_simplesubstitution(plaintext, score_functions, key=None, ntrials=30, t
             match = decrypt
             break
 
-    for decrypt in decryptions:
-        print(decrypt)
-
     assert match is not None
 
     # THIS CURRENTLY FAILS DUE TO 2 LETTER DIFFERENCES IN THE KEY, SO WE SHOULD CHECK THIS
