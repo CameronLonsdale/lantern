@@ -1,12 +1,14 @@
 """Test the chi-squared scoring function"""
 
-# from lantern.analysis.frequency import (
-#     english, frequency_to_probability,
-#     chi_squared, frequency_analyze
-# )
-# from lantern.fitness import ChiSquared
+from lantern.fitness import ChiSquared
 
 
+def test_chisquared():
+    scorer = ChiSquared({'a': 1, 'b': 2})
+    text = 'aabbb'
+    assert scorer(text) == -0.1
+
+# TODO: solve the floating point inaccuracy problem
 # def test_chisquared_english_unigrams():
 #     unigram_freq = frequency_to_probability(english.unigrams)
 #     scorer = ChiSquared(english.unigrams)
