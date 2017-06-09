@@ -1,5 +1,7 @@
 """Test utility functions"""
 
+import pytest
+
 import string
 
 from lantern.util import (
@@ -26,6 +28,24 @@ def test_remove_with_list_and_set():
     assert remove(plaintext, set(['e', 'x'])) == "ampl"
 
 
+def test_columns_length_1():
+    """Since splitting into 1 column works, you should be able to combine 1 columns"""
+    text = "example"
+    split = split_columns(text, 1)
+
+    assert split == ['example']
+    assert combine_columns(*split) == text
+
+
+def test_columns_lower_length():
+    """Testing split and combine columns where num columns is less than the length of text"""
+    text = "example"
+    split = split_columns(text, 4)
+
+    assert split == ['ep', 'xl', 'ae', 'm']
+    assert combine_columns(*split) == text
+
+
 def test_columns_same_length():
     """Testing split and combine where n_cols = len(text)"""
     text = "example"
@@ -35,45 +55,18 @@ def test_columns_same_length():
     assert combine_columns(*split) == text
 
 
-def test_columns_lower_length():
-    """Testing split and combine columns where num columns is less than the length of text"""
+def test_split_columns_invalid_values():
+    """Testing split columns with invalid lengths raise ValueError"""
     text = "example"
 
-    split = split_columns(text, 1)
-    assert split == ['example']
-    assert combine_columns(*split) == 'example'
+    with pytest.raises(ValueError):
+        split_columns(text, -1)
 
-    split = split_columns(text, 2)
-    assert split == ['eape', 'xml']
-    assert combine_columns(*split) == 'example'
+    with pytest.raises(ValueError):
+        split_columns(text, -200)
 
-    split = split_columns(text, 3)
-    assert split == ['eme', 'xp', 'al']
-    assert combine_columns(*split) == 'example'
+    with pytest.raises(ValueError):
+        split_columns(text, 0)
 
-    split = split_columns(text, 4)
-    assert split == ['ep', 'xl', 'ae', 'm']
-    assert combine_columns(*split) == 'example'
-
-    split = split_columns(text, 5)
-    assert split == ['el', 'xe', 'a', 'm', 'p']
-    assert combine_columns(*split) == 'example'
-
-    split = split_columns(text, 6)
-    assert split == ['ee', 'x', 'a', 'm', 'p', 'l']
-    assert combine_columns(*split) == 'example'
-
-
-def test_split_columns_invalid_values_are_clamped():
-    """Testing split columns with invalid lengths are clamped between 1 and len(text)"""
-    text = "example"
-
-    assert split_columns(text, -1) == [text]
-    assert split_columns(text, -200) == [text]
-    assert split_columns(text, 0) == [text]
-    assert split_columns(text, 200) == list(text)
-
-
-def test_combine_columns_args_expansion():
-    """Testing that multiple args work with combine_columns"""
-    assert combine_columns('eape', 'xml') == "example"
+    with pytest.raises(ValueError):
+        split_columns(text, 200)

@@ -25,7 +25,6 @@ def remove(text, exclude):
 def split_columns(text, n_cols):
     """
     Split ``text`` into ``n_cols`` number of columns.
-    Negative ``n_cols`` or a value greater than length of ``text`` are clamped.
 
     Example: ::
 
@@ -37,12 +36,17 @@ def split_columns(text, n_cols):
 
     Return:
         list of columns
+
+    Raises:
+        ValueError: If n_cols is <= 0 or >= len(text)
     """
-    n_cols = max(1, min(len(text), n_cols))
+    if n_cols <= 0 or n_cols > len(text):
+        raise ValueError("n_cols must be within the bounds of 1 and text length")
+
     return [text[i::n_cols] for i in range(n_cols)]
 
 
-def combine_columns(*columns):
+def combine_columns(first, *rest):
     """
     Combine ``columns`` into a single string.
 
@@ -56,5 +60,5 @@ def combine_columns(*columns):
     Return:
         string of combined columns
     """
-    columns_zipped = itertools.zip_longest(*columns)
+    columns_zipped = itertools.zip_longest(first, *rest)
     return ''.join(x for zipped in columns_zipped for x in zipped if x)
