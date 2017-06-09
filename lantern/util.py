@@ -55,7 +55,8 @@ def combine_columns(first, *rest):
         combine_columns('eape', 'xml') == "example"
 
     Parameters:
-        columns (variable length arg list): Ordered iterable of columns to combine
+        first (str): First column to combine
+        rest (variable length arg list): Ordered iterable of columns to combine
 
     Return:
         string of combined columns
