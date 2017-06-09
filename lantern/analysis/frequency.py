@@ -139,7 +139,7 @@ class LanguageFrequency:
     Example: ::
 
         english = LanguageFrequency({
-            'unigrams': (lambda: _load_ngram('unigrams'))
+            'unigrams': lambda: _load_ngram('unigrams')
         })
         english.unigrams
 
@@ -165,8 +165,8 @@ def _load_ngram(name):
     return getattr(module, name)
 
 english = LanguageFrequency({
-    'unigrams': (lambda: _load_ngram('unigrams')),
-    'bigrams': (lambda: _load_ngram('bigrams')),
-    'trigrams': (lambda: _load_ngram('trigrams')),
-    'quadgrams': (lambda: _load_ngram('quadgrams'))
+    'unigrams': lambda: _load_ngram('unigrams'),
+    'bigrams': lambda: _load_ngram('bigrams'),
+    'trigrams': lambda: _load_ngram('trigrams'),
+    'quadgrams': lambda: _load_ngram('quadgrams')
 })
