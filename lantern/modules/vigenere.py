@@ -36,10 +36,10 @@ def crack(ciphertext, score_functions, key_period=None, max_key_period=30):
 
     original_text = ciphertext
     ciphertext = remove(ciphertext, string.punctuation + string.whitespace)
-    periods = [(int(key_period), 0)] if key_period else key_periods(ciphertext, max_key_period)
+    periods = [int(key_period)] if key_period else key_periods(ciphertext, max_key_period)
 
     period_decryptions = []
-    for period, _ in filter(lambda p: p[0] <= len(ciphertext), periods):
+    for period in filter(lambda p: p <= len(ciphertext), periods):
         column_decryptions = []
         for col in split_columns(ciphertext, period):
             decryptions = caesar.crack(col, score_functions)
@@ -80,7 +80,7 @@ def key_periods(ciphertext, max_key_period):
         score = abs(ENGLISH_IC - delta_index_of_coincidence(*cols))
         key_scores.append((period, score))
 
-    return sorted(key_scores, key=lambda x: x[1])
+    return [p[0] for p in sorted(key_scores, key=lambda x: x[1])]
 
 
 def _build_key(keys):
