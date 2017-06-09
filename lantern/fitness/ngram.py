@@ -1,15 +1,20 @@
 """Fitness scoring using ngram frequency."""
-import os
+
 import string
 from math import log10
 
 from lantern.util import remove
-
 from lantern.analysis import frequency
 
 
 class NgramScore():
-    """Computes the score of a text by using the frequencies of ngrams."""
+    """
+    Computes the score of a text by using the frequencies of ngrams.
+
+    Parameters:
+        frequency_map (dict): ngram to frequency mapping
+    """
+
     def __init__(self, frequency_map):
         self.ngrams = frequency_map
         self.length = len(list(self.ngrams.keys())[0])
@@ -23,8 +28,7 @@ class NgramScore():
 
     def __call__(self, text):
         """Compute the probability of text being a valid string in the source language."""
-        text = text.upper()
-        text = remove(text, string.whitespace + string.punctuation)
+        text = remove(text.upper(), string.whitespace + string.punctuation)
         score = 0
 
         for i in range(len(text) - self.length + 1):
@@ -35,43 +39,21 @@ class NgramScore():
 
 
 class LanguageNGrams:
-    def __init__(self, frequency_maps):
-        self.frequency_maps = frequency_maps
-        self._unigrams = None
-        self._bigrams = None
-        self._trigrams = None
-        self._quadgrams = None
+    def __init__(self, ngram_builders):
+        self.ngram_builders = ngram_builders
 
-    @property
-    def unigrams(self):
-        if self._unigrams is None:
-            self._unigrams = NgramScore(self.frequency_maps['unigrams']())
-        return self._unigrams
+    def __getattr__(self, name):
+        try:
+            ngram_map = self.ngram_builders[name]()
+        except KeyError:
+            raise AttributeError("'LanguageNgrams' object has no attribute '{}'".format(name))
+        else:
+            setattr(self, name, ngram_map)
+            return ngram_map
 
-    @property
-    def bigrams(self):
-        if self._bigrams is None:
-            self._bigrams = NgramScore(self.frequency_maps['bigrams']())
-        return self._bigrams
-
-    @property
-    def trigrams(self):
-        if self._trigrams is None:
-            self._trigrams = NgramScore(self.frequency_maps['trigrams']())
-        return self._trigrams
-
-    @property
-    def quadgrams(self):
-        if self._quadgrams is None:
-            self._quadgrams = NgramScore(self.frequency_maps['quadgrams']())
-        return self._quadgrams
-
-
-english_ngram_to_frequency_lambda_map = {
-    'unigrams': lambda: frequency.english.unigrams,
-    'bigrams': lambda: frequency.english.bigrams,
-    'trigrams': lambda: frequency.english.trigrams,
-    'quadgrams': lambda: frequency.english.quadgrams
-}
-
-english = LanguageNGrams(english_ngram_to_frequency_lambda_map)
+english = LanguageNGrams({
+    'unigrams': (lambda: NgramScore(frequency.english.unigrams)),
+    'bigrams': (lambda: NgramScore(frequency.english.bigrams)),
+    'trigrams': (lambda: NgramScore(frequency.english.trigrams)),
+    'quadgrams': (lambda: NgramScore(frequency.english.quadgrams))
+})
