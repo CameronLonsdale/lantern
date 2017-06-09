@@ -56,7 +56,7 @@ def combine_columns(first, *rest):
 
     Parameters:
         first (str): First column to combine
-        rest (variable length arg list): Ordered iterable of columns to combine
+        rest (variable length arg list): Additional columns to combine
 
     Return:
         string of combined columns
