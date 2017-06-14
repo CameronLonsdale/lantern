@@ -5,13 +5,14 @@ import pycipher
 import pytest
 from tests.util import get_top_decryptions
 
+from lantern.fitness import corpus
 from lantern.modules import caesar
 from lantern import fitness
 
 
-def _test_caesar(plaintext, score_functions, key=3, top_n=1):
+def _test_caesar(plaintext, *score_functions, key=3, top_n=1):
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
-    decryptions = caesar.crack(ciphertext, score_functions)
+    decryptions = caesar.crack(ciphertext, *score_functions)
 
     top_decryptions = get_top_decryptions(decryptions, top_n)
 
@@ -47,6 +48,12 @@ def test_quick_brown_fox_quadgrams():
     """Testing quick brown fox"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
     _test_caesar(plaintext, fitness.english.quadgrams)
+
+
+def test_quick_brown_fox_multiple_functions():
+    """Testing quick brown fox"""
+    plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
+    _test_caesar(plaintext, fitness.english.bigrams, fitness.english.trigrams)
 
 
 def test_quick_brown_fox_upper():
@@ -154,14 +161,7 @@ def test_decrypt_large_key_wrapped():
 #     Can be fixed with better corpus.
 #     """
 #     plaintext = "- OH, MY!"
-#     _test_caesar(
-#         plaintext,
-#         score_functions=[
-#             fitness.english.quadgrams,
-#             partial(corpus.english_words, whitespace_hint=True)
-#         ],
-#         top_n=2
-#     )
+#     _test_caesar(plaintext, fitness.english.quadgrams, corpus.english_words, top_n=2)
 
 
 # def test_ok():

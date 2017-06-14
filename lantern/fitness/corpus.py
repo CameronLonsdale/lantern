@@ -14,14 +14,10 @@ class Corpus():
         self.words = corpus
         self.floor = log10(0.01 / len(self.words))
 
-    def __call__(self, text, whitespace_hint):
+    def __call__(self, text):
         """Score based on number of words not in the corpus."""
-        if whitespace_hint:
-            text = remove(text, string.punctuation)
-            words = text.split()
-        else:
-            text = remove(text, string.punctuation + string.whitespace)
-            raise NotImplementedError()
+        text = remove(text, string.punctuation)
+        words = text.split()
 
         invalid_words = list(filter(lambda word: word and word.lower() not in self.words, words))
         return len(invalid_words) * self.floor

@@ -13,9 +13,9 @@ from lantern.analysis import frequency
 from lantern.util import remove
 
 
-def _test_vigenere(plaintext, score_functions, key, period=None, top_n=1):
+def _test_vigenere(plaintext, first, *rest, key, period=None, top_n=1):
     ciphertext = pycipher.Vigenere(key).encipher(plaintext)
-    decryptions = vigenere.crack(ciphertext, score_functions, period)
+    decryptions = vigenere.crack(ciphertext, first, *rest, key_period=period)
 
     top_decryptions = get_top_decryptions(decryptions, top_n)
 
@@ -37,7 +37,7 @@ def test_250_character_text_periods_unknown():
         key = list(string.ascii_uppercase)
         random.shuffle(key)
         key = key[:period]
-        _test_vigenere(plaintext, [fitness.ChiSquared(frequency.english.unigrams), fitness.english.quadgrams], key)
+        _test_vigenere(plaintext, fitness.ChiSquared(frequency.english.unigrams), fitness.english.quadgrams, key=key)
 
 
 def test_250_character_text_periods_known():
@@ -47,7 +47,11 @@ def test_250_character_text_periods_known():
         key = list(string.ascii_uppercase)
         random.shuffle(key)
         key = key[:period]
-        _test_vigenere(plaintext, [fitness.ChiSquared(frequency.english.unigrams), fitness.english.quadgrams], key, period)
+        _test_vigenere(
+            plaintext,
+            fitness.ChiSquared(frequency.english.unigrams), fitness.english.quadgrams,
+            key=key, period=period
+        )
 
 
 def test_500_character_text_all_periods_unknown():
@@ -57,7 +61,11 @@ def test_500_character_text_all_periods_unknown():
         key = list(string.ascii_uppercase)
         random.shuffle(key)
         key = key[:period]
-        _test_vigenere(plaintext, [fitness.ChiSquared(frequency.english.unigrams), fitness.english.quadgrams], key)
+        _test_vigenere(
+            plaintext,
+            fitness.ChiSquared(frequency.english.unigrams), fitness.english.quadgrams,
+            key=key
+        )
 
 
 def test_500_character_text_all_periods_known():
@@ -67,7 +75,9 @@ def test_500_character_text_all_periods_known():
         key = list(string.ascii_uppercase)
         random.shuffle(key)
         key = key[:period]
-        _test_vigenere(plaintext, fitness.ChiSquared(frequency.english.unigrams), key, period)
+        _test_vigenere(
+            plaintext, fitness.ChiSquared(frequency.english.unigrams),
+            key=key, period=period)
 
 
 def test_text_with_punctuation_and_mixed_case():

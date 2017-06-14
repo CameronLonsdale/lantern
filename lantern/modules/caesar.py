@@ -6,7 +6,7 @@ from lantern import score
 from lantern.structures import Decryption
 
 
-def crack(ciphertext, score_functions, min_key=0, max_key=26):
+def crack(ciphertext, first, *rest, min_key=0, max_key=26):
     """
     Break ``ciphertext`` by enumerating keys between ``min_key`` and ``max_key``.
 
@@ -14,9 +14,12 @@ def crack(ciphertext, score_functions, min_key=0, max_key=26):
 
         crack(ciphertext, fitness.english.quadgrams)
 
-    Parameters:
+    Arguments:
         ciphertext (str): The text to decrypt
-        scoring_functions (Function or iterable of functions): Function(s) to score decryptions with
+        first (function): Function to score decryption with
+        rest (variable length arg list): Addition functions to score with
+
+    Keyword Arguments:
         min_key (int): Key to start with
         max_key (int): Key to stop at (exclusive)
 
@@ -32,7 +35,7 @@ def crack(ciphertext, score_functions, min_key=0, max_key=26):
     decryptions = []
     for key in range(min_key, max_key):
         plaintext = decrypt(key, ciphertext)
-        decryptions.append(Decryption(plaintext, key, score(plaintext, score_functions)))
+        decryptions.append(Decryption(plaintext, key, score(plaintext, first, *rest)))
 
     return sorted(decryptions, reverse=True)
 

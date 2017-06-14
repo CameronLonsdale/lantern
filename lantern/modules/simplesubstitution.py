@@ -7,7 +7,7 @@ from lantern import score
 from lantern.structures import Decryption
 
 
-def crack(ciphertext, score_functions, ntrials=30, nswaps=3000):
+def crack(ciphertext, first, *rest, ntrials=30, nswaps=3000):
     """
     Break ``ciphertext`` using a hill climbing algorithm.
 
@@ -47,7 +47,7 @@ def crack(ciphertext, score_functions, ntrials=30, nswaps=3000):
             new_key[a], new_key[b] = new_key[b], new_key[a]
 
             plaintext = decrypt(new_key, ciphertext)
-            new_score = score(plaintext, score_functions)
+            new_score = score(plaintext, first, *rest)
 
             # Keep track of best score for a single trial
             if new_score > best_trial_score:

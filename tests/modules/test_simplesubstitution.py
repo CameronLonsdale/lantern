@@ -11,13 +11,13 @@ from lantern.modules import simplesubstitution
 from lantern import fitness
 
 
-def _test_simplesubstitution(plaintext, score_functions, key=None, ntrials=30, top_n=1):
+def _test_simplesubstitution(plaintext, first, *rest, key=None, ntrials=30, top_n=1):
     if key is None:
         key = list(string.ascii_uppercase)
         random.shuffle(key)
 
     ciphertext = pycipher.SimpleSubstitution(key).encipher(plaintext, keep_punct=True)
-    decryptions = simplesubstitution.crack(ciphertext, score_functions, ntrials)
+    decryptions = simplesubstitution.crack(ciphertext, first, *rest, ntrials=ntrials)
 
     top_decryptions = get_top_decryptions(decryptions, top_n)
 

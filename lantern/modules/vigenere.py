@@ -11,7 +11,7 @@ from lantern.util import split_columns, remove
 
 
 # TODO: maybe add finding keyperiods as a parameter because people might want to use kasiski
-def crack(ciphertext, score_functions, key_period=None, max_key_period=30):
+def crack(ciphertext, first, *rest, key_period=None, max_key_period=30):
     """
     Break ``ciphertext`` by finding (or using the given) key_period then breaking ``key_period`` many Caesar ciphers.
 
@@ -42,12 +42,12 @@ def crack(ciphertext, score_functions, key_period=None, max_key_period=30):
     for period in filter(lambda p: p <= len(ciphertext), periods):
         column_decryptions = []
         for col in split_columns(ciphertext, period):
-            decryptions = caesar.crack(col, score_functions)
+            decryptions = caesar.crack(col, first, *rest)
             column_decryptions.append(decryptions[0])
 
         key = _build_key(decrypt.key for decrypt in column_decryptions)
         plaintext = decrypt(key, original_text)
-        period_decryptions.append(Decryption(plaintext, key, score(plaintext, score_functions)))
+        period_decryptions.append(Decryption(plaintext, key, score(plaintext, first, *rest)))
 
     return sorted(period_decryptions, reverse=True)
 
