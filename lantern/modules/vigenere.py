@@ -1,4 +1,4 @@
-"""Automated breaking of the Vigenere Cipher"""
+"""Automated breaking of the Vigenere Cipher."""
 
 import string
 
@@ -11,7 +11,7 @@ from lantern.util import split_columns, remove
 
 
 # TODO: maybe add finding keyperiods as a parameter because people might want to use kasiski
-def crack(ciphertext, first, *rest, key_period=None, max_key_period=30):
+def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
     """
     Break ``ciphertext`` by finding (or using the given) key_period then breaking ``key_period`` many Caesar ciphers.
 
@@ -19,9 +19,11 @@ def crack(ciphertext, first, *rest, key_period=None, max_key_period=30):
 
         crack(ciphertext, fitness.ChiSquared(analysis.frequency.english.unigrams))
 
-    Parameters:
+    Arguments:
         ciphertext (str): The text to decrypt
-        scoring_functions (Function or iterable of functions): Function(s) to score decryptions with
+        fitness_functions (variable length arg list): Functions to score decryption with
+
+    Keyword Arguments:
         key_period (int): The period of the key
         max_key_period (int): The maximum period the key could be
 
@@ -42,12 +44,12 @@ def crack(ciphertext, first, *rest, key_period=None, max_key_period=30):
     for period in filter(lambda p: p <= len(ciphertext), periods):
         column_decryptions = []
         for col in split_columns(ciphertext, period):
-            decryptions = caesar.crack(col, first, *rest)
+            decryptions = caesar.crack(col, *fitness_functions)
             column_decryptions.append(decryptions[0])
 
         key = _build_key(decrypt.key for decrypt in column_decryptions)
         plaintext = decrypt(key, original_text)
-        period_decryptions.append(Decryption(plaintext, key, score(plaintext, first, *rest)))
+        period_decryptions.append(Decryption(plaintext, key, score(plaintext, *fitness_functions)))
 
     return sorted(period_decryptions, reverse=True)
 

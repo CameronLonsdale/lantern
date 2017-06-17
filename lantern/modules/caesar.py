@@ -6,7 +6,7 @@ from lantern import score
 from lantern.structures import Decryption
 
 
-def crack(ciphertext, first, *rest, min_key=0, max_key=26):
+def crack(ciphertext, *fitness_functions, min_key=0, max_key=26):
     """
     Break ``ciphertext`` by enumerating keys between ``min_key`` and ``max_key``.
 
@@ -16,8 +16,7 @@ def crack(ciphertext, first, *rest, min_key=0, max_key=26):
 
     Arguments:
         ciphertext (str): The text to decrypt
-        first (function): Function to score decryption with
-        rest (variable length arg list): Addition functions to score with
+        fitness_functions (variable length arg list): Functions to score decryption with
 
     Keyword Arguments:
         min_key (int): Key to start with
@@ -35,14 +34,14 @@ def crack(ciphertext, first, *rest, min_key=0, max_key=26):
     decryptions = []
     for key in range(min_key, max_key):
         plaintext = decrypt(key, ciphertext)
-        decryptions.append(Decryption(plaintext, key, score(plaintext, first, *rest)))
+        decryptions.append(Decryption(plaintext, key, score(plaintext, *fitness_functions)))
 
     return sorted(decryptions, reverse=True)
 
 
 def decrypt(key, ciphertext):
     """
-    Decrypt Caesar encrypted ``ciphertext`` using ``key``.
+    Decrypt Caesar enciphered ``ciphertext`` using ``key``.
 
     Example: ::
 

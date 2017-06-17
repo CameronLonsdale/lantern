@@ -4,7 +4,7 @@ Output range depends on the score functions used.
 """
 
 
-def score(text, score_function, *args):
+def score(text, *score_functions):
     """
     Score ``text`` using score functions.
 
@@ -13,14 +13,18 @@ def score(text, score_function, *args):
         score("abc", function_a)
         score("abc", function_a, function_b)
 
-    Arguments:
+    Parameters:
         text (str): The text to score
-        score_function (function): function to score with
-        args (variable length arg list): Additional functions to use
+        score_functions (variable length arg list): functions to score with
 
     Return:
         Arithmetic mean of scores
+
+    Raises:
+        ValueError: If score_functions is empty
     """
-    scoring_functions = (score_function, *args)
-    total_score = sum(func(text) for func in scoring_functions)
-    return total_score / len(scoring_functions)
+    if not score_functions:
+        raise ValueError("score_functions must not be empty")
+
+    total_score = sum(func(text) for func in score_functions)
+    return total_score / len(score_functions)

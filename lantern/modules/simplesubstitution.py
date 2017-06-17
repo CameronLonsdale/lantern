@@ -1,4 +1,4 @@
-"""Automated breaking of the Simple Substitution cipher"""
+"""Automated breaking of the Simple Substitution Cipher."""
 
 import random
 import string
@@ -7,7 +7,7 @@ from lantern import score
 from lantern.structures import Decryption
 
 
-def crack(ciphertext, first, *rest, ntrials=30, nswaps=3000):
+def crack(ciphertext, *fitness_functions, ntrials=30, nswaps=3000):
     """
     Break ``ciphertext`` using a hill climbing algorithm.
 
@@ -15,9 +15,11 @@ def crack(ciphertext, first, *rest, ntrials=30, nswaps=3000):
 
         crack(ciphertext, fitness.english.quadgrams)
 
-    Parameters:
+    Arguments:
         ciphertext (str): The text to decrypt
-        scoring_functions (Function or iterable of functions): Function(s) to score decryptions with
+        fitness_functions (variable length arg list): Functions to score decryption with
+
+    Keyword Arguments:
         ntrials (int): The number of times to run the hill climbing algorithm
         nswaps (int): The number of rounds to find a local maximum
 
@@ -47,7 +49,7 @@ def crack(ciphertext, first, *rest, ntrials=30, nswaps=3000):
             new_key[a], new_key[b] = new_key[b], new_key[a]
 
             plaintext = decrypt(new_key, ciphertext)
-            new_score = score(plaintext, first, *rest)
+            new_score = score(plaintext, *fitness_functions)
 
             # Keep track of best score for a single trial
             if new_score > best_trial_score:
@@ -65,7 +67,7 @@ def crack(ciphertext, first, *rest, ntrials=30, nswaps=3000):
 
 def decrypt(key, ciphertext):
     """
-    Decrypt Simple Substitution encrypted ``ciphertext`` using ``key``.
+    Decrypt Simple Substitution enciphered ``ciphertext`` using ``key``.
 
     Example: ::
 

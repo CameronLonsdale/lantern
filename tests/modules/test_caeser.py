@@ -5,7 +5,6 @@ import pycipher
 import pytest
 from tests.util import get_top_decryptions
 
-from lantern.fitness import corpus
 from lantern.modules import caesar
 from lantern import fitness
 
@@ -123,54 +122,3 @@ def test_decrypt_large_key_wrapped():
     key = 30
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
     assert caesar.decrypt(key, ciphertext) == plaintext
-
-
-# TODO: THIS NEEDS TO BE ACTIVATED ONCE CORPUS IS FIXED
-# def test_buzz_buzz_buzz_quadgrams_and_corpus():
-#     """
-#     Testing buzz buzz buzz in top 2 results.
-#     haff haff haff beats it because of a better freqency distribution.
-#     """
-#     plaintext = "BUZZ BUZZ BUZZ"
-#     _test_caesar(
-#         plaintext,
-#         score_functions=[
-#             fitness.english.quadgrams,
-#         ],
-#         top_n=2
-#     )
-
-
-# def test_bye():
-#     """Testing Bye has top score"""
-#     plaintext = "- BYE!"
-#     _test_caesar(
-#         plaintext,
-#         score_functions=[
-#             fitness.english.quadgrams,
-#             partial(corpus.english_words, whitespace_hint=True)
-#         ]
-#     )
-
-
-# def test_oh_my():
-#     """
-#     Testing oh my in top 2 positions.
-
-#     un se as a decryption beats out oh my.
-#     Can be fixed with better corpus.
-#     """
-#     plaintext = "- OH, MY!"
-#     _test_caesar(plaintext, fitness.english.quadgrams, corpus.english_words, top_n=2)
-
-
-# def test_ok():
-#     """Testing ok"""
-#     plaintext = "- OK."
-#     _test_caesar(
-#         plaintext,
-#         score_functions=[
-#             fitness.english.quadgrams,
-#             partial(corpus.english_words, whitespace_hint=True)
-#         ]
-#     )

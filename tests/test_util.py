@@ -33,7 +33,7 @@ def test_columns_length_1():
     text = "example"
     split = split_columns(text, 1)
 
-    assert split == ['example']
+    assert split == [text]
     assert combine_columns(*split) == text
 
 
@@ -57,16 +57,20 @@ def test_columns_same_length():
 
 def test_split_columns_invalid_values():
     """Testing split columns with invalid lengths raise ValueError"""
-    text = "example"
+    with pytest.raises(ValueError):
+        split_columns("example", -1)
 
     with pytest.raises(ValueError):
-        split_columns(text, -1)
+        split_columns("example", -200)
 
     with pytest.raises(ValueError):
-        split_columns(text, -200)
+        split_columns("example", 0)
 
     with pytest.raises(ValueError):
-        split_columns(text, 0)
+        split_columns("example", 200)
 
+
+def test_combine_columns_invalid_values():
+    """Testing combine columns with no columns raises ValueError"""
     with pytest.raises(ValueError):
-        split_columns(text, 200)
+        combine_columns()
