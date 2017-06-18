@@ -24,8 +24,7 @@ Install
 
 .. code-block:: bash
 
-    git clone git@github.com:CameronLonsdale/lantern.git
-    pip install -e ./lantern
+    pip install lantern
 
 Guide
 =====
