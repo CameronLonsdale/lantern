@@ -34,19 +34,13 @@ Full documentation available at [lantern-crypto.readthedocs.io](https://lantern-
 
 ## Requirements
 
-| Supported Python Implementations |
-| ---------------------------------|
-| Python 2.7                       |
-| Python 3.5                       |
-| PyPy                             |
+Python 3.x required.
 
 lantern has no external dependencies outside of the Python standard library.
 
 ## Usage
 
 lanterns's usage is for it's modules to be imported into custom scripts written by the user. The modules aim to be generalised cryptoanalysis functions which the user can extend / modify / combine with other changes to solve particular problems.
-
-Recommended usage with PyPy for maximum speed.
 
 [Example programs](examples)
 
