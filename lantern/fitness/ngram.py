@@ -3,8 +3,8 @@
 import string
 from math import log10
 
-from lantern.util import remove
 from lantern.analysis import frequency
+from lantern.util import remove, iterate_ngrams
 
 
 class NgramScore():
@@ -31,8 +31,7 @@ class NgramScore():
         text = remove(text.upper(), string.whitespace + string.punctuation)
         score = 0
 
-        for i in range(len(text) - self.length + 1):
-            ngram = text[i: i + self.length]
+        for ngram in iterate_ngrams(text, self.length):
             score += self.ngrams[ngram] if ngram in self.ngrams else self.floor
 
         return score

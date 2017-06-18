@@ -68,3 +68,14 @@ def combine_columns(*columns):
 
     columns_zipped = itertools.zip_longest(*columns)
     return ''.join(x for zipped in columns_zipped for x in zipped if x)
+
+
+def iterate_ngrams(text, n):
+    """Generator to yield ngrams in text"""
+    for i in range(len(text) - n + 1):
+        yield text[i: i + n]
+
+
+def group(text, n):
+    """Group text into blocks of n"""
+    return [text[i:i + n] for i in range(0, len(text), n)]

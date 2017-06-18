@@ -10,6 +10,11 @@ def test_frequency_analyze():
     assert frequency.frequency_analyze("abb") == {'a': 1, 'b': 2}
 
 
+def test_frequency_analyze_bigram():
+    """Test frequency analyze works for ngram = 2"""
+    assert frequency.frequency_analyze("abb", 2) == {'ab': 1, 'bb': 1}
+
+
 def test_frequency_analyze_empty_string():
     """Test empty string can be frequency analyzed"""
     assert frequency.frequency_analyze("") == {}

@@ -2,14 +2,11 @@
 
 import importlib
 
-from collections import defaultdict
+from collections import Counter
+
+from lantern.util import iterate_ngrams
 
 
-# TODO: Am I handling stripping away punctuation here? Should that be default or optional?
-# I think punction should be kept by default.
-# If a user wants to take the frequency with all punctuation characters remove they
-# can either use the keep_punct flag or strip it themselves
-# TODO: work with different sized ngrams
 def frequency_analyze(text, n=1):
     """
     Analyze the frequency of ngrams for a piece of text
@@ -17,18 +14,16 @@ def frequency_analyze(text, n=1):
     Example: ::
 
         frequency_analyze("abb") == {'a': 1, 'b': 2}
+        frequency_analyze("abb", 2) == {'ab': 1, 'bb': 1}
 
     Parameters:
         text (str): The text to analyze
+        n (int): The ngram size to use
 
     Return:
-        Dictionary of symbols to frequency
+        Dictionary of ngrams to frequency
     """
-    frequency = defaultdict(lambda: 0, {})
-    for symbol in text:
-        frequency[symbol] += 1
-
-    return frequency
+    return Counter(iterate_ngrams(text, n))
 
 
 def frequency_to_probability(frequency_map, decorator=lambda f: f):
@@ -44,7 +39,7 @@ def frequency_to_probability(frequency_map, decorator=lambda f: f):
         decorator (lambda): A function to manipulate the probability
 
     Return:
-        Dictionary of symbols to probability
+        Dictionary of ngrams to probability
     """
     total = sum(frequency_map.values())
     return {k: decorator(float(v) / total) for k, v in frequency_map.items()}
