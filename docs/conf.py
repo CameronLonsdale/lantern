@@ -11,11 +11,15 @@ sys.path.insert(0, os.path.abspath('..'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc',
+extensions = ['sphinx.ext.todo',
+              'sphinx.ext.autodoc',
               'sphinx.ext.doctest',
               'sphinx.ext.coverage',
               'sphinxcontrib.napoleon',
               'alabaster']
+
+napoleon_include_init_with_doc = True
+napoleon_include_special_with_doc = True
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -56,7 +60,7 @@ exclude_patterns = []
 pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = False
+todo_include_todos = True
 
 autodoc_member_order = 'bysource'
 
