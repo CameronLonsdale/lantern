@@ -17,15 +17,15 @@ class ChiSquared:
         Once there is evidence it is needed, I will add it.
     """
 
-    def __init__(self, target_frequency_map):
+    def __init__(self, target_frequency):
         """
         Parameters:
-            target_frequency_map (dict): symbol to frequency mapping of the distribution to compare with
+            target_frequency (dict): symbol to frequency mapping of the distribution to compare with
         """
-        self.target_frequency = target_frequency_map
+        self.target_frequency = target_frequency
 
     def __call__(self, text):
-        """Score text using chi_squared.
+        """Score text using the Chi Squared statistic.
 
         Example:
             >>> fitness = ChiSquared(english.unigrams)
@@ -36,6 +36,6 @@ class ChiSquared:
             text (str): The text to score
 
         Return:
-            ChiSquared score for text
+            Chi Squared score for text
         """
         return -chi_squared(frequency_analyze(text), self.target_frequency)
