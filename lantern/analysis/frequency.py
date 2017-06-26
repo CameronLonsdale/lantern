@@ -1,4 +1,4 @@
-"""General purpose frequency analysis tools"""
+"""General purpose frequency analysis tools."""
 
 import importlib
 
@@ -8,13 +8,14 @@ from lantern.util import iterate_ngrams
 
 
 def frequency_analyze(text, n=1):
-    """
-    Analyze the frequency of ngrams for a piece of text
+    """Analyze the frequency of ngrams for a piece of text.
 
-    Example: ::
+    Examples:
+        >>> frequency_analyze("abb")
+        {'a': 1, 'b': 2}
 
-        frequency_analyze("abb") == {'a': 1, 'b': 2}
-        frequency_analyze("abb", 2) == {'ab': 1, 'bb': 1}
+        >>> frequency_analyze("abb", 2)
+        {'ab': 1, 'bb': 1}
 
     Parameters:
         text (str): The text to analyze
@@ -27,16 +28,16 @@ def frequency_analyze(text, n=1):
 
 
 def frequency_to_probability(frequency_map, decorator=lambda f: f):
-    """
-    Transform a ``frequency_map`` into a map of probability
+    """Transform a ``frequency_map`` into a map of probability.
+    Using the sum of all frequencies as the total.
 
-    Example: ::
-
-        frequency_to_probability({'a': 1, 'b': 2}) == {'a': 1/3, 'b': 2/3}
+    Example:
+        >>> frequency_to_probability({'a': 1, 'b': 2})
+        {'a': 1/3, 'b': 2/3}
 
     Parameters:
         frequency_map (dict): The dictionary to transform
-        decorator (lambda): A function to manipulate the probability
+        decorator (function): A function to manipulate the probability
 
     Return:
         Dictionary of ngrams to probability
@@ -45,55 +46,38 @@ def frequency_to_probability(frequency_map, decorator=lambda f: f):
     return {k: decorator(float(v) / total) for k, v in frequency_map.items()}
 
 
-def index_of_coincidence(text):
-    """
-    Calculate the index of coincidence for a piece of ``text``
+def index_of_coincidence(*texts):
+    """Calculate the index of coincidence for one or more ``texts``.
+    The results are averaged over multiple texts to return the delta index of coincidence.
 
-    Example: ::
+    Examples:
+        >>> index_of_coincidence("aabbc")
+        0.2
 
-        index_of_coincidence("aabbc") == 0.2
-
-    Parameters:
-        text (str): The text to analyze
-
-    Return:
-        Decimal value of the index of coincidence
-    """
-    return _calculate_ioc(frequency_analyze(text), len(text))
-
-
-def delta_index_of_coincidence(*texts):
-    """
-    Calculate the delta index of coincidence for several ``texts``
-
-    Example: ::
-
-        delta_index_of_coincidence("aabbc", "abbcc") == 0.2
+        >>> index_of_coincidence("aabbc", "abbcc")
+        0.2
 
     Parameters:
         texts (variable length arg list): The texts to analyze
 
     Return:
-        Decimal value of the average index of coincidence
+        Decimal value of the index of coincidence
     """
-    average = sum(index_of_coincidence(text) for text in texts)
-    try:
-        return average / len(texts)
-    except ZeroDivisionError:
+    if not texts:
         raise ValueError("texts must not be empty")
 
+    total = sum(_calculate_index_of_coincidence(frequency_analyze(text), len(text)) for text in texts)
+    return total / len(texts)
 
-# TODO: SOLVE THE KEY ERROR PROBLEM
-# IF a key is not present in the target frequency then its expected value is 0??
+
 def chi_squared(source_frequency, target_frequency):
-    """
-    Calculate the Chi Squared Statistic by comparing ``source_frequency`` with ``target_frequency``
+    """Calculate the Chi Squared statistic by comparing ``source_frequency`` with ``target_frequency``.
 
-    Example: ::
+    Example:
+        >>> chi_squared({'a': 2, 'b': 3}, {'a': 1, 'b': 2})
+        0.1
 
-        chi_squared({'a': 2, 'b':3}, {'a':1, 'b':2}) == 0.1
-
-    Parameters
+    Parameters:
         source_frequency (dict): Frequency map of the text you are analyzing
         target_frequency (dict): Frequency map of the target language to compare with
 
@@ -101,42 +85,40 @@ def chi_squared(source_frequency, target_frequency):
         Decimal value of the chi-squared statistic
     """
     target_prob = frequency_to_probability(target_frequency)
-    source_len = sum(source_frequency.values())
-    return sum(_calculate_chi_squared(source_frequency, target_prob, source_len, n) for n in source_frequency)
+    # Ignore any symbols from source that are not in target
+    source_len = sum(v for k, v in source_frequency.items() if k in target_frequency)
+    return sum(_calculate_chi_squared(source_frequency.get(symbol, 0), prob, source_len) for symbol, prob in target_prob.items())
 
 
-ENGLISH_IC = 0.066
+def _calculate_index_of_coincidence(frequency_map, length):
+    """A measure of how similar frequency_map is to the uniform distribution.
+    Or the probability that two letters picked randomly are alike.
+    """
+    if length <= 1:
+        return 0  # Should be NaN but 0 for simplicity
+
+    # Mathemtical combination, number of ways to choose 2 letters, no replacement, order doesnt matter
+    combination_of_letters = sum((frequency_map[symbol] * (frequency_map[symbol] - 1)) for symbol in frequency_map)
+    return float(combination_of_letters) / (length * (length - 1))
 
 
-def _calculate_ioc(frequency_map, length):
-    coms_of_letters = sum((frequency_map[symbol] * (frequency_map[symbol] - 1)) for symbol in frequency_map)
-    # TODO: NOT SURE IF BEST APPROACH
-    try:
-        return float(coms_of_letters) / (length * (length - 1))
-    except ZeroDivisionError:
-        return 0
-
-
-def _calculate_chi_squared(source_frequency, target_prob, source_len, n):
-    # TODO: Fairly sure this is wrong
-    if n not in target_prob:
-        return 0
-
-    return (source_frequency[n] - source_len * target_prob[n])**2 / (source_len * target_prob[n])
+def _calculate_chi_squared(source_freq, target_prob, source_len):
+    """A measure of the observed frequency of the symbol versus the expected frequency.
+    If the value is 0 then the texts are exactly alike for that symbol.
+    """
+    expected = source_len * target_prob
+    return (source_freq - expected)**2 / expected
 
 
 class LanguageFrequency:
-    """
-    A LanguageFrequency object, to hold frequency distributions for a language.
-    On Attribute access, if the ngram does not exist, it is built using a given builder.
-    Any subsequent accesses then use the existing frequney map
+    """A LanguageFrequency object to hold frequency distributions for a language.
+    On Attribute access if the ngram does not exist it is built using a given builder.
+    Any subsequent accesses then use the existing ngram map
 
-    Example: ::
-
-        english = LanguageFrequency({
-            'unigrams': lambda: _load_ngram('unigrams')
-        })
-        english.unigrams
+    Example:
+        >>> english = LanguageFrequency({'unigrams': lambda: _load_ngram('unigrams')})
+        >>> english.unigrams
+        {'A': 374061888, 'B': 70195826, ...}
 
     Parameters:
         ngrams_builders (dict): A dictionary of attribute name to attribute builder
@@ -156,6 +138,9 @@ class LanguageFrequency:
 
 
 def _load_ngram(name):
+    """Dynamically import the python module with the ngram defined as a dictionary.
+    Since higher ngrams are very large, its wasteful to always statically import them if theyre not used.
+    """
     module = importlib.import_module('lantern.analysis.english_ngrams.{}'.format(name))
     return getattr(module, name)
 
@@ -165,3 +150,5 @@ english = LanguageFrequency({
     'trigrams': lambda: _load_ngram('trigrams'),
     'quadgrams': lambda: _load_ngram('quadgrams')
 })
+
+ENGLISH_IC = _calculate_index_of_coincidence(english.unigrams, sum(english.unigrams.values()))

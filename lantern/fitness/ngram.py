@@ -16,15 +16,10 @@ class NgramScore():
     """
 
     def __init__(self, frequency_map):
-        self.ngrams = frequency_map
-        self.length = len(list(self.ngrams.keys())[0])
-        self.total = sum(self.ngrams.values())
-
         # Calculate the log probability
-        self.ngrams = {
-            k: log10(float(v) / self.total) for k, v in self.ngrams.items()
-        }
-        self.floor = log10(0.01 / self.total)
+        self.length = len(list(frequency_map.keys())[0])
+        self.floor = log10(0.01 / sum(frequency_map.values()))
+        self.ngrams = frequency.frequency_to_probability(frequency_map, decorator=lambda f: log10(f))
 
     def __call__(self, text):
         """Compute the probability of text being a valid string in the source language."""

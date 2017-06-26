@@ -41,29 +41,34 @@ def test_index_of_coincidence_empty():
     assert frequency.index_of_coincidence("") == 0
 
 
-def test_delta_index_of_coincidence():
-    """Test delta index of coincidence for texts"""
-    assert frequency.delta_index_of_coincidence("aabbc", "abbcc") == 0.2
+def test_index_of_coincidence_multiple_texts():
+    """Test index of coincidence with multiple texts"""
+    assert frequency.index_of_coincidence("aabbc", "abbcc") == 0.2
 
 
-def test_delta_index_of_coincidence_empty():
-    """Test delta index of coincidence for texts"""
+def test_index_of_coincidence_none():
+    """Test index of coincidence raises value error on empty texts"""
     with pytest.raises(ValueError):
-        frequency.delta_index_of_coincidence()
+        frequency.index_of_coincidence()
 
 
 def test_chi_squared():
     """Test matching frequency distributions have chi squared of 0"""
+    assert frequency.chi_squared({'a': 2, 'b': 3}, {'a': 2, 'b': 3}) == 0
+
+
+def test_chi_squared_similar():
+    """Test similar frequency distributions have chi squared of 0.1"""
     assert frequency.chi_squared({'a': 2, 'b': 3}, {'a': 1, 'b': 2}) == 0.1
 
 
-# def test_chi_squared_different_symbols():
-#     """Test matching frequency distributions have chi squared of 0"""
-#     assert frequency.chi_squared({'c': 1, 'd':2}, {'a':1, 'b':2}) == 0
+def test_chi_squared_different_symbols():
+    """Test different symbols are handled appropriately"""
+    assert frequency.chi_squared({'a': 1, 'd': 3}, {'a': 1}) == 0
 
 
 def test_languagefrequency_attribute_access():
-    """Correct attributes are found, incorrect attributes raise AttributeErrors"""
+    """Test correct attributes are found, incorrect attributes raise AttributeErrors"""
     frequency.english.unigrams
 
     with pytest.raises(AttributeError):

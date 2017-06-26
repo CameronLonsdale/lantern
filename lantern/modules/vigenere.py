@@ -6,7 +6,7 @@ from lantern import score
 from lantern.modules import caesar
 from lantern.structures import Decryption
 
-from lantern.analysis.frequency import delta_index_of_coincidence, ENGLISH_IC
+from lantern.analysis.frequency import index_of_coincidence, ENGLISH_IC
 from lantern.util import split_columns, remove
 
 
@@ -79,7 +79,7 @@ def key_periods(ciphertext, max_key_period):
     key_scores = []
     for period in range(1, max_key_period + 1):
         cols = split_columns(ciphertext, period)
-        score = abs(ENGLISH_IC - delta_index_of_coincidence(*cols))
+        score = abs(ENGLISH_IC - index_of_coincidence(*cols))
         key_scores.append((period, score))
 
     return [p[0] for p in sorted(key_scores, key=lambda x: x[1])]
