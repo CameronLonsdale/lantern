@@ -1,7 +1,6 @@
 """Score plaintext based on number of words identified are in the corpus"""
 
 import string
-
 from math import log10
 
 from lantern.util import remove
