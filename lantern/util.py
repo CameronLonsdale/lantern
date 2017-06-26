@@ -4,12 +4,11 @@ import itertools
 
 
 def remove(text, exclude):
-    """
-    Remove ``exclude`` symbols from ``text``.
+    """Remove ``exclude`` symbols from ``text``.
 
-    Example: ::
-
-        remove("example text", string.whitespace) == "exampletext"
+    Example:
+        >>> remove("example text", string.whitespace)
+        exampletext
 
     Parameters:
         text (str): The text to modify
@@ -23,12 +22,11 @@ def remove(text, exclude):
 
 
 def split_columns(text, n_cols):
-    """
-    Split ``text`` into ``n_cols`` number of columns.
+    """Split ``text`` into ``n_cols`` number of columns.
 
-    Example: ::
-
-        split_columns("example", 2) == ['eape', 'xml']
+    Example:
+        >>> split_columns("example", 2)
+        ['eape', 'xml']
 
     Parameters:
         text (str): The text to split
@@ -47,12 +45,11 @@ def split_columns(text, n_cols):
 
 
 def combine_columns(*columns):
-    """
-    Combine ``columns`` into a single string.
+    """Combine ``columns`` into a single string.
 
-    Example: ::
-
-        combine_columns('eape', 'xml') == "example"
+    Example:
+        >>> combine_columns('eape', 'xml')
+        example
 
     Parameters:
         columns (variable length arg list): columns to combine

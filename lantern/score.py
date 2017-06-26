@@ -5,13 +5,11 @@ Output range depends on the score functions used.
 
 
 def score(text, *score_functions):
-    """
-    Score ``text`` using score functions.
+    """Score ``text`` using score functions.
 
-    Examples: ::
-
-        score("abc", function_a)
-        score("abc", function_a, function_b)
+    Examples:
+        >>> score("abc", function_a)
+        >>> score("abc", function_a, function_b)
 
     Parameters:
         text (str): The text to score

@@ -12,8 +12,7 @@ from lantern.util import split_columns, remove
 
 # TODO: maybe add finding keyperiods as a parameter because people might want to use kasiski
 def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
-    """
-    Break ``ciphertext`` by finding (or using the given) key_period then breaking ``key_period`` many Caesar ciphers.
+    """Break ``ciphertext`` by finding (or using the given) key_period then breaking ``key_period`` many Caesar ciphers.
 
     Example: ::
 
@@ -56,8 +55,7 @@ def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
 
 # Name should be different?, say youre finding key periods through IC.
 def key_periods(ciphertext, max_key_period):
-    """
-    Rank all key periods for ``ciphertext`` up to and including ``max_key_period``
+    """Rank all key periods for ``ciphertext`` up to and including ``max_key_period``
 
     Example: ::
 
@@ -90,8 +88,7 @@ def _build_key(keys):
 
 
 def decrypt(key, ciphertext):
-    """
-    Decrypt Vigenere encrypted ``ciphertext`` using ``key``.
+    """Decrypt Vigenere encrypted ``ciphertext`` using ``key``.
 
     Example: ::
 

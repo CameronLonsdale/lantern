@@ -8,12 +8,12 @@ from lantern.structures import Decryption
 
 
 def crack(ciphertext, *fitness_functions, ntrials=30, nswaps=3000):
-    """
-    Break ``ciphertext`` using a hill climbing algorithm.
+    """Break ``ciphertext`` using a hill climbing algorithm.
 
-    Example: ::
-
-        crack(ciphertext, fitness.english.quadgrams)
+    Example:
+        >>> decryptions = crack("XUOOB", fitness.english.quadgrams)
+        >>> print(decryptions[0])
+        HELLO
 
     Arguments:
         ciphertext (str): The text to decrypt
@@ -66,12 +66,11 @@ def crack(ciphertext, *fitness_functions, ntrials=30, nswaps=3000):
 
 
 def decrypt(key, ciphertext):
-    """
-    Decrypt Simple Substitution enciphered ``ciphertext`` using ``key``.
+    """Decrypt Simple Substitution enciphered ``ciphertext`` using ``key``.
 
-    Example: ::
-
-        decrypt("PQSTUVWXYZCODEBRAKINGFHJLM", "XUOOB") == "HELLO"
+    Example:
+        >>> decrypt("PQSTUVWXYZCODEBRAKINGFHJLM", "XUOOB")
+        HELLO
 
     Parameters:
         key (iterable): The key to use
