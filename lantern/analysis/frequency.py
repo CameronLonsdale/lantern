@@ -62,6 +62,10 @@ def index_of_coincidence(*texts):
 
     Return:
         Decimal value of the index of coincidence
+
+    Raises:
+        ValueError: If texts is empty
+        ValueError: If any text is less that 1 character long
     """
     if not texts:
         raise ValueError("texts must not be empty")
@@ -95,7 +99,7 @@ def _calculate_index_of_coincidence(frequency_map, length):
     Or the probability that two letters picked randomly are alike.
     """
     if length <= 1:
-        return 0  # Should be NaN but 0 for simplicity
+        raise ValueError("length must be greater than 1")  # Could change this to 0 or Nan. Future decision.
 
     # Mathemtical combination, number of ways to choose 2 letters, no replacement, order doesnt matter
     combination_of_letters = sum((frequency_map[symbol] * (frequency_map[symbol] - 1)) for symbol in frequency_map)

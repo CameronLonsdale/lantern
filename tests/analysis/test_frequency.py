@@ -36,11 +36,6 @@ def test_index_of_coincidence():
     assert frequency.index_of_coincidence("aabbc") == 0.2
 
 
-def test_index_of_coincidence_empty():
-    """Test index of coincidence for empty string"""
-    assert frequency.index_of_coincidence("") == 0
-
-
 def test_index_of_coincidence_multiple_texts():
     """Test index of coincidence with multiple texts"""
     assert frequency.index_of_coincidence("aabbc", "abbcc") == 0.2
@@ -50,6 +45,12 @@ def test_index_of_coincidence_none():
     """Test index of coincidence raises value error on empty texts"""
     with pytest.raises(ValueError):
         frequency.index_of_coincidence()
+
+
+def test_index_of_coincidence_empty():
+    """Test index of coincidence for empty string raises ValueError"""
+    with pytest.raises(ValueError):
+        frequency.index_of_coincidence("")
 
 
 def test_chi_squared():
