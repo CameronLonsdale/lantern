@@ -7,12 +7,12 @@ from lantern.structures import Decryption
 
 
 def crack(ciphertext, *fitness_functions, min_key=0, max_key=26):
-    """
-    Break ``ciphertext`` by enumerating keys between ``min_key`` and ``max_key``.
+    """Break ``ciphertext`` by enumerating keys between ``min_key`` and ``max_key``.
 
-    Example: ::
-
-        crack(ciphertext, fitness.english.quadgrams)
+    Example:
+        >>> decryptions = crack("KHOOR", fitness.english.quadgrams)
+        >>> print(decryptions[0])
+        HELLO
 
     Arguments:
         ciphertext (str): The text to decrypt
@@ -40,12 +40,11 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26):
 
 
 def decrypt(key, ciphertext):
-    """
-    Decrypt Caesar enciphered ``ciphertext`` using ``key``.
+    """Decrypt Caesar enciphered ``ciphertext`` using ``key``.
 
-    Example: ::
-
-        decrypt(3, "KHOOR") == "HELLO"
+    Example:
+        >>> decrypt(3, "KHOOR")
+        HELLO
 
     Parameters:
         key (int): The shift to use
