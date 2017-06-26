@@ -154,5 +154,8 @@ english = LanguageFrequency({
     'trigrams': lambda: _load_ngram('trigrams'),
     'quadgrams': lambda: _load_ngram('quadgrams')
 })
+"""English ngram frequencies."""
+
 
 ENGLISH_IC = _calculate_index_of_coincidence(english.unigrams, sum(english.unigrams.values()))
+"""Index of coincidence for the English language."""
