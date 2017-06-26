@@ -1,7 +1,6 @@
 """General purpose frequency analysis tools."""
 
 import importlib
-
 from collections import Counter
 
 from lantern.util import iterate_ngrams
