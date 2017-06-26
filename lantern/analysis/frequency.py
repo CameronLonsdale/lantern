@@ -89,7 +89,8 @@ def chi_squared(source_frequency, target_frequency):
         Decimal value of the chi-squared statistic
     """
     target_prob = frequency_to_probability(target_frequency)
-    # Ignore any symbols from source that are not in target
+    # Ignore any symbols from source that are not in target.
+    # TODO: raise Error if source_len is 0?
     source_len = sum(v for k, v in source_frequency.items() if k in target_frequency)
     return sum(_calculate_chi_squared(source_frequency.get(symbol, 0), prob, source_len) for symbol, prob in target_prob.items())
 
@@ -123,15 +124,27 @@ class LanguageFrequency:
         >>> english = LanguageFrequency({'unigrams': lambda: _load_ngram('unigrams')})
         >>> english.unigrams
         {'A': 374061888, 'B': 70195826, ...}
-
-    Parameters:
-        ngrams_builders (dict): A dictionary of attribute name to attribute builder
     """
 
     def __init__(self, ngram_builders):
+        """
+        Parameters:
+            ngrams_builders (dict): A dictionary of attribute name to attribute builder
+        """
         self.ngram_builders = ngram_builders
 
     def __getattr__(self, name):
+        """Build attribute and set for future use.
+
+        Parameters:
+            name (str): The name of the attribute
+
+        Raises:
+            AttributeError: If the attribute cannot be built
+
+        Return:
+            The built attribute
+        """
         try:
             ngram_map = self.ngram_builders[name]()
         except KeyError:
