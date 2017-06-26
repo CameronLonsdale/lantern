@@ -65,7 +65,7 @@ def index_of_coincidence(*texts):
 
     Raises:
         ValueError: If texts is empty
-        ValueError: If any text is less that 1 character long
+        ValueError: If any text is less that 2 character long
     """
     if not texts:
         raise ValueError("texts must not be empty")
@@ -143,10 +143,11 @@ class LanguageFrequency:
 
 def _load_ngram(name):
     """Dynamically import the python module with the ngram defined as a dictionary.
-    Since higher ngrams are very large, its wasteful to always statically import them if theyre not used.
+    Since bigger ngrams are large files its wasteful to always statically import them if they're not used.
     """
     module = importlib.import_module('lantern.analysis.english_ngrams.{}'.format(name))
     return getattr(module, name)
+
 
 english = LanguageFrequency({
     'unigrams': lambda: _load_ngram('unigrams'),
