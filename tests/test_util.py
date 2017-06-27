@@ -11,26 +11,23 @@ from lantern.util import (
 
 
 def test_remove_with_punctuation():
-    """Test punctuation removed"""
-    plaintext = "Don't worry my friends."
-    assert remove(plaintext, string.punctuation) == "Dont worry my friends"
+    """Testing punctuation is removed"""
+    assert remove("Don't worry my friends.", string.punctuation) == "Dont worry my friends"
 
 
 def test_remove_with_whitespace():
-    """Test whitespace removed"""
-    plaintext = "Don't worry my friends."
-    assert remove(plaintext, string.whitespace) == "Don'tworrymyfriends."
+    """Testing whitespace is removed"""
+    assert remove("Don't worry my friends.", string.whitespace) == "Don'tworrymyfriends."
 
 
 def test_remove_with_list_and_set():
-    """Test remove with list and set excludes"""
-    plaintext = "example"
-    assert remove(plaintext, ['e', 'x']) == "ampl"
-    assert remove(plaintext, set(['e', 'x'])) == "ampl"
+    """Testing remove with exclude as a set or list"""
+    assert remove("example", ['e', 'x']) == "ampl"
+    assert remove("example", set(['e', 'x'])) == "ampl"
 
 
 def test_columns_length_1():
-    """Since splitting into 1 column works, you should be able to combine 1 columns"""
+    """Testing splitting and combining 1 column text works"""
     text = "example"
     split = split_columns(text, 1)
 
@@ -39,7 +36,7 @@ def test_columns_length_1():
 
 
 def test_columns_lower_length():
-    """Testing split and combine columns where num columns is less than the length of text"""
+    """Testing split and combine columns where n_columns is less than the length of text"""
     text = "example"
     split = split_columns(text, 4)
 
@@ -48,7 +45,7 @@ def test_columns_lower_length():
 
 
 def test_columns_same_length():
-    """Testing split and combine where n_cols = len(text)"""
+    """Testing split and combine where n_columns = len(text)"""
     text = "example"
     split = split_columns(text, len(text))
 
@@ -88,7 +85,7 @@ def test_iterate_ngrams_empty():
 
 
 def test_iterate_ngrams_non_positive():
-    """Testing non positive n-values raises ValueError"""
+    """Testing non positive n values raise ValueError"""
     with pytest.raises(ValueError):
         list(iterate_ngrams("example", 0))
 
@@ -96,18 +93,18 @@ def test_iterate_ngrams_non_positive():
         list(iterate_ngrams("example", -1))
 
 
-def test_group_even():
+def test_group_even_length():
     """Testing group with even length string"""
     assert group("test", 2) == ['te', 'st']
 
 
-def test_group_odd():
+def test_group_odd_length():
     """Testing group with odd length string"""
     assert group("example", 2) == ['ex', 'am', 'pl', 'e']
 
 
 def test_group_invalid():
-    """Testing non positive n-values raise ValueError"""
+    """Testing non positive sizes raise ValueError"""
     with pytest.raises(ValueError):
         list(group("example", 0))
 
