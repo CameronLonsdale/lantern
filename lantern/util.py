@@ -8,7 +8,7 @@ def remove(text, exclude):
 
     Example:
         >>> remove("example text", string.whitespace)
-        exampletext
+        'exampletext'
 
     Parameters:
         text (str): The text to modify
@@ -49,7 +49,7 @@ def combine_columns(*columns):
 
     Example:
         >>> combine_columns('eape', 'xml')
-        example
+        'example'
 
     Parameters:
         columns (variable length arg list): columns to combine
@@ -70,19 +70,37 @@ def combine_columns(*columns):
 def iterate_ngrams(text, n):
     """Generator to yield ngrams in text.
 
+    Example:
+        >>> for ngram in iterate_ngrams("example", 4):
+        ...     print(ngram)
+        exam
+        xamp
+        ampl
+        mple
+
     Parameters:
         text (str): text to iterate over
         n (int): size of window for iteration
 
     Yields:
         The next ngram in the text
+
+    Raises:
+        ValueError: If n is non positive
     """
+    if n <= 0:
+        raise ValueError("n must be a positive integer")
+
     for i in range(len(text) - n + 1):
         yield text[i: i + n]
 
 
 def group(text, n):
-    """Group text into blocks of n
+    """Group text into blocks of n.
+
+    Example:
+        >>> group("test", 2)
+        ['te', 'st']
 
     Parameters:
         text (str): text to separate
@@ -90,5 +108,11 @@ def group(text, n):
 
     Returns:
         list of n-sized groups of text
+
+    Raises:
+        ValueError: If n is non positive
     """
+    if n <= 0:
+        raise ValueError("n must be a positive integer")
+
     return [text[i:i + n] for i in range(0, len(text), n)]
