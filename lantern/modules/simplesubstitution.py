@@ -8,7 +8,7 @@ from lantern.structures import Decryption
 
 
 def crack(ciphertext, *fitness_functions, ntrials=30, nswaps=3000):
-    """Break ``ciphertext`` using a hill climbing algorithm.
+    """Break ``ciphertext`` using hill climbing.
 
     Example:
         >>> decryptions = crack("XUOOB", fitness.english.quadgrams)
@@ -32,41 +32,40 @@ def crack(ciphertext, *fitness_functions, ntrials=30, nswaps=3000):
     if ntrials <= 0 or nswaps <= 0:
         raise ValueError("ntrials and nswaps must be positive integers")
 
-    key = list(string.ascii_uppercase)
-    decryptions = []
-    best_score = -float('inf')
-
-    def get_next_node(node):
+    # Find a local maximum by swapping two letters and scoring the decryption
+    def next_node_inner_climb(node):
         # Swap 2 characters in the key
         a, b = random.sample(range(len(node)), 2)
         node[a], node[b] = node[b], node[a]
-        return node, lantern.score(decrypt(node, ciphertext), *fitness_functions)
+        plaintext = decrypt(node, ciphertext)
+        score = lantern.score(plaintext, *fitness_functions)
+        return node, score, Decryption(plaintext, ''.join(node), score)
 
-    # Repeat hill climb at different starting points for more comprehensive results
-    for iteration in range(ntrials):
-        random.shuffle(key)
-        score, key = hill_climb(nswaps, key[:], get_next_node)
+    # Outer climb rereuns hill climb ntrials number of times each time at a different start location
+    def next_node_outer_climb(node):
+        random.shuffle(node)
+        key, score, outputs = hill_climb(nswaps, node[:], next_node_inner_climb)
+        return key, score, outputs[-1]  # The last item in this list is the item with the highest score
 
-        # Keep track of the best score over all trials
-        if score > best_score:
-            best_key = key[:]
-            best_score = score
-            decryptions.append(Decryption(decrypt(best_key, ciphertext), ''.join(best_key), best_score))
-
-    return sorted(decryptions, reverse=True)
+    _, _, decryptions = hill_climb(ntrials, list(string.ascii_uppercase), next_node_outer_climb)
+    return sorted(decryptions, reverse=True)  # We sort the list to ensure the best results are at the front of the list
 
 
 def hill_climb(nsteps, start_node, get_next_node):
+    """Hill climb"""
+    outputs = []
     best_score = -float('inf')
+
     for step in range(nsteps):
-        next_node, score = get_next_node(start_node[:])
+        next_node, score, output = get_next_node(start_node[:])
 
         # Keep track of best score and the start node becomes finish node
         if score > best_score:
             start_node = next_node[:]
             best_score = score
+            outputs.append(output)
 
-    return best_score, start_node
+    return start_node, best_score, outputs
 
 
 def decrypt(key, ciphertext):
