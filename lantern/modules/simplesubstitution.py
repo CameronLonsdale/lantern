@@ -3,7 +3,7 @@
 import random
 import string
 
-from lantern import score
+import lantern
 from lantern.structures import Decryption
 
 
@@ -36,33 +36,37 @@ def crack(ciphertext, *fitness_functions, ntrials=30, nswaps=3000):
     decryptions = []
     best_score = -float('inf')
 
-    # Find global maximums
+    def get_next_node(node):
+        # Swap 2 characters in the key
+        a, b = random.sample(range(len(node)), 2)
+        node[a], node[b] = node[b], node[a]
+        return node, lantern.score(decrypt(node, ciphertext), *fitness_functions)
+
+    # Repeat hill climb at different starting points for more comprehensive results
     for iteration in range(ntrials):
         random.shuffle(key)
-        best_trial_score = -float('inf')
-
-        for swap in range(nswaps):
-            new_key = key[:]
-
-            # Swap 2 characters in the key
-            a, b = random.sample(range(26), 2)
-            new_key[a], new_key[b] = new_key[b], new_key[a]
-
-            plaintext = decrypt(new_key, ciphertext)
-            new_score = score(plaintext, *fitness_functions)
-
-            # Keep track of best score for a single trial
-            if new_score > best_trial_score:
-                key = new_key[:]
-                best_trial_score = new_score
+        score, key = hill_climb(nswaps, key[:], get_next_node)
 
         # Keep track of the best score over all trials
-        if best_trial_score > best_score:
+        if score > best_score:
             best_key = key[:]
-            best_score = best_trial_score
+            best_score = score
             decryptions.append(Decryption(decrypt(best_key, ciphertext), ''.join(best_key), best_score))
 
     return sorted(decryptions, reverse=True)
+
+
+def hill_climb(nsteps, start_node, get_next_node):
+    best_score = -float('inf')
+    for step in range(nsteps):
+        next_node, score = get_next_node(start_node[:])
+
+        # Keep track of best score and the start node becomes finish node
+        if score > best_score:
+            start_node = next_node[:]
+            best_score = score
+
+    return best_score, start_node
 
 
 def decrypt(key, ciphertext):
