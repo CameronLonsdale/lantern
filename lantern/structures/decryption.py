@@ -1,13 +1,20 @@
-"""Class to group information about a decryption"""
+"""Class to group information about a decryption.
+
+Todo:
+    Possibly add more functionality to this class
+    * Equality checking
+    * Formatted plaintext (added spaces)
+    Once there is evidence these things are needed, I will implement them
+"""
 
 
 class Decryption():
     """A decryption object, composed of plaintext, a score and the key.
 
     Example:
-        >>> decryption = Decryption("plaintext", "key", -10)
+        >>> decryption = Decryption("example", "key", -10)
         >>> decryption.plaintext
-        plaintext
+        example
         >>> decryption.key
         key
         >>> decryption.score
@@ -16,10 +23,10 @@ class Decryption():
 
     def __init__(self, plaintext, key, score):
         """
-        Parameters:
-            plaintext (str): The decrypted ciphertext
-            key (object): The key which resulted in this decryption
-            score (object): The score of this decryption
+        Args:
+            plaintext: The decrypted ciphertext
+            key: The key which resulted in this decryption
+            score: The score of this decryption
         """
         self.plaintext = plaintext
         self.key = key
@@ -28,18 +35,18 @@ class Decryption():
     def __str__(self):
         """Return the plaintext as the string representation for the object.
 
-        Return:
-            self.plaintext
+        Returns:
+            plaintext
         """
         return self.plaintext
 
     def __lt__(self, other):
         """Compare decryptions with other decryptions by score.
 
-        Parameters:
-            other (object): Object to compare with
+        Args:
+            other: Object to compare with
 
-        Return:
-            True or False
+        Returns:
+            True if self is less than other, else False
         """
         return self.score < other.score
