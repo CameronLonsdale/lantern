@@ -68,11 +68,27 @@ def combine_columns(*columns):
 
 
 def iterate_ngrams(text, n):
-    """Generator to yield ngrams in text"""
+    """Generator to yield ngrams in text.
+
+    Parameters:
+        text (str): text to iterate over
+        n (int): size of window for iteration
+
+    Yields:
+        The next ngram in the text
+    """
     for i in range(len(text) - n + 1):
         yield text[i: i + n]
 
 
 def group(text, n):
-    """Group text into blocks of n"""
+    """Group text into blocks of n
+
+    Parameters:
+        text (str): text to separate
+        n (int): size of groups to split the text into
+
+    Returns:
+        list of n-sized groups of text
+    """
     return [text[i:i + n] for i in range(0, len(text), n)]
