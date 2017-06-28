@@ -51,7 +51,7 @@ def decrypt(key, ciphertext):
         ciphertext (str): The text to decrypt
 
     Returns:
-        Decrypted plaintext
+        Decrypted ciphertext
     """
     alphabet = [string.ascii_lowercase, string.ascii_uppercase]
     key %= len(alphabet[0])
