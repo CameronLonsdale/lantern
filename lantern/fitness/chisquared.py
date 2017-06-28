@@ -19,7 +19,7 @@ class ChiSquared:
 
     def __init__(self, target_frequency):
         """
-        Parameters:
+        Args:
             target_frequency (dict): symbol to frequency mapping of the distribution to compare with
         """
         self.target_frequency = target_frequency
@@ -32,10 +32,10 @@ class ChiSquared:
             >>> fitness("ABC")
             -32.2
 
-        Parameters:
+        Args:
             text (str): The text to score
 
-        Return:
+        Returns:
             Chi Squared score for text
         """
         return -chi_squared(frequency_analyze(text), self.target_frequency)
