@@ -11,6 +11,13 @@ from lantern.structures import Decryption
 def crack(ciphertext, *fitness_functions, ntrials=30, nswaps=3000):
     """Break ``ciphertext`` using hill climbing.
 
+    Note:
+        Currently ntrails and nswaps default to magic numbers.
+        Generally the trend is, the longer the text, the lower the number of trials
+        you need to run, because the hill climbing will lead to the best answer faster.
+        Because randomness is involved, there is the possibility of the correct decryption
+        not being found. In this circumstance you just need to run the code again.
+
     Example:
         >>> decryptions = crack("XUOOB", fitness.english.quadgrams)
         >>> print(decryptions[0])
@@ -29,6 +36,7 @@ def crack(ciphertext, *fitness_functions, ntrials=30, nswaps=3000):
 
     Raises:
         ValueError: If nswaps or ntrails are not positive integers
+        ValueError: If no fitness_functions are given
     """
     if ntrials <= 0 or nswaps <= 0:
         raise ValueError("ntrials and nswaps must be positive integers")
@@ -66,7 +74,8 @@ def decrypt(key, ciphertext):
     Returns:
         Decrypted ciphertext
     """
+    # TODO: Is it worth keeping this here I should I only accept strings?
     key = ''.join(key)
     alphabet = string.ascii_letters
-    reversed_alphabet = key.lower() + key.upper()
-    return ciphertext.translate(str.maketrans(reversed_alphabet, alphabet))
+    cipher_alphabet = key.lower() + key.upper()
+    return ciphertext.translate(str.maketrans(cipher_alphabet, alphabet))

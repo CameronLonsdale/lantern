@@ -1,5 +1,7 @@
 """Algorithms for searching and optimisation."""
 
+import copy
+
 
 def hill_climb(nsteps, start_node, get_next_node):
     """Modular hill climbing algorithm.
@@ -26,11 +28,11 @@ def hill_climb(nsteps, start_node, get_next_node):
     best_score = -float('inf')
 
     for step in range(nsteps):
-        next_node, score, output = get_next_node(start_node[:])
+        next_node, score, output = get_next_node(copy.deepcopy(start_node))
 
         # Keep track of best score and the start node becomes finish node
         if score > best_score:
-            start_node = next_node[:]
+            start_node = copy.deepcopy(next_node)
             best_score = score
             outputs.append(output)
 

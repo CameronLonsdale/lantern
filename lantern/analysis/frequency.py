@@ -1,6 +1,7 @@
 """General purpose frequency analysis tools."""
 
 import importlib
+import statistics
 from collections import Counter
 
 from lantern.util import iterate_ngrams
@@ -30,7 +31,7 @@ def frequency_analyze(text, n=1):
 
 
 def frequency_to_probability(frequency_map, decorator=lambda f: f):
-    """Transform a ``frequency_map`` into a map of probability usesing the sum of all frequencies as the total.
+    """Transform a ``frequency_map`` into a map of probability using the sum of all frequencies as the total.
 
     Example:
         >>> frequency_to_probability({'a': 2, 'b': 2})
@@ -44,7 +45,7 @@ def frequency_to_probability(frequency_map, decorator=lambda f: f):
         Dictionary of ngrams to probability
     """
     total = sum(frequency_map.values())
-    return {k: decorator(float(v) / total) for k, v in frequency_map.items()}
+    return {k: decorator(v / total) for k, v in frequency_map.items()}
 
 
 def index_of_coincidence(*texts):
@@ -71,8 +72,20 @@ def index_of_coincidence(*texts):
     if not texts:
         raise ValueError("texts must not be empty")
 
-    total = sum(_calculate_index_of_coincidence(frequency_analyze(text), len(text)) for text in texts)
-    return total / len(texts)
+    return statistics.mean(_calculate_index_of_coincidence(frequency_analyze(text), len(text)) for text in texts)
+
+
+def _calculate_index_of_coincidence(frequency_map, length):
+    """A measure of how similar frequency_map is to the uniform distribution.
+    Or the probability that two letters picked randomly are alike.
+    """
+    if length <= 1:
+        # TODO: ? Could change this to 0 or Nan. Future decision.
+        raise ValueError("length must be greater than 1")
+
+    # Mathemtical combination, number of ways to choose 2 letters, no replacement, order doesnt matter
+    combination_of_letters = sum(freq * (freq - 1) for freq in frequency_map.values())
+    return combination_of_letters / (length * (length - 1))
 
 
 def chi_squared(source_frequency, target_frequency):
@@ -89,23 +102,17 @@ def chi_squared(source_frequency, target_frequency):
     Returns:
         Decimal value of the chi-squared statistic
     """
-    target_prob = frequency_to_probability(target_frequency)
     # Ignore any symbols from source that are not in target.
     # TODO: raise Error if source_len is 0?
+    target_prob = frequency_to_probability(target_frequency)
     source_len = sum(v for k, v in source_frequency.items() if k in target_frequency)
-    return sum(_calculate_chi_squared(source_frequency.get(symbol, 0), prob, source_len) for symbol, prob in target_prob.items())
 
+    result = 0
+    for symbol, prob in target_prob.items():
+        symbol_frequency = source_frequency.get(symbol, 0)  # Frequecy is 0 if it doesnt appear in source
+        result += _calculate_chi_squared(symbol_frequency, prob, source_len)
 
-def _calculate_index_of_coincidence(frequency_map, length):
-    """A measure of how similar frequency_map is to the uniform distribution.
-    Or the probability that two letters picked randomly are alike.
-    """
-    if length <= 1:
-        raise ValueError("length must be greater than 1")  # Could change this to 0 or Nan. Future decision.
-
-    # Mathemtical combination, number of ways to choose 2 letters, no replacement, order doesnt matter
-    combination_of_letters = sum((frequency_map[symbol] * (frequency_map[symbol] - 1)) for symbol in frequency_map)
-    return float(combination_of_letters) / (length * (length - 1))
+    return result
 
 
 def _calculate_chi_squared(source_freq, target_prob, source_len):

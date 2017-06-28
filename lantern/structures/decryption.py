@@ -8,7 +8,7 @@ Todo:
 """
 
 
-class Decryption():
+class Decryption:
     """A decryption object, composed of plaintext, a score and the key.
 
     Example:

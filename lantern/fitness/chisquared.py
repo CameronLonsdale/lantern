@@ -3,7 +3,7 @@
 from lantern.analysis.frequency import frequency_analyze, chi_squared
 
 
-class ChiSquared:
+def ChiSquared(target_frequency):
     """Score a text by comparing its frequency distribution against another.
 
     Note:
@@ -15,27 +15,13 @@ class ChiSquared:
     Todo:
         Maybe include paramter for ngram size. Havent had a use case for this yet.
         Once there is evidence it is needed, I will add it.
+
+    Example:
+        >>> fitness = ChiSquared(english.unigrams)
+        >>> fitness("ABC")
+        -32.2
+
+    Args:
+        target_frequency (dict): symbol to frequency mapping of the distribution to compare with
     """
-
-    def __init__(self, target_frequency):
-        """
-        Args:
-            target_frequency (dict): symbol to frequency mapping of the distribution to compare with
-        """
-        self.target_frequency = target_frequency
-
-    def __call__(self, text):
-        """Score text using the Chi Squared statistic.
-
-        Example:
-            >>> fitness = ChiSquared(english.unigrams)
-            >>> fitness("ABC")
-            -32.2
-
-        Args:
-            text (str): The text to score
-
-        Returns:
-            Chi Squared score for text
-        """
-        return -chi_squared(frequency_analyze(text), self.target_frequency)
+    return lambda text: -chi_squared(frequency_analyze(text), target_frequency)

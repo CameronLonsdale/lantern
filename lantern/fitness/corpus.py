@@ -6,8 +6,13 @@ from math import log10
 from lantern.util import remove
 
 
-class Corpus():
-    """Scoring function based on existance of words in a corpus."""
+class Corpus:
+    """Scoring function based on existance of words in a corpus.
+
+    Todo:
+        This is fairly broken. I'm not happy with this implementation
+        and will be changing it in the future when I revisit weighted mean scoring
+    """
 
     def __init__(self, corpus):
         """Build function with set of words from a corpus.

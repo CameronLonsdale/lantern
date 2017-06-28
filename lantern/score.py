@@ -3,6 +3,8 @@ Scoring algorithm to return probability of correct decryption.
 Output range depends on the score functions used.
 """
 
+import statistics
+
 
 def score(text, *score_functions):
     """Score ``text`` using ``score_functions``.
@@ -24,5 +26,4 @@ def score(text, *score_functions):
     if not score_functions:
         raise ValueError("score_functions must not be empty")
 
-    total_score = sum(func(text) for func in score_functions)
-    return total_score / len(score_functions)
+    return statistics.mean(func(text) for func in score_functions)

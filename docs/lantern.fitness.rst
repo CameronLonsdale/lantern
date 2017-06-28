@@ -5,27 +5,27 @@ Fitness Functions
 Chi Squared
 -----------
 
-.. autoclass:: lantern.fitness.ChiSquared
+.. automodule:: lantern.fitness.chisquared
     :members:
     :undoc-members:
 
 Corpus
 ------
 
-.. autoclass:: lantern.fitness.Corpus
+.. automodule:: lantern.fitness.corpus
     :members:
     :undoc-members:
 
 Ngram
 -----
 
-.. autoclass:: lantern.fitness.NgramScore
+.. automodule:: lantern.fitness.ngram
     :members:
     :undoc-members:
 
 Pattern Match
 -------------
 
-.. autoclass:: lantern.fitness.PatternMatch
+.. automodule:: lantern.fitness.patternmatch
     :members:
     :undoc-members:

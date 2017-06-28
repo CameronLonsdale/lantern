@@ -44,25 +44,19 @@ def split_columns(text, n_columns):
     return [text[i::n_columns] for i in range(n_columns)]
 
 
-def combine_columns(*columns):
+def combine_columns(columns):
     """Combine ``columns`` into a single string.
 
     Example:
-        >>> combine_columns('eape', 'xml')
+        >>> combine_columns(['eape', 'xml'])
         'example'
 
     Args:
-        *columns (variable length argument list): columns to combine
+        columns (iterable): ordered columns to combine
 
     Returns:
         String of combined columns
-
-    Raises:
-        ValueError: If columns is empty
     """
-    if not columns:
-        raise ValueError("columns must not be empty")
-
     columns_zipped = itertools.zip_longest(*columns)
     return ''.join(x for zipped in columns_zipped for x in zipped if x)
 

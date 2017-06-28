@@ -32,6 +32,7 @@ def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
 
     Raises:
         ValueError: If key_period or max_key_period are less than or equal to 0
+        ValueError: If no fitness_functions are given
     """
     if max_key_period <= 0 or (key_period is not None and key_period <= 0):
         raise ValueError("Period values must be positive integers")
@@ -43,7 +44,9 @@ def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
 
     # Decrypt for every valid period
     period_decryptions = []
-    for period in filter(lambda p: p <= len(ciphertext), periods):
+    for period in periods:
+        if period >= len(ciphertext):
+            continue
 
         # Collect the best decryptions for every column
         column_decryptions = [caesar.crack(col, *fitness_functions)[0] for col in split_columns(ciphertext, period)]
@@ -86,7 +89,7 @@ def key_periods(ciphertext, max_key_period):
 
 def _build_key(keys):
     num_letters = len(string.ascii_uppercase)
-    return ''.join([string.ascii_uppercase[(key) % num_letters] for key in keys])
+    return ''.join(string.ascii_uppercase[(key) % num_letters] for key in keys)
 
 
 def decrypt(key, ciphertext):
@@ -114,4 +117,4 @@ def decrypt(key, ciphertext):
             index = (index + 1) % len(key)
         decrypted += char
 
-    return ''.join(decrypted)
+    return decrypted

@@ -27,6 +27,7 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26):
 
     Raises:
         ValueError: If min_key exceeds max_key
+        ValueError: If no fitness_functions are given
     """
     if min_key >= max_key:
         raise ValueError("min_key cannot exceed max_key")

@@ -32,7 +32,7 @@ def test_columns_length_1():
     split = split_columns(text, 1)
 
     assert split == [text]
-    assert combine_columns(*split) == text
+    assert combine_columns(split) == text
 
 
 def test_columns_lower_length():
@@ -41,7 +41,7 @@ def test_columns_lower_length():
     split = split_columns(text, 4)
 
     assert split == ['ep', 'xl', 'ae', 'm']
-    assert combine_columns(*split) == text
+    assert combine_columns(split) == text
 
 
 def test_columns_same_length():
@@ -50,7 +50,7 @@ def test_columns_same_length():
     split = split_columns(text, len(text))
 
     assert split == list(text)
-    assert combine_columns(*split) == text
+    assert combine_columns(split) == text
 
 
 def test_split_columns_invalid_values():
@@ -66,12 +66,6 @@ def test_split_columns_invalid_values():
 
     with pytest.raises(ValueError):
         split_columns("example", 200)
-
-
-def test_combine_columns_invalid_values():
-    """Testing combine columns with no columns raises ValueError"""
-    with pytest.raises(ValueError):
-        combine_columns()
 
 
 def test_iterate_ngrams():

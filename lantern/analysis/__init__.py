@@ -1,1 +1,1 @@
-from . import frequency
+from . import frequency, search

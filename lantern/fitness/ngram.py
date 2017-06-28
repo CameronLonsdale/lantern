@@ -1,41 +1,35 @@
 """Fitness scoring using ngram frequency."""
 
 import string
-from math import log10
+import math
 
 from lantern.analysis import frequency
 from lantern.util import remove, iterate_ngrams
 
 
-class NgramScore():
-    """Computes the score of a text by using the frequencies of ngrams."""
+def NgramScorer(frequency_map):
+    """Computes the score of a text by using the frequencies of ngrams.
 
-    def __init__(self, frequency_map):
-        """
-        Args:
-            frequency_map (dict): ngram to frequency mapping
-        """
-        # Calculate the log probability
-        self.length = len(list(frequency_map.keys())[0])
-        self.floor = log10(0.01 / sum(frequency_map.values()))
-        self.ngrams = frequency.frequency_to_probability(frequency_map, decorator=lambda f: log10(f))
+    Example:
+        >>> fitness = NgramScore(english.unigrams)
+        >>> fitness("ABC")
+        -4.3622319742618245
 
-    def __call__(self, text):
-        """Compute the probability of text being a valid string in the source language.
+    Args:
+        frequency_map (dict): ngram to frequency mapping
+    """
 
-        Example:
-            >>> fitness = NgramScore(english.unigrams)
-            >>> fitness("ABC")
-            -4.3622319742618245
+    # Calculate the log probability
+    length = len(next(iter(frequency_map)))
+    # TODO: 0.01 is a magic number. Needs to be better than that.
+    floor = math.log10(0.01 / sum(frequency_map.values()))
+    ngrams = frequency.frequency_to_probability(frequency_map, decorator=math.log10)
 
-        Args:
-            text (str): The text to score
-
-        Returns:
-            Probability of correct decryption according to ngram frequency
-        """
+    def inner(text):
         text = remove(text.upper(), string.whitespace + string.punctuation)
-        return sum(self.ngrams.get(ngram, self.floor) for ngram in iterate_ngrams(text, self.length))
+        return sum(ngrams.get(ngram, floor) for ngram in iterate_ngrams(text, length))
+
+    return inner
 
 
 # TODO: This can be refactored with LanguageFrequency
@@ -54,9 +48,9 @@ class LanguageNGrams:
 
 
 english = LanguageNGrams({
-    'unigrams': (lambda: NgramScore(frequency.english.unigrams)),
-    'bigrams': (lambda: NgramScore(frequency.english.bigrams)),
-    'trigrams': (lambda: NgramScore(frequency.english.trigrams)),
-    'quadgrams': (lambda: NgramScore(frequency.english.quadgrams))
+    'unigrams': (lambda: NgramScorer(frequency.english.unigrams)),
+    'bigrams': (lambda: NgramScorer(frequency.english.bigrams)),
+    'trigrams': (lambda: NgramScorer(frequency.english.trigrams)),
+    'quadgrams': (lambda: NgramScorer(frequency.english.quadgrams))
 })
 """English ngram scorers."""
