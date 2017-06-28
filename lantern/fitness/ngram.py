@@ -1,7 +1,7 @@
 """Fitness scoring using ngram frequency."""
 
-import string
 import math
+import string
 
 from lantern.analysis import frequency
 from lantern.util import remove, iterate_ngrams
@@ -48,9 +48,9 @@ class LanguageNGrams:
 
 
 english = LanguageNGrams({
-    'unigrams': (lambda: NgramScorer(frequency.english.unigrams)),
-    'bigrams': (lambda: NgramScorer(frequency.english.bigrams)),
-    'trigrams': (lambda: NgramScorer(frequency.english.trigrams)),
-    'quadgrams': (lambda: NgramScorer(frequency.english.quadgrams))
+    'unigrams': lambda: NgramScorer(frequency.english.unigrams),
+    'bigrams': lambda: NgramScorer(frequency.english.bigrams),
+    'trigrams': lambda: NgramScorer(frequency.english.trigrams),
+    'quadgrams': lambda: NgramScorer(frequency.english.quadgrams)
 })
 """English ngram scorers."""
