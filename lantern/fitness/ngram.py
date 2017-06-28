@@ -12,7 +12,7 @@ class NgramScore():
 
     def __init__(self, frequency_map):
         """
-        Parameters:
+        Args:
             frequency_map (dict): ngram to frequency mapping
         """
         # Calculate the log probability
@@ -28,10 +28,10 @@ class NgramScore():
             >>> fitness("ABC")
             -4.3622319742618245
 
-        Parameters:
+        Args:
             text (str): The text to score
 
-        Return:
+        Returns:
             Probability of correct decryption according to ngram frequency
         """
         text = remove(text.upper(), string.whitespace + string.punctuation)
