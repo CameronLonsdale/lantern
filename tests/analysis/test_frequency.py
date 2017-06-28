@@ -6,70 +6,70 @@ from lantern.analysis import frequency
 
 
 def test_frequency_analyze():
-    """Test frequency analyze works for ngram = 1"""
+    """Testing frequency analyze works for ngram = 1"""
     assert frequency.frequency_analyze("abb") == {'a': 1, 'b': 2}
 
 
 def test_frequency_analyze_bigram():
-    """Test frequency analyze works for ngram = 2"""
+    """Testing frequency analyze works for ngram = 2"""
     assert frequency.frequency_analyze("abb", 2) == {'ab': 1, 'bb': 1}
 
 
 def test_frequency_analyze_empty_string():
-    """Test empty string can be frequency analyzed"""
+    """Testing empty string can be frequency analyzed"""
     assert frequency.frequency_analyze("") == {}
 
 
 def test_frequency_to_probability():
-    """Test frequency map is converted to probability distribution succesfully"""
+    """Testing frequency map is converted to probability distribution succesfully"""
     frequency_map = {'a': 1, 'b': 2}
     assert frequency.frequency_to_probability(frequency_map) == {'a': 1.0 / 3, 'b': 2.0 / 3}
 
 
 def test_frequency_to_probability_empty():
-    """Test empty frequency_map is converted to empty probability distribution"""
+    """Testing empty frequency_map is converted to empty probability distribution"""
     assert frequency.frequency_to_probability({}) == {}
 
 
 def test_index_of_coincidence():
-    """Test index of coincidence for a piece of text"""
+    """Testing index of coincidence for a piece of text"""
     assert frequency.index_of_coincidence("aabbc") == 0.2
 
 
 def test_index_of_coincidence_multiple_texts():
-    """Test index of coincidence with multiple texts"""
+    """Testing index of coincidence with multiple texts"""
     assert frequency.index_of_coincidence("aabbc", "abbcc") == 0.2
 
 
 def test_index_of_coincidence_none():
-    """Test index of coincidence raises value error on empty texts"""
+    """Testing index of coincidence raises value error on empty texts"""
     with pytest.raises(ValueError):
         frequency.index_of_coincidence()
 
 
 def test_index_of_coincidence_empty():
-    """Test index of coincidence for empty string raises ValueError"""
+    """Testing index of coincidence for empty string raises ValueError"""
     with pytest.raises(ValueError):
         frequency.index_of_coincidence("")
 
 
 def test_chi_squared():
-    """Test matching frequency distributions have chi squared of 0"""
+    """Testing matching frequency distributions have chi squared of 0"""
     assert frequency.chi_squared({'a': 2, 'b': 3}, {'a': 2, 'b': 3}) == 0
 
 
 def test_chi_squared_similar():
-    """Test similar frequency distributions have chi squared of 0.1"""
+    """Testing similar frequency distributions have chi squared of 0.1"""
     assert frequency.chi_squared({'a': 2, 'b': 3}, {'a': 1, 'b': 2}) == 0.1
 
 
 def test_chi_squared_different_symbols():
-    """Test different symbols are handled appropriately"""
+    """Testing different symbols are handled appropriately"""
     assert frequency.chi_squared({'a': 1, 'd': 3}, {'a': 1}) == 0
 
 
 def test_languagefrequency_attribute_access():
-    """Test correct attributes are found, incorrect attributes raise AttributeErrors"""
+    """Testing correct attributes are found, incorrect attributes raise AttributeErrors"""
     frequency.english.unigrams
 
     with pytest.raises(AttributeError):

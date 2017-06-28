@@ -16,29 +16,31 @@ def frequency_analyze(text, n=1):
         >>> frequency_analyze("abb", 2)
         {'ab': 1, 'bb': 1}
 
-    Parameters:
+    Args:
         text (str): The text to analyze
         n (int): The ngram size to use
 
-    Return:
+    Returns:
         Dictionary of ngrams to frequency
+
+    Raises:
+        ValueError: If n is not a positive integer
     """
     return Counter(iterate_ngrams(text, n))
 
 
 def frequency_to_probability(frequency_map, decorator=lambda f: f):
-    """Transform a ``frequency_map`` into a map of probability.
-    Using the sum of all frequencies as the total.
+    """Transform a ``frequency_map`` into a map of probability usesing the sum of all frequencies as the total.
 
     Example:
-        >>> frequency_to_probability({'a': 1, 'b': 2})
-        {'a': 1/3, 'b': 2/3}
+        >>> frequency_to_probability({'a': 2, 'b': 2})
+        {'a': 0.5, 'b': 0.5}
 
-    Parameters:
+    Args:
         frequency_map (dict): The dictionary to transform
         decorator (function): A function to manipulate the probability
 
-    Return:
+    Returns:
         Dictionary of ngrams to probability
     """
     total = sum(frequency_map.values())
@@ -56,10 +58,10 @@ def index_of_coincidence(*texts):
         >>> index_of_coincidence("aabbc", "abbcc")
         0.2
 
-    Parameters:
-        texts (variable length arg list): The texts to analyze
+    Args:
+        *texts (variable length argument list): The texts to analyze
 
-    Return:
+    Returns:
         Decimal value of the index of coincidence
 
     Raises:
@@ -80,11 +82,11 @@ def chi_squared(source_frequency, target_frequency):
         >>> chi_squared({'a': 2, 'b': 3}, {'a': 1, 'b': 2})
         0.1
 
-    Parameters:
+    Args:
         source_frequency (dict): Frequency map of the text you are analyzing
         target_frequency (dict): Frequency map of the target language to compare with
 
-    Return:
+    Returns:
         Decimal value of the chi-squared statistic
     """
     target_prob = frequency_to_probability(target_frequency)
@@ -127,7 +129,7 @@ class LanguageFrequency:
 
     def __init__(self, ngram_builders):
         """
-        Parameters:
+        Args:
             ngrams_builders (dict): A dictionary of attribute name to attribute builder
         """
         self.ngram_builders = ngram_builders
@@ -135,14 +137,14 @@ class LanguageFrequency:
     def __getattr__(self, name):
         """Build attribute and set for future use.
 
-        Parameters:
+        Args:
             name (str): The name of the attribute
+
+        Returns:
+            The built attribute
 
         Raises:
             AttributeError: If the attribute cannot be built
-
-        Return:
-            The built attribute
         """
         try:
             ngram_map = self.ngram_builders[name]()
