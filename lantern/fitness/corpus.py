@@ -1,4 +1,4 @@
-"""Score plaintext based on number of words identified are in the corpus"""
+"""Score plaintext based on number of words identified are in the corpus."""
 
 import string
 from math import log10
@@ -12,7 +12,7 @@ class Corpus():
     def __init__(self, corpus):
         """Build function with set of words from a corpus.
 
-        Parameters:
+        Args:
             corpus (collection): collection of words to use
         """
         self.words = corpus
@@ -29,10 +29,10 @@ class Corpus():
             >>> fitness("different")
             -2.0
 
-        Parameters:
+        Args:
             text (str): The text to score
 
-        Return:
+        Returns:
             Corpus score for text
         """
         text = remove(text, string.punctuation)
