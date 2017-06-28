@@ -9,9 +9,9 @@ from lantern.modules import caesar
 from lantern import fitness
 
 
-def _test_caesar(plaintext, *score_functions, key=3, top_n=1):
+def _test_caesar(plaintext, *fitness_functions, key=3, top_n=1):
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
-    decryptions = caesar.crack(ciphertext, *score_functions)
+    decryptions = caesar.crack(ciphertext, *fitness_functions)
 
     top_decryptions = get_top_decryptions(decryptions, top_n)
 
@@ -32,49 +32,49 @@ def test_quick_brown_fox_unigrams():
 
 
 def test_quick_brown_fox_bigrams():
-    """Testing quick brown fox"""
+    """Testing quick brown fox with bigrams"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
     _test_caesar(plaintext, fitness.english.bigrams)
 
 
 def test_quick_brown_fox_trigrams():
-    """Testing quick brown fox"""
+    """Testing quick brown fox with trigrams"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
     _test_caesar(plaintext, fitness.english.trigrams)
 
 
 def test_quick_brown_fox_quadgrams():
-    """Testing quick brown fox"""
+    """Testing quick brown fox with quadgrams"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
     _test_caesar(plaintext, fitness.english.quadgrams)
 
 
 def test_quick_brown_fox_multiple_functions():
-    """Testing quick brown fox"""
+    """Testing quick brown fox with multiple fitness functions"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
     _test_caesar(plaintext, fitness.english.bigrams, fitness.english.trigrams)
 
 
 def test_quick_brown_fox_upper():
-    """Testing quick brown fox"""
+    """Testing quick brown fox uppercase letters"""
     plaintext = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"
     _test_caesar(plaintext, fitness.english.quadgrams)
 
 
 def test_quick_brown_fox_patristocrats():
-    """Testing quick brown fox"""
+    """Testing quick brown fox broken into groups of 5"""
     plaintext = "TheQu ckBro wnFox Jumps OverT heLaz yDog"
     _test_caesar(plaintext, fitness.english.quadgrams)
 
 
 def test_quick_brown_fox_no_whitespace():
-    """Testing quick brown fox"""
+    """Testing quick brown fox no whitespace"""
     plaintext = "thequickbrownfoxjumpsoverthelazydog"
     _test_caesar(plaintext, fitness.english.quadgrams)
 
 
 def test_quick_brown_fox_no_whitespace_upper():
-    """Testing quick brown fox"""
+    """Testing quick brown fox no whitespace and uppercase"""
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
     _test_caesar(plaintext, fitness.english.quadgrams)
 

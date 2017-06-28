@@ -14,15 +14,15 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26):
         >>> print(decryptions[0])
         HELLO
 
-    Arguments:
+    Args:
         ciphertext (str): The text to decrypt
-        fitness_functions (variable length arg list): Functions to score decryption with
+        *fitness_functions (variable length argument list): Functions to score decryption with
 
-    Keyword Arguments:
+    Keyword Args:
         min_key (int): Key to start with
         max_key (int): Key to stop at (exclusive)
 
-    Return:
+    Returns:
         Sorted list of decryptions
 
     Raises:
@@ -46,12 +46,12 @@ def decrypt(key, ciphertext):
         >>> decrypt(3, "KHOOR")
         HELLO
 
-    Parameters:
+    Args:
         key (int): The shift to use
         ciphertext (str): The text to decrypt
 
-    Return:
-        plaintext
+    Returns:
+        Decrypted plaintext
     """
     alphabet = [string.ascii_lowercase, string.ascii_uppercase]
     key %= len(alphabet[0])
