@@ -40,7 +40,9 @@ lantern has no external dependencies outside of the Python standard library.
 
 ## Usage
 
-lanterns's usage is for it's modules to be imported into custom scripts written by the user. The modules aim to be generalised cryptoanalysis functions which the user can extend / modify / combine with other changes to solve particular problems.
+As a library, lanterns functionality can be used in REPL or pre-written scripts. 
+The library aims to be highly modular and generalised, providing the user with the ability to extend / modify / combine functions
+with others to solve particular problems.
 
 [Example programs](examples)
 
@@ -48,25 +50,17 @@ lanterns's usage is for it's modules to be imported into custom scripts written 
 
 ### Testing
 
-Setup a virtual environment with your favourite version of python
+Setup a virtual environment with a version of python3.
 
 ```
 virtualenv -p python3.5 venv
 source ./venv/bin/activate
 ```
 
-Install testing requirements
+Install testing requirements.
 
-`pip install -r test_requirements`
+`pip install -r dev_requirements.txt`
 
-Use `py.test` to run tests using your current working environment
+Use `py.test` to run tests using your current working environment.
 
-Use `tox -r` to build a new environment for each python version and run all tests
-
-## Contributing
-
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`.
-3. Commit your changes: `git commit -am 'Add some feature'`.
-4. Push to the branch: `git push origin my-new-feature`.
-5. Submit a pull request.
+Use `tox -r` to build a new environment for each python version and run all tests.
