@@ -27,7 +27,7 @@ def _test_vigenere(plaintext, first, *rest, key, period=None, top_n=1):
             break
 
     assert match is not None
-    assert ''.join(key) in match.key
+    assert ''.join(key) in match.key  # Not equality because key can be repeated if the chosen period was longer
 
 
 def test_250_character_text_periods_unknown():

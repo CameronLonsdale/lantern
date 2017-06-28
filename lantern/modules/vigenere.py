@@ -14,19 +14,20 @@ from lantern.util import split_columns, remove
 def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
     """Break ``ciphertext`` by finding (or using the given) key_period then breaking ``key_period`` many Caesar ciphers.
 
-    Example: ::
+    Example:
+        >>> decryptions = crack("OMSTV", fitness.ChiSquared(analysis.frequency.english.unigrams))
+        >>> print(decryptions[0])
+        HELLO
 
-        crack(ciphertext, fitness.ChiSquared(analysis.frequency.english.unigrams))
-
-    Arguments:
+    Args:
         ciphertext (str): The text to decrypt
-        fitness_functions (variable length arg list): Functions to score decryption with
+        *fitness_functions (variable length argument list): Functions to score decryption with
 
-    Keyword Arguments:
+    Keyword Args:
         key_period (int): The period of the key
         max_key_period (int): The maximum period the key could be
 
-    Return:
+    Returns:
         Sorted list of decryptions
 
     Raises:
@@ -36,17 +37,18 @@ def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
         raise ValueError("Period values must be positive integers")
 
     original_text = ciphertext
+    # Make the assumption that punctionation and whitespace have not been encrypted
     ciphertext = remove(ciphertext, string.punctuation + string.whitespace)
     periods = [int(key_period)] if key_period else key_periods(ciphertext, max_key_period)
 
+    # Decrypt for every valid period
     period_decryptions = []
     for period in filter(lambda p: p <= len(ciphertext), periods):
-        column_decryptions = []
-        for col in split_columns(ciphertext, period):
-            decryptions = caesar.crack(col, *fitness_functions)
-            column_decryptions.append(decryptions[0])
 
+        # Collect the best decryptions for every column
+        column_decryptions = [caesar.crack(col, *fitness_functions)[0] for col in split_columns(ciphertext, period)]
         key = _build_key(decrypt.key for decrypt in column_decryptions)
+
         plaintext = decrypt(key, original_text)
         period_decryptions.append(Decryption(plaintext, key, score(plaintext, *fitness_functions)))
 
@@ -57,15 +59,15 @@ def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
 def key_periods(ciphertext, max_key_period):
     """Rank all key periods for ``ciphertext`` up to and including ``max_key_period``
 
-    Example: ::
+    Example:
+        >>> key_periods(ciphertext, 30)
+        [2, 4, 8, 3, ...]
 
-        key_periods(ciphertext, 30)
-
-    Parameters:
+    Args:
         ciphertext (str): The text to analyze
         max_key_period (int): The maximum period the key could be
 
-    Return:
+    Returns:
         Sorted list of keys
 
     Raises:
@@ -76,30 +78,30 @@ def key_periods(ciphertext, max_key_period):
 
     key_scores = []
     for period in range(1, max_key_period + 1):
-        cols = split_columns(ciphertext, period)
-        score = abs(ENGLISH_IC - index_of_coincidence(*cols))
+        score = abs(ENGLISH_IC - index_of_coincidence(*split_columns(ciphertext, period)))
         key_scores.append((period, score))
 
     return [p[0] for p in sorted(key_scores, key=lambda x: x[1])]
 
 
 def _build_key(keys):
-    return ''.join([string.ascii_uppercase[(key) % 26] for key in keys])
+    num_letters = len(string.ascii_uppercase)
+    return ''.join([string.ascii_uppercase[(key) % num_letters] for key in keys])
 
 
 def decrypt(key, ciphertext):
     """Decrypt Vigenere encrypted ``ciphertext`` using ``key``.
 
-    Example: ::
+    Example:
+        >>> decrypt("KEY", "RIJVS")
+        HELLO
 
-        decrypt("KEY", "RIJVS") == "HELLO"
-
-    Parameters:
+    Args:
         key (iterable): The key to use
         ciphertext (str): The text to decrypt
 
-    Return:
-        plaintext
+    Returns:
+        Decrypted ciphertext
     """
     decrypted = ""
     key = ''.join(key)
