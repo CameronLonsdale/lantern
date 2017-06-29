@@ -24,7 +24,7 @@ Install
 
 .. code-block:: bash
 
-    pip install -U lantern
+    pip3 install -U lantern
 
 Guide
 =====
