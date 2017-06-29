@@ -4,7 +4,7 @@ import re
 
 
 def PatternMatch(regex):
-    """Computes the score of a text by determing if a pattern matches.
+    """Compute the score of a text by determing if a pattern matches.
 
     Example:
         >>> fitness = PatternMatch("flag{.*}")

@@ -85,7 +85,7 @@ def iterate_ngrams(text, n):
     if n <= 0:
         raise ValueError("n must be a positive integer")
 
-    return (text[i: i + n] for i in range(len(text) - n + 1))
+    return [text[i: i + n] for i in range(len(text) - n + 1)]
 
 
 def group(text, size):

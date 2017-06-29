@@ -106,15 +106,16 @@ def decrypt(key, ciphertext):
     Returns:
         Decrypted ciphertext
     """
-    decrypted = ""
-    key = ''.join(key)
-
     index = 0
+    decrypted = ""
     for char in ciphertext:
-        if char not in string.punctuation + string.whitespace:
-            alphabet = string.ascii_uppercase if key[index].isupper() else string.ascii_lowercase
-            char = caesar.decrypt(int(alphabet.index(key[index])), char)
-            index = (index + 1) % len(key)
-        decrypted += char
+        if char in string.punctuation or char in string.whitespace:
+            decrypted += char
+            continue  # Not part of the decryption
+
+        # Rotate character by the alphabet position of the letter in the key
+        alphabet = string.ascii_uppercase if key[index].isupper() else string.ascii_lowercase
+        decrypted += caesar.decrypt(int(alphabet.index(key[index])), char)
+        index = (index + 1) % len(key)
 
     return decrypted

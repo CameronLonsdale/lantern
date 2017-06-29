@@ -9,7 +9,7 @@ from lantern.util import remove, iterate_ngrams
 
 
 def NgramScorer(frequency_map):
-    """Computes the score of a text by using the frequencies of ngrams.
+    """Compute the score of a text by using the frequencies of ngrams.
 
     Example:
         >>> fitness = NgramScore(english.unigrams)
