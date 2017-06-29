@@ -38,8 +38,9 @@ def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
         raise ValueError("Period values must be positive integers")
 
     original_text = ciphertext
-    # Make the assumption that punctionation and whitespace have not been encrypted
-    ciphertext = remove(ciphertext, string.punctuation + string.whitespace)
+    # Make the assumption that non alphabet characters have not been encrypted
+    # TODO: This is fairly poor code. Once languages are a thing, there should be some nice abstractions for this stuff
+    ciphertext = remove(ciphertext, string.punctuation + string.whitespace + string.digits)
     periods = [int(key_period)] if key_period else key_periods(ciphertext, max_key_period)
 
     # Decrypt for every valid period
@@ -109,7 +110,7 @@ def decrypt(key, ciphertext):
     index = 0
     decrypted = ""
     for char in ciphertext:
-        if char in string.punctuation or char in string.whitespace:
+        if char in string.punctuation + string.whitespace + string.digits:
             decrypted += char
             continue  # Not part of the decryption
 
