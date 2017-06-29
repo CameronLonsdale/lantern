@@ -9,7 +9,6 @@ def test_dynamicdict():
     """Testing entries are built and returned correctly"""
     container = DynamicDict({'example': lambda: 9})
     assert container.example == 9
-   #assert container['example'] == 9
 
 
 def test_dynamicdict_operations():
@@ -18,11 +17,6 @@ def test_dynamicdict_operations():
 
     container.invalid = "hello"
     assert container.invalid == "hello"
-    #assert container['invalid'] == "hello"
-
-    # container['example'] = "example"
-    # assert container.example == "example"
-    # assert container['example'] == "example"
 
 
 def test_dynamicdict_invalid_access():
@@ -31,6 +25,3 @@ def test_dynamicdict_invalid_access():
 
     with pytest.raises(AttributeError):
         container.invalid
-
-    # with pytest.raises(KeyError):
-    #     container['invalid']
