@@ -4,6 +4,7 @@ import math
 import string
 
 from lantern.analysis import frequency
+from lantern.structures import DynamicDict
 from lantern.util import remove, iterate_ngrams
 
 
@@ -18,7 +19,6 @@ def NgramScorer(frequency_map):
     Args:
         frequency_map (dict): ngram to frequency mapping
     """
-
     # Calculate the log probability
     length = len(next(iter(frequency_map)))
     # TODO: 0.01 is a magic number. Needs to be better than that.
@@ -32,22 +32,7 @@ def NgramScorer(frequency_map):
     return inner
 
 
-# TODO: This can be refactored with LanguageFrequency
-class LanguageNGrams:
-    def __init__(self, ngram_builders):
-        self.ngram_builders = ngram_builders
-
-    def __getattr__(self, name):
-        try:
-            ngram_map = self.ngram_builders[name]()
-        except KeyError:
-            raise AttributeError("'LanguageNgrams' object has no attribute '{}'".format(name))
-        else:
-            setattr(self, name, ngram_map)
-            return ngram_map
-
-
-english = LanguageNGrams({
+english = DynamicDict({
     'unigrams': lambda: NgramScorer(frequency.english.unigrams),
     'bigrams': lambda: NgramScorer(frequency.english.bigrams),
     'trigrams': lambda: NgramScorer(frequency.english.trigrams),

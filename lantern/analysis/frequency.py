@@ -4,6 +4,7 @@ import importlib
 import statistics
 from collections import Counter
 
+from lantern.structures import DynamicDict
 from lantern.util import iterate_ngrams
 
 
@@ -123,45 +124,6 @@ def _calculate_chi_squared(source_freq, target_prob, source_len):
     return (source_freq - expected)**2 / expected
 
 
-class LanguageFrequency:
-    """A LanguageFrequency object to hold frequency distributions for a language.
-    On Attribute access if the ngram does not exist it is built using a given builder.
-    Any subsequent accesses then use the existing ngram map
-
-    Example:
-        >>> english = LanguageFrequency({'unigrams': lambda: _load_ngram('unigrams')})
-        >>> english.unigrams
-        {'A': 374061888, 'B': 70195826, ...}
-    """
-
-    def __init__(self, ngram_builders):
-        """
-        Args:
-            ngrams_builders (dict): A dictionary of attribute name to attribute builder
-        """
-        self.ngram_builders = ngram_builders
-
-    def __getattr__(self, name):
-        """Build attribute and set for future use.
-
-        Args:
-            name (str): The name of the attribute
-
-        Returns:
-            The built attribute
-
-        Raises:
-            AttributeError: If the attribute cannot be built
-        """
-        try:
-            ngram_map = self.ngram_builders[name]()
-        except KeyError:
-            raise AttributeError("'LanguageFrequency' object has no attribute '{}'".format(name))
-        else:
-            setattr(self, name, ngram_map)
-            return ngram_map
-
-
 def _load_ngram(name):
     """Dynamically import the python module with the ngram defined as a dictionary.
     Since bigger ngrams are large files its wasteful to always statically import them if they're not used.
@@ -170,7 +132,7 @@ def _load_ngram(name):
     return getattr(module, name)
 
 
-english = LanguageFrequency({
+english = DynamicDict({
     'unigrams': lambda: _load_ngram('unigrams'),
     'bigrams': lambda: _load_ngram('bigrams'),
     'trigrams': lambda: _load_ngram('trigrams'),
