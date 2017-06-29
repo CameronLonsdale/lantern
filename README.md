@@ -34,9 +34,9 @@ Full documentation available at [lantern-crypto.readthedocs.io](https://lantern-
 
 ## Requirements
 
-Python 3.x required.
+Python 3.4 or newer required.
 
-lantern has no external dependencies outside of the Python standard library.
+lantern has no external dependencies outside of the standard library.
 
 ## Usage
 
@@ -50,14 +50,14 @@ with others to solve particular problems.
 
 ### Testing
 
-Setup a virtual environment with a version of python3.
+Setup a virtual environment.
 
 ```
 virtualenv -p python3.5 venv
 source ./venv/bin/activate
 ```
 
-Install testing requirements.
+Install development requirements.
 
 `pip install -r dev_requirements.txt`
 
