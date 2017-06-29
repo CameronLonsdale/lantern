@@ -25,7 +25,7 @@ In short, lantern can be used to:
 ## Installation
 
 ```
-pip install lantern
+pip install -U lantern
 ```
 
 ## Documentation
