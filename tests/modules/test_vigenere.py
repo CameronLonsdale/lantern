@@ -87,6 +87,13 @@ def test_text_with_punctuation_and_mixed_case():
     assert "FREKEY" in decryptions[0].key
 
 
+def test_20_character_key_length_2():
+    """Testing text of length 20 characters, key of length 2"""
+    plaintext = """THE EARTH IS GOOD YES"""
+    key = "BC"
+    _test_vigenere(plaintext, fitness.ChiSquared(frequency.english.unigrams), fitness.english.quadgrams, key=key)
+
+
 def test_invalid_key_period():
     """Testing invalid values of key_period and max_key_period"""
     with pytest.raises(ValueError):

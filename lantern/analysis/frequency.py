@@ -81,8 +81,15 @@ def _calculate_index_of_coincidence(frequency_map, length):
     Or the probability that two letters picked randomly are alike.
     """
     if length <= 1:
-        # TODO: ? Could change this to 0 or Nan. Future decision.
-        raise ValueError("length must be greater than 1")
+        return 0
+        # We cannot error here as length can legitimiately be 1.
+        # Imagine a ciphertext of length 3 and a key of length 2.
+        # Spliting this text up and calculating the index of coincidence results in ['AC', 'B']
+        # IOC of B will be calcuated for the 2nd column of the key. We could represent the same
+        # encryption with a key of length 3 but then we encounter the same problem. This is also
+        # legitimiate encryption scheme we cannot ignore. Hence we have to deal with this fact here
+        # A value of 0 will impact the overall mean, however it does make some sense when you ask the question
+        # How many ways to choose 2 letters from the text, if theres only 1 letter then the answer is 0.
 
     # Mathemtical combination, number of ways to choose 2 letters, no replacement, order doesnt matter
     combination_of_letters = sum(freq * (freq - 1) for freq in frequency_map.values())

@@ -11,6 +11,7 @@ from lantern.util import split_columns, remove
 
 
 # TODO: maybe add finding keyperiods as a parameter because people might want to use kasiski
+# TODO: Maybe consider splitting the scoring functions for columns and the whole
 def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
     """Break ``ciphertext`` by finding (or using the given) key_period then breaking ``key_period`` many Caesar ciphers.
 
@@ -81,7 +82,7 @@ def key_periods(ciphertext, max_key_period):
         raise ValueError("max_key_period must be a positive integer")
 
     key_scores = []
-    for period in range(1, max_key_period + 1):
+    for period in range(1, min(max_key_period, len(ciphertext)) + 1):
         score = abs(ENGLISH_IC - index_of_coincidence(*split_columns(ciphertext, period)))
         key_scores.append((period, score))
 

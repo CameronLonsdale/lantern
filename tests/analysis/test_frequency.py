@@ -48,9 +48,8 @@ def test_index_of_coincidence_none():
 
 
 def test_index_of_coincidence_empty():
-    """Testing index of coincidence for empty string raises ValueError"""
-    with pytest.raises(ValueError):
-        frequency.index_of_coincidence("")
+    """Testing index of coincidence for empty string returns 0"""
+    assert frequency.index_of_coincidence("") == 0
 
 
 def test_chi_squared():
