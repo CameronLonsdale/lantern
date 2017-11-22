@@ -3,7 +3,7 @@
 import string
 
 from lantern import score
-from lantern.modules import caesar
+from lantern.modules import shift
 from lantern.structures import Decryption
 
 from lantern.analysis.frequency import index_of_coincidence, ENGLISH_IC

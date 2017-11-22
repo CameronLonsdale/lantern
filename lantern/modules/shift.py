@@ -1,4 +1,4 @@
-"""Automated breaking of the Caesar Cipher."""
+"""Automated breaking of the Shift Cipher."""
 
 import string
 
@@ -82,7 +82,7 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26, shift_function=
 
 
 def decrypt(key, ciphertext, shift_function=shift_case_english):
-    """Decrypt Caesar enciphered ``ciphertext`` using ``key``.
+    """Decrypt Shift enciphered ``ciphertext`` using ``key``.
 
     Example:
         >>> decrypt(3, "KHOOR")
