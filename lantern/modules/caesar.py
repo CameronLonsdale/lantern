@@ -13,17 +13,20 @@ def make_shift_function(alphabet):
         Shift cases independently
 
         >>> make_shift_function([string.ascii_uppercase, string.ascii_lowercase])
+        <function make_shift_function.<locals>.shift_case_sensitive>
 
         Additionally shift punctuation characters
 
         >>> make_shift_function([string.ascii_uppercase, string.ascii_lowercase, string.punctuation])
+        <function make_shift_function.<locals>.shift_case_sensitive>
 
         Shift entire ascii range, overflowing cases
 
         >>> make_shift_function([''.join(chr(x) for x in range(32, 127))])
+        <function make_shift_function.<locals>.shift_case_sensitive>
 
     Args:
-        alphabet (iterable): Ordered iterable of strings representing separated cases of an alphabet
+        alphabet (iterable): Ordered iterable of strings representing separate cases of an alphabet
 
     Returns:
         Function (shift, symbol)
@@ -58,6 +61,7 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26, shift_function=
     Keyword Args:
         min_key (int): Key to start with
         max_key (int): Key to stop at (exclusive)
+        shift_function (function(shift, symbol)): Shift function to use
 
     Returns:
         Sorted list of decryptions
