@@ -6,21 +6,20 @@ Modules
     a lower score means the text is closer to the target.
 
 Caesar
--------------------------------
+------
 
 .. automodule:: lantern.modules.caesar
     :members:
-    :undoc-members:
 
 Simple Substitution
--------------------------------------------
+-------------------
 
 .. automodule:: lantern.modules.simplesubstitution
     :members:
     :undoc-members:
 
 Vigenere
----------------------------------
+--------
 
 .. automodule:: lantern.modules.vigenere
     :members:

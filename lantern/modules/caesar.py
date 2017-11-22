@@ -20,7 +20,7 @@ def make_shift_function(alphabet):
         >>> make_shift_function([string.ascii_uppercase, string.ascii_lowercase, string.punctuation])
         <function make_shift_function.<locals>.shift_case_sensitive>
 
-        Shift entire ascii range, overflowing cases
+        Shift entire ASCII range, overflowing cases
 
         >>> make_shift_function([''.join(chr(x) for x in range(32, 127))])
         <function make_shift_function.<locals>.shift_case_sensitive>
