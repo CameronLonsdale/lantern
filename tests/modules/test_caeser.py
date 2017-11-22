@@ -1,6 +1,7 @@
 """Tests for the Caeser module"""
 
 import pycipher
+import string
 
 import pytest
 from tests.util import get_top_decryptions
@@ -113,7 +114,7 @@ def test_decrypt():
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
     key = 3
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
-    assert caesar.decrypt(key, ciphertext) == plaintext
+    assert ''.join(caesar.decrypt(key, ciphertext)) == plaintext
 
 
 def test_decrypt_large_key_wrapped():
@@ -121,4 +122,36 @@ def test_decrypt_large_key_wrapped():
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
     key = 30
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
-    assert caesar.decrypt(key, ciphertext) == plaintext
+    assert ''.join(caesar.decrypt(key, ciphertext)) == plaintext
+
+
+def test_shifted_punctuation():
+    """Test punctuation shifting can be cracked"""
+    ciphertext = 'IODJ~Lw*v|Wkh|Uhpla|ri|Dgglwlrq"'
+    shift_function = caesar.make_shift_function([string.ascii_uppercase, string.ascii_lowercase, string.punctuation])
+    top_decryption = caesar.crack(ciphertext, fitness.english.quadgrams, shift_function=shift_function)[0]
+    assert ''.join(top_decryption.plaintext) == "FLAG{It's_The_Remix_of_Addition}"
+
+
+def test_decrypt_shifted_punctuation():
+    """Test punctuation is also shifted"""
+    ciphertext = 'IODJ~Lw*v|Wkh|Uhpla|ri|Dgglwlrq"'
+    shift_function = caesar.make_shift_function([string.ascii_uppercase, string.ascii_lowercase, string.punctuation])
+    assert ''.join(caesar.decrypt(3, ciphertext, shift_function)) == "FLAG{It's_The_Remix_of_Addition}"
+
+
+def test_decrypt_shifted_overflow():
+    """Test characters overflow into other cases"""
+    ciphertext = 'IODJ~Lw*vbWkhbUhpl{bribDgglwlrq!'
+    shift_function = caesar.make_shift_function([''.join(chr(x) for x in range(32, 127))])
+    assert ''.join(caesar.decrypt(3, ciphertext, shift_function)) == "FLAG{It's_The_Remix_of_Addition}"
+
+
+def test_decrypt_byte_shifting():
+    """Test bytes can be shifted"""
+    def shift_bytes(shift, symbol):
+        return symbol + shift
+
+    ciphertext = [0xcf, 0x9e, 0xaf, 0xe0]
+    shifted = caesar.decrypt(15, ciphertext, shift_bytes)
+    assert ''.join(str(hex(c))[2:] for c in shifted) == "deadbeef"

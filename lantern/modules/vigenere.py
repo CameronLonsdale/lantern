@@ -117,7 +117,7 @@ def decrypt(key, ciphertext):
 
         # Rotate character by the alphabet position of the letter in the key
         alphabet = string.ascii_uppercase if key[index].isupper() else string.ascii_lowercase
-        decrypted += caesar.decrypt(int(alphabet.index(key[index])), char)
+        decrypted += ''.join(caesar.decrypt(int(alphabet.index(key[index])), char))
         index = (index + 1) % len(key)
 
     return decrypted

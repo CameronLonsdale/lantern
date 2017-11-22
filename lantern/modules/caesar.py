@@ -6,7 +6,44 @@ from lantern import score
 from lantern.structures import Decryption
 
 
-def crack(ciphertext, *fitness_functions, min_key=0, max_key=26):
+def make_shift_function(alphabet):
+    """Construct a shift function from an alphabet.
+
+    Examples:
+        Shift cases independently
+
+        >>> make_shift_function([string.ascii_uppercase, string.ascii_lowercase])
+
+        Additionally shift punctuation characters
+
+        >>> make_shift_function([string.ascii_uppercase, string.ascii_lowercase, string.punctuation])
+
+        Shift entire ascii range, overflowing cases
+
+        >>> make_shift_function([''.join(chr(x) for x in range(32, 127))])
+
+    Args:
+        alphabet (iterable): Ordered iterable of strings representing separated cases of an alphabet
+
+    Returns:
+        Function (shift, symbol)
+
+    """
+    def shift_case_sensitive(shift, symbol):
+        case = [case for case in alphabet if symbol in case]
+        if not case:
+            return symbol
+
+        case = case[0]
+        index = case.index(symbol)
+        return case[(index - shift) % len(case)]
+
+    return shift_case_sensitive
+
+shift_case_english = make_shift_function([string.ascii_uppercase, string.ascii_lowercase])
+
+
+def crack(ciphertext, *fitness_functions, min_key=0, max_key=26, shift_function=shift_case_english):
     """Break ``ciphertext`` by enumerating keys between ``min_key`` and ``max_key``.
 
     Example:
@@ -34,13 +71,13 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26):
 
     decryptions = []
     for key in range(min_key, max_key):
-        plaintext = decrypt(key, ciphertext)
+        plaintext = ''.join(decrypt(key, ciphertext, shift_function=shift_function))
         decryptions.append(Decryption(plaintext, key, score(plaintext, *fitness_functions)))
 
     return sorted(decryptions, reverse=True)
 
 
-def decrypt(key, ciphertext):
+def decrypt(key, ciphertext, shift_function=shift_case_english):
     """Decrypt Caesar enciphered ``ciphertext`` using ``key``.
 
     Example:
@@ -51,14 +88,10 @@ def decrypt(key, ciphertext):
         key (int): The shift to use
         ciphertext (str): The text to decrypt
 
+    Keyword Args:
+        shift_function (function (shift, symbol)): shift function to apply to symbols in the ciphertext
+
     Returns:
         Decrypted ciphertext
     """
-    alphabet = [string.ascii_lowercase, string.ascii_uppercase]
-    key %= len(alphabet[0])
-    shifted = _shift_alphabet(alphabet, key)
-    return ciphertext.translate(str.maketrans(''.join(shifted), ''.join(alphabet)))
-
-
-def _shift_alphabet(letter_cases, shift):
-    return [case[shift:] + case[:shift] for case in letter_cases]
+    return [shift_function(key, symbol) for symbol in ciphertext]
