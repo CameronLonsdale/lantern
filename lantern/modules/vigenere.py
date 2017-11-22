@@ -51,7 +51,7 @@ def crack(ciphertext, *fitness_functions, key_period=None, max_key_period=30):
             continue
 
         # Collect the best decryptions for every column
-        column_decryptions = [caesar.crack(col, *fitness_functions)[0] for col in split_columns(ciphertext, period)]
+        column_decryptions = [shift.crack(col, *fitness_functions)[0] for col in split_columns(ciphertext, period)]
         key = _build_key(decrypt.key for decrypt in column_decryptions)
 
         plaintext = decrypt(key, original_text)
@@ -117,7 +117,7 @@ def decrypt(key, ciphertext):
 
         # Rotate character by the alphabet position of the letter in the key
         alphabet = string.ascii_uppercase if key[index].isupper() else string.ascii_lowercase
-        decrypted += ''.join(caesar.decrypt(int(alphabet.index(key[index])), char))
+        decrypted += ''.join(shift.decrypt(int(alphabet.index(key[index])), char))
         index = (index + 1) % len(key)
 
     return decrypted

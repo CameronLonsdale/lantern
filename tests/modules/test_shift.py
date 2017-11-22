@@ -11,7 +11,7 @@ from lantern import fitness
 
 
 def _test_shift(plaintext, *fitness_functions, key=3, top_n=1):
-    ciphertext = pycipher.shift(key).encipher(plaintext, keep_punct=True)
+    ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
     decryptions = shift.crack(ciphertext, *fitness_functions)
 
     top_decryptions = get_top_decryptions(decryptions, top_n)
@@ -93,7 +93,7 @@ def test_buzz_buzz_buzz_quadgrams():
 def test_narrow_key_range():
     """Test narrower keyrange lowers the amount of brute forcing done"""
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
-    ciphertext = pycipher.shift(3).encipher(plaintext, keep_punct=True)
+    ciphertext = pycipher.Caesar(3).encipher(plaintext, keep_punct=True)
 
     decryptions = shift.crack(ciphertext, fitness.english.quadgrams, min_key=3, max_key=5)
     assert len(decryptions) == 2
@@ -103,7 +103,7 @@ def test_narrow_key_range():
 def test_invalid_key_range():
     """Test an invalid key throws ValueError"""
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
-    ciphertext = pycipher.shift(3).encipher(plaintext, keep_punct=True)
+    ciphertext = pycipher.Caesar(3).encipher(plaintext, keep_punct=True)
 
     with pytest.raises(ValueError):
         shift.crack(ciphertext, fitness.english.quadgrams, min_key=7, max_key=2)
@@ -113,7 +113,7 @@ def test_decrypt():
     """Test decrypt successfully decrypts ciphertext enciphered with the same key"""
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
     key = 3
-    ciphertext = pycipher.shift(key).encipher(plaintext, keep_punct=True)
+    ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
     assert ''.join(shift.decrypt(key, ciphertext)) == plaintext
 
 
@@ -121,7 +121,7 @@ def test_decrypt_large_key_wrapped():
     """Test key value is wrapped around by the length of the alphabet"""
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
     key = 30
-    ciphertext = pycipher.shift(key).encipher(plaintext, keep_punct=True)
+    ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
     assert ''.join(shift.decrypt(key, ciphertext)) == plaintext
 
 
