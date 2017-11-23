@@ -7,12 +7,12 @@
 **lantern** is a cryptanalysis library to assist with the identification and breaking of classical ciphers. The library provides general purpose analysis tools, as well as premade modules to break well known ciphers.
 
 ```python
-from lantern.modules import caesar
+from lantern.modules import shift
 from lantern import fitness
 
 ciphertext = "iodj{EuxwhIrufhLvEhvwIrufh}"
 
-decryptions = caesar.crack(ciphertext, fitness.english.quadgrams)
+decryptions = shift.crack(ciphertext, fitness.english.quadgrams)
 print(decryptions[0])
 ```
 
@@ -59,8 +59,20 @@ source ./venv/bin/activate
 
 Install development requirements.
 
-`pip install -r dev_requirements.txt`
+`pip install -Ur dev_requirements.txt`
 
 Use `py.test` to run tests using your current working environment.
 
 Use `tox -r` to build a new environment for each python version and run all tests.
+
+### Documentation
+
+Document is built using [sphinx](http://www.sphinx-doc.org) and [napoleon-sphinx](https://sphinxcontrib-napoleon.readthedocs.io).
+
+Install documentation requirements.
+
+`pip install -Ur docs/requirements.txt`
+
+Build the HTML, output in `build/html`.
+
+`make html`

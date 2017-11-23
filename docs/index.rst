@@ -4,12 +4,12 @@ lantern: automated cryptanalysis
 
 **lantern** is a cryptanalysis library to assist with the identification and breaking of classical ciphers. The library provides general purpose analysis tools, as well as premade modules to break well known ciphers. ::
 
-    from lantern.modules import caesar
+    from lantern.modules import shift
     from lantern import fitness
 
     ciphertext = "iodj{EuxwhIrufhLvEhvwIrufh}"
 
-    decryptions = caesar.crack(ciphertext, fitness.english.quadgrams)
+    decryptions = shift.crack(ciphertext, fitness.english.quadgrams)
     print(decryptions[0])
 
 

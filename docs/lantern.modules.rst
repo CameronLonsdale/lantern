@@ -5,22 +5,21 @@ Modules
     fitness_functions in every module must return a value such that
     a lower score means the text is closer to the target.
 
-Caesar
--------------------------------
+Shift
+-----
 
-.. automodule:: lantern.modules.caesar
+.. automodule:: lantern.modules.shift
     :members:
-    :undoc-members:
 
 Simple Substitution
--------------------------------------------
+-------------------
 
 .. automodule:: lantern.modules.simplesubstitution
     :members:
     :undoc-members:
 
 Vigenere
----------------------------------
+--------
 
 .. automodule:: lantern.modules.vigenere
     :members:

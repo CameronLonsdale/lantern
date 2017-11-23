@@ -1,17 +1,18 @@
 """Tests for the Caeser module"""
 
 import pycipher
+import string
 
 import pytest
 from tests.util import get_top_decryptions
 
-from lantern.modules import caesar
+from lantern.modules import shift
 from lantern import fitness
 
 
-def _test_caesar(plaintext, *fitness_functions, key=3, top_n=1):
+def _test_shift(plaintext, *fitness_functions, key=3, top_n=1):
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
-    decryptions = caesar.crack(ciphertext, *fitness_functions)
+    decryptions = shift.crack(ciphertext, *fitness_functions)
 
     top_decryptions = get_top_decryptions(decryptions, top_n)
 
@@ -28,55 +29,55 @@ def _test_caesar(plaintext, *fitness_functions, key=3, top_n=1):
 def test_quick_brown_fox_unigrams():
     """Testing quick brown fox"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
-    _test_caesar(plaintext, fitness.english.unigrams)
+    _test_shift(plaintext, fitness.english.unigrams)
 
 
 def test_quick_brown_fox_bigrams():
     """Testing quick brown fox with bigrams"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
-    _test_caesar(plaintext, fitness.english.bigrams)
+    _test_shift(plaintext, fitness.english.bigrams)
 
 
 def test_quick_brown_fox_trigrams():
     """Testing quick brown fox with trigrams"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
-    _test_caesar(plaintext, fitness.english.trigrams)
+    _test_shift(plaintext, fitness.english.trigrams)
 
 
 def test_quick_brown_fox_quadgrams():
     """Testing quick brown fox with quadgrams"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
-    _test_caesar(plaintext, fitness.english.quadgrams)
+    _test_shift(plaintext, fitness.english.quadgrams)
 
 
 def test_quick_brown_fox_multiple_functions():
     """Testing quick brown fox with multiple fitness functions"""
     plaintext = "The Quick Brown Fox Jumps Over The Lazy Dog"
-    _test_caesar(plaintext, fitness.english.bigrams, fitness.english.trigrams)
+    _test_shift(plaintext, fitness.english.bigrams, fitness.english.trigrams)
 
 
 def test_quick_brown_fox_upper():
     """Testing quick brown fox uppercase letters"""
     plaintext = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"
-    _test_caesar(plaintext, fitness.english.quadgrams)
+    _test_shift(plaintext, fitness.english.quadgrams)
 
 
 def test_quick_brown_fox_patristocrats():
     """Testing quick brown fox broken into groups of 5"""
     plaintext = "TheQu ckBro wnFox Jumps OverT heLaz yDog"
-    _test_caesar(plaintext, fitness.english.quadgrams)
+    _test_shift(plaintext, fitness.english.quadgrams)
 
 
 def test_quick_brown_fox_no_whitespace():
     """Testing quick brown fox no whitespace"""
     plaintext = "thequickbrownfoxjumpsoverthelazydog"
-    _test_caesar(plaintext, fitness.english.quadgrams)
+    _test_shift(plaintext, fitness.english.quadgrams)
 
 
 def test_quick_brown_fox_no_whitespace_upper():
     """Testing quick brown fox no whitespace and uppercase"""
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
-    _test_caesar(plaintext, fitness.english.quadgrams)
+    _test_shift(plaintext, fitness.english.quadgrams)
 
 
 def test_buzz_buzz_buzz_quadgrams():
@@ -86,7 +87,7 @@ def test_buzz_buzz_buzz_quadgrams():
     haff haff haff beats it because it has a better freqency distribution.
     """
     plaintext = "BUZZ BUZZ BUZZ"
-    _test_caesar(plaintext, fitness.english.quadgrams, top_n=2)
+    _test_shift(plaintext, fitness.english.quadgrams, top_n=2)
 
 
 def test_narrow_key_range():
@@ -94,7 +95,7 @@ def test_narrow_key_range():
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
     ciphertext = pycipher.Caesar(3).encipher(plaintext, keep_punct=True)
 
-    decryptions = caesar.crack(ciphertext, fitness.english.quadgrams, min_key=3, max_key=5)
+    decryptions = shift.crack(ciphertext, fitness.english.quadgrams, min_key=3, max_key=5)
     assert len(decryptions) == 2
     assert decryptions[0].plaintext == plaintext
 
@@ -105,7 +106,7 @@ def test_invalid_key_range():
     ciphertext = pycipher.Caesar(3).encipher(plaintext, keep_punct=True)
 
     with pytest.raises(ValueError):
-        caesar.crack(ciphertext, fitness.english.quadgrams, min_key=7, max_key=2)
+        shift.crack(ciphertext, fitness.english.quadgrams, min_key=7, max_key=2)
 
 
 def test_decrypt():
@@ -113,7 +114,7 @@ def test_decrypt():
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
     key = 3
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
-    assert caesar.decrypt(key, ciphertext) == plaintext
+    assert ''.join(shift.decrypt(key, ciphertext)) == plaintext
 
 
 def test_decrypt_large_key_wrapped():
@@ -121,4 +122,36 @@ def test_decrypt_large_key_wrapped():
     plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
     key = 30
     ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
-    assert caesar.decrypt(key, ciphertext) == plaintext
+    assert ''.join(shift.decrypt(key, ciphertext)) == plaintext
+
+
+def test_shifted_punctuation():
+    """Test punctuation shifting can be cracked"""
+    ciphertext = 'IODJ~Lw*v|Wkh|Uhpla|ri|Dgglwlrq"'
+    shift_function = shift.make_shift_function([string.ascii_uppercase, string.ascii_lowercase, string.punctuation])
+    top_decryption = shift.crack(ciphertext, fitness.english.quadgrams, shift_function=shift_function)[0]
+    assert ''.join(top_decryption.plaintext) == "FLAG{It's_The_Remix_of_Addition}"
+
+
+def test_decrypt_shifted_punctuation():
+    """Test punctuation is also shifted"""
+    ciphertext = 'IODJ~Lw*v|Wkh|Uhpla|ri|Dgglwlrq"'
+    shift_function = shift.make_shift_function([string.ascii_uppercase, string.ascii_lowercase, string.punctuation])
+    assert ''.join(shift.decrypt(3, ciphertext, shift_function)) == "FLAG{It's_The_Remix_of_Addition}"
+
+
+def test_decrypt_shifted_overflow():
+    """Test characters overflow into other cases"""
+    ciphertext = 'IODJ~Lw*vbWkhbUhpl{bribDgglwlrq!'
+    shift_function = shift.make_shift_function([''.join(chr(x) for x in range(32, 127))])
+    assert ''.join(shift.decrypt(3, ciphertext, shift_function)) == "FLAG{It's_The_Remix_of_Addition}"
+
+
+def test_decrypt_byte_shifting():
+    """Test bytes can be shifted"""
+    def shift_bytes(shift, symbol):
+        return symbol + shift
+
+    ciphertext = [0xcf, 0x9e, 0xaf, 0xe0]
+    shifted = shift.decrypt(15, ciphertext, shift_bytes)
+    assert ''.join(str(hex(c))[2:] for c in shifted) == "deadbeef"
