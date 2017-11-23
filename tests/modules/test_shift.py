@@ -1,4 +1,4 @@
-"""Tests for the Caeser module"""
+"""Tests for the Shift module"""
 
 import pycipher
 import string
