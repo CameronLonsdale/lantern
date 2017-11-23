@@ -51,7 +51,7 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26, shift_function=
 
     Example:
         >>> decryptions = crack("KHOOR", fitness.english.quadgrams)
-        >>> print(decryptions[0])
+        >>> print(''.join(decryptions[0].plaintext))
         HELLO
 
     Args:
@@ -85,7 +85,7 @@ def decrypt(key, ciphertext, shift_function=shift_case_english):
     """Decrypt Shift enciphered ``ciphertext`` using ``key``.
 
     Example:
-        >>> decrypt(3, "KHOOR")
+        >>> ''.join(decrypt(3, "KHOOR"))
         HELLO
 
     Args:
