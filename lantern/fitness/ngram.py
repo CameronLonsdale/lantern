@@ -26,6 +26,9 @@ def NgramScorer(frequency_map):
     ngrams = frequency.frequency_to_probability(frequency_map, decorator=math.log10)
 
     def inner(text):
+        # I dont like this, it is only for the .upper() to work,
+        # But I feel as though this can be removed in later refactoring
+        text = ''.join(text)
         text = remove(text.upper(), string.whitespace + string.punctuation)
         return sum(ngrams.get(ngram, floor) for ngram in iterate_ngrams(text, length))
 
