@@ -24,3 +24,10 @@ Vigenere
 .. automodule:: lantern.modules.vigenere
     :members:
     :undoc-members:
+
+
+Railfence
+---------
+
+.. automodule:: lantern.modules.railfence
+    :members:
