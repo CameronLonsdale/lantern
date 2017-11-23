@@ -18,7 +18,7 @@ def _test_shift(plaintext, *fitness_functions, key=3, top_n=1):
 
     match = None
     for decrypt in top_decryptions:
-        if decrypt.plaintext.upper() == plaintext.upper():
+        if ''.join(decrypt.plaintext).upper() == plaintext.upper():
             match = decrypt
             break
 
@@ -97,7 +97,7 @@ def test_narrow_key_range():
 
     decryptions = shift.crack(ciphertext, fitness.english.quadgrams, min_key=3, max_key=5)
     assert len(decryptions) == 2
-    assert decryptions[0].plaintext == plaintext
+    assert ''.join(decryptions[0].plaintext) == plaintext
 
 
 def test_invalid_key_range():

@@ -75,7 +75,7 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26, shift_function=
 
     decryptions = []
     for key in range(min_key, max_key):
-        plaintext = ''.join(decrypt(key, ciphertext, shift_function=shift_function))
+        plaintext = decrypt(key, ciphertext, shift_function=shift_function)
         decryptions.append(Decryption(plaintext, key, score(plaintext, *fitness_functions)))
 
     return sorted(decryptions, reverse=True)
@@ -96,6 +96,6 @@ def decrypt(key, ciphertext, shift_function=shift_case_english):
         shift_function (function (shift, symbol)): shift function to apply to symbols in the ciphertext
 
     Returns:
-        Decrypted ciphertext
+        Decrypted ciphertext, list of plaintext symbols
     """
     return [shift_function(key, symbol) for symbol in ciphertext]

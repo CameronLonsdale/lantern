@@ -24,4 +24,8 @@ def ChiSquared(target_frequency):
     Args:
         target_frequency (dict): symbol to frequency mapping of the distribution to compare with
     """
-    return lambda text: -chi_squared(frequency_analyze(text), target_frequency)
+    def inner(text):
+        text = ''.join(text)
+        return -chi_squared(frequency_analyze(text), target_frequency)
+
+    return inner
