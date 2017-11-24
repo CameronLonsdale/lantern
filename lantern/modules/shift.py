@@ -30,7 +30,6 @@ def make_shift_function(alphabet):
 
     Returns:
         Function (shift, symbol)
-
     """
     def shift_case_sensitive(shift, symbol):
         case = [case for case in alphabet if symbol in case]
@@ -51,11 +50,11 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26, shift_function=
 
     Example:
         >>> decryptions = crack("KHOOR", fitness.english.quadgrams)
-        >>> print(decryptions[0])
+        >>> print(''.join(decryptions[0].plaintext))
         HELLO
 
     Args:
-        ciphertext (str): The text to decrypt
+        ciphertext (iterable): The symbols to decrypt
         *fitness_functions (variable length argument list): Functions to score decryption with
 
     Keyword Args:
@@ -84,16 +83,17 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26, shift_function=
 def decrypt(key, ciphertext, shift_function=shift_case_english):
     """Decrypt Shift enciphered ``ciphertext`` using ``key``.
 
-    Example:
-        >>> decrypt(3, "KHOOR")
+    Examples:
+        >>> ''.join(decrypt(3, "KHOOR"))
         HELLO
+
+        >> decrypt(15, [0xcf, 0x9e, 0xaf, 0xe0], shift_bytes)
+        [0xde, 0xad, 0xbe, 0xef]
 
     Args:
         key (int): The shift to use
-        ciphertext (str): The text to decrypt
-
-    Keyword Args:
-        shift_function (function (shift, symbol)): shift function to apply to symbols in the ciphertext
+        ciphertext (iterable): The symbols to decrypt
+        shift_function (function (shift, symbol)): Shift function to apply to symbols in the ciphertext
 
     Returns:
         Decrypted ciphertext, list of plaintext symbols
