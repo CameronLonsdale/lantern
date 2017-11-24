@@ -18,7 +18,7 @@ def _test_shift(plaintext, *fitness_functions, key=3, top_n=1):
 
     match = None
     for decrypt in top_decryptions:
-        if ''.join(decrypt.plaintext).upper() == plaintext.upper():
+        if ''.join(decrypt.plaintext).upper() == ''.join(plaintext).upper():
             match = decrypt
             break
 
@@ -155,3 +155,32 @@ def test_decrypt_byte_shifting():
     ciphertext = [0xcf, 0x9e, 0xaf, 0xe0]
     shifted = shift.decrypt(15, ciphertext, shift_bytes)
     assert ''.join(str(hex(c))[2:] for c in shifted) == "deadbeef"
+
+
+def test_decrypt_list():
+    """Test decrypt can handle ciphertext as a list"""
+    plaintext = "THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG"
+    key = 3
+    ciphertext = pycipher.Caesar(key).encipher(plaintext, keep_punct=True)
+    assert ''.join(shift.decrypt(key, list(ciphertext))) == plaintext
+
+
+def test_crack_list():
+    """Test crack can handle ciphertext as a list"""
+    plaintext = list("THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG")
+    _test_shift(plaintext, fitness.english.bigrams, fitness.english.quadgrams)
+
+
+def test_multi_symbol_decryption():
+    """Test a ciphertext which uses multiple characters as a single symbol"""
+    ciphertext = ['TF', 'SU']
+
+    # In this (not very good) example, we split the ciphertext into pairs, and the shift function
+    # only shifts the second letter. So essentially a shift cipher applied to every second letter
+    # We can solve it using this method, or by seperating the shifted letters and decrypting that.
+    def shift_function(shift, symbol):
+        a, b = symbol[:]
+        print(a)
+        return a + chr(ord(b) - shift)
+
+    assert ''.join(shift.decrypt(1, ciphertext, shift_function)) == "TEST"
