@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 from lantern.modules import simplesubstitution
 from lantern import fitness
