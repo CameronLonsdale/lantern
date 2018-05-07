@@ -12,7 +12,7 @@ def NgramScorer(frequency_map):
     """Compute the score of a text by using the frequencies of ngrams.
 
     Example:
-        >>> fitness = NgramScore(english.unigrams)
+        >>> fitness = NgramScorer(english.unigrams)
         >>> fitness("ABC")
         -4.3622319742618245
 
