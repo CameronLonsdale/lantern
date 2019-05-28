@@ -1,15 +1,13 @@
 language: python
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
+  - "3.7"
 
-# command to install dependencies
+# Command to install dependencies
 install:
   - "pip install -r dev_requirements.txt"
   - "pip install coveralls"
 
-# command to run tests
+# Command to run tests
 script: 
   "coverage run --source lantern -m py.test"
 
