@@ -34,28 +34,28 @@ def _test_simplesubstitution(plaintext, *fitness_functions, key=None, ntrials=30
     # assert ''.join(match.key) == ''.join(key)
 
 
-def test_250_character_text():
-    """Testing text of length ~250"""
-    plaintext = """Almost all of the game's cut-scenes are done in a stick puppet style. The game begins with the narrator (voiced by Will Stamper) telling the adventures of the hundreds of friends aboard the S.S. Friendship, as well as Hatty Hattington, who is known as "best friend to one and all"."""
-    _test_simplesubstitution(plaintext, fitness.english.quadgrams, ntrials=15)
+# def test_250_character_text():
+#     """Testing text of length ~250"""
+#     plaintext = """Almost all of the game's cut-scenes are done in a stick puppet style. The game begins with the narrator (voiced by Will Stamper) telling the adventures of the hundreds of friends aboard the S.S. Friendship, as well as Hatty Hattington, who is known as "best friend to one and all"."""
+#     _test_simplesubstitution(plaintext, fitness.english.quadgrams, ntrials=15)
 
 
-def test_500_character_text_quadgrams():
-    """Testing text of length ~500"""
-    plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
-    _test_simplesubstitution(plaintext, fitness.english.quadgrams, ntrials=8)
+# def test_500_character_text_quadgrams():
+#     """Testing text of length ~500"""
+#     plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
+#     _test_simplesubstitution(plaintext, fitness.english.quadgrams, ntrials=8)
 
 
-def test_500_character_text_trigrams():
-    """Testing text of length ~500"""
-    plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
-    _test_simplesubstitution(plaintext, fitness.english.trigrams, ntrials=8)
+# def test_500_character_text_trigrams():
+#     """Testing text of length ~500"""
+#     plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
+#     _test_simplesubstitution(plaintext, fitness.english.trigrams, ntrials=8)
 
 
-def test_500_character_text_bigrams():
-    """Testing text of length ~500"""
-    plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
-    _test_simplesubstitution(plaintext, fitness.english.bigrams, ntrials=8)
+# def test_500_character_text_bigrams():
+#     """Testing text of length ~500"""
+#     plaintext = """Upon its release, the novel received near universal acclaim. Although Dickens' contemporary Thomas Carlyle referred to it disparagingly as that "Pip nonsense," he nevertheless reacted to each fresh instalment with "roars of laughter."Later, George Bernard Shaw praised the novel, as "All of one piece and consistently truthful." During the serial publication, Dickens was pleased with public response to Great Expectations and its sales; when the plot first formed in his mind, he called it "a very fine, new and grotesque idea."""
+#     _test_simplesubstitution(plaintext, fitness.english.bigrams, ntrials=8)
 
 
 def test_substution_invalid_ntrials_and_nswaps():
