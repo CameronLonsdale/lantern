@@ -53,7 +53,7 @@ with others to solve particular problems.
 1. Setup a virtual environment.
 
 ```
-virtualenv -p python3.5 venv
+virtualenv -p python3.7 venv
 source ./venv/bin/activate
 ```
 
