@@ -34,7 +34,7 @@ Full documentation available at [lantern-crypto.readthedocs.io](https://lantern-
 
 ## Requirements
 
-Python 3.4 or newer required.
+Python 3.7 required.
 
 lantern has no external dependencies outside of the standard library.
 
