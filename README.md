@@ -50,29 +50,35 @@ with others to solve particular problems.
 
 ### Testing
 
-Setup a virtual environment.
+1. Setup a virtual environment.
 
 ```
 virtualenv -p python3.5 venv
 source ./venv/bin/activate
 ```
 
-Install development requirements.
+2. Install development requirements.
 
-`pip install -Ur dev_requirements.txt`
+```
+pip install -Ur dev_requirements.txt
+```
 
-Use `py.test` to run tests using your current working environment.
+3. Use `py.test` to run tests using your current working environment.
 
-Use `tox -r` to build a new environment for each python version and run all tests.
+4. Use `tox -r` to build a new environment for each python version and run all tests.
 
 ### Documentation
 
 Document is built using [sphinx](http://www.sphinx-doc.org) and [napoleon-sphinx](https://sphinxcontrib-napoleon.readthedocs.io).
 
-Install documentation requirements.
+1. Install documentation requirements.
 
-`pip install -Ur docs/requirements.txt`
+```
+pip install -Ur docs/requirements.txt
+```
 
-Build the HTML, output in `build/html`.
+2. Build the HTML, output in `build/html`.
 
-`make html`
+```
+make html
+```
