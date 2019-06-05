@@ -180,7 +180,13 @@ def test_multi_symbol_decryption():
     # We can solve it using this method, or by seperating the shifted letters and decrypting that.
     def shift_function(shift, symbol):
         a, b = symbol[:]
-        print(a)
         return a + chr(ord(b) - shift)
 
     assert ''.join(shift.decrypt(1, ciphertext, shift_function)) == "TEST"
+
+
+def test_encrypt():
+    """Test shift encryption"""
+    plaintext = "HELLO"
+
+    assert ''.join(shift.encrypt(3, plaintext)) == "KHOOR"
