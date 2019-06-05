@@ -19,12 +19,6 @@ def test_args():
     assert decryption.score == 0
 
 
-def test_str():
-    """Testing string typecast returns plaintext"""
-    decryption = Decryption("plaintext", "key", 0)
-    assert str(decryption) == "plaintext"
-
-
 def test_lt():
     """Testing __lt__ compares using score"""
     decryption1 = Decryption("plaintext1", "key1", 0)

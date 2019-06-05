@@ -32,14 +32,6 @@ class Decryption:
         self.key = key
         self.score = score
 
-    def __str__(self):
-        """Return the plaintext as the string representation for the object.
-
-        Returns:
-            plaintext
-        """
-        return self.plaintext
-
     def __lt__(self, other):
         """Compare decryptions with other decryptions by score.
 
