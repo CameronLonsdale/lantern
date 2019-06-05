@@ -87,7 +87,7 @@ def decrypt(key, ciphertext, shift_function=shift_case_english):
         >>> ''.join(decrypt(3, "KHOOR"))
         HELLO
 
-        >> decrypt(15, [0xcf, 0x9e, 0xaf, 0xe0], shift_bytes)
+        >>> decrypt(15, [0xcf, 0x9e, 0xaf, 0xe0], shift_bytes)
         [0xde, 0xad, 0xbe, 0xef]
 
     Args:
