@@ -12,7 +12,7 @@ subtract: ShiftOperator = lambda a, b: a - b
 add: ShiftOperator = lambda a, b: a + b
 
 
-def make_shift_function(alphabet, operator: ShiftOperator=subtract):
+def make_shift_function(alphabet: Iterable, operator: ShiftOperator=subtract):
     """Construct a shift function from an alphabet.
 
     Examples:
