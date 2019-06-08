@@ -8,38 +8,38 @@ from lantern import score
 from lantern.structures import Decryption
 
 ShiftOperator = Callable[[int, int], int]
+ShiftFunction = Callable[[int, object], object]
+
 subtract: ShiftOperator = lambda a, b: a - b
 add: ShiftOperator = lambda a, b: a + b
 
 
-def make_shift_function(alphabet: Iterable, operator: ShiftOperator=subtract):
+def make_shift_function(alphabet: Iterable, operator: ShiftOperator = subtract) -> ShiftFunction:
     """Construct a shift function from an alphabet.
 
     Examples:
         Shift cases independently
 
         >>> make_shift_function([string.ascii_uppercase, string.ascii_lowercase])
-        <function make_shift_function.<locals>.shift_case_sensitive>
 
         Additionally shift punctuation characters
 
         >>> make_shift_function([string.ascii_uppercase, string.ascii_lowercase, string.punctuation])
-        <function make_shift_function.<locals>.shift_case_sensitive>
 
         Shift entire ASCII range, overflowing cases
 
         >>> make_shift_function([''.join(chr(x) for x in range(32, 127))])
-        <function make_shift_function.<locals>.shift_case_sensitive>
 
     Args:
         alphabet (iterable): Ordered iterable of strings representing separate cases of an alphabet
 
     Returns:
-        Function (shift, symbol)
+        Function (shift: int, symbol: object)
     """
     def shift_case_sensitive(shift, symbol):
         case = [case for case in alphabet if symbol in case]
         if not case:
+            # If symbol cannot be shifted return unmodified
             return symbol
 
         case = case[0]
@@ -49,8 +49,13 @@ def make_shift_function(alphabet: Iterable, operator: ShiftOperator=subtract):
     return shift_case_sensitive
 
 
-shift_decrypt_case_english = make_shift_function([string.ascii_uppercase, string.ascii_lowercase], subtract)
-shift_encrypt_case_english = make_shift_function([string.ascii_uppercase, string.ascii_lowercase], add)
+shift_decrypt_case_english: ShiftFunction = make_shift_function(
+    [string.ascii_uppercase, string.ascii_lowercase], subtract
+)
+
+shift_encrypt_case_english: ShiftFunction = make_shift_function(
+    [string.ascii_uppercase, string.ascii_lowercase], add
+)
 
 
 def crack(ciphertext, *fitness_functions, min_key=0, max_key=26, shift_function=shift_decrypt_case_english):
@@ -88,7 +93,7 @@ def crack(ciphertext, *fitness_functions, min_key=0, max_key=26, shift_function=
     return sorted(decryptions, reverse=True)
 
 
-def decrypt(key, ciphertext, shift_function=shift_decrypt_case_english) -> Iterable:
+def decrypt(key: int, ciphertext: Iterable, shift_function: ShiftFunction = shift_decrypt_case_english) -> Iterable:
     """Decrypt Shift enciphered ``ciphertext`` using ``key``.
 
     Examples:
@@ -109,8 +114,8 @@ def decrypt(key, ciphertext, shift_function=shift_decrypt_case_english) -> Itera
     return [shift_function(key, symbol) for symbol in ciphertext]
 
 
-def encrypt(key: int, plaintext: Iterable, shift_function=shift_encrypt_case_english) -> Iterable:
-    """Encrypt ``plaintext`` with ``key`` using the shift cipher.
+def encrypt(key: int, plaintext: Iterable, shift_function: ShiftFunction = shift_encrypt_case_english) -> Iterable:
+    """Encrypt ``plaintext`` with ``key`` using the Shift cipher.
 
     Examples:
         >>> ''.join(encrypt(3, "HELLO"))
