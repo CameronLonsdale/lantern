@@ -77,7 +77,7 @@ Document is built using [sphinx](http://www.sphinx-doc.org) and [napoleon-sphinx
 pip3 install -Ur docs/requirements.txt
 ```
 
-2. Build the HTML, output in `build/html`.
+2. Build the HTML from inside `/docs`, output in `build/html`.
 
 ```
 make html
