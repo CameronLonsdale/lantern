@@ -60,12 +60,12 @@ source ./venv/bin/activate
 2. Install development requirements.
 
 ```
-pip install -Ur dev_requirements.txt
+pip3 install -Ur dev_requirements.txt
 ```
 
 3. Use `py.test` to run tests using your current working environment.
 
-4. Use `tox -r` to build a new environment for each python version and run all tests.
+4. Use `tox` to build a new environment for each python version and run all tests.
 
 ### Documentation
 
@@ -74,7 +74,7 @@ Document is built using [sphinx](http://www.sphinx-doc.org) and [napoleon-sphinx
 1. Install documentation requirements.
 
 ```
-pip install -Ur docs/requirements.txt
+pip3 install -Ur docs/requirements.txt
 ```
 
 2. Build the HTML, output in `build/html`.
