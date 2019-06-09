@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='lantern',
-    version='0.1.2',
+    version='0.1.3',
     description='Automated Cryptanalysis',
     author='Cameron Lonsdale',
     author_email='cameron.lonsdale@gmail.com',

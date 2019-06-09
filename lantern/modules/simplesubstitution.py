@@ -60,7 +60,7 @@ def crack(ciphertext, *fitness_functions, ntrials=30, nswaps=3000):
     return sorted(decryptions, reverse=True)  # We sort the list to ensure the best results are at the front of the list
 
 
-def decrypt(key, ciphertext):
+def decrypt(key: str, ciphertext: str):
     """Decrypt Simple Substitution enciphered ``ciphertext`` using ``key``.
 
     Example:
@@ -79,3 +79,20 @@ def decrypt(key, ciphertext):
     alphabet = string.ascii_letters
     cipher_alphabet = key.lower() + key.upper()
     return ciphertext.translate(str.maketrans(cipher_alphabet, alphabet))
+
+
+def encrypt(key: str, plaintext: str):
+    """Simple Substitution encrypt ``plaintext`` using ``key``.
+
+    Example:
+        >>> encrypt("PQSTUVWXYZCODEBRAKINGFHJLM", "HELLO")
+        XUOOB
+
+    Args:
+        key (iterable): The key to use
+        plaintext (str): The text to decrypt
+
+    Returns:
+        Encrypted text
+    """
+    return decrypt(key, plaintext)

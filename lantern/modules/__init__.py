@@ -1,3 +1,5 @@
 from . import (
-    shift, simplesubstitution, vigenere
+    shift,
+    simplesubstitution,
+    vigenere,
 )
