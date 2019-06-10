@@ -5,7 +5,6 @@ import string
 from typing import Callable, Iterable, List
 
 from lantern import score
-from lantern.score import ScoreFunction
 from lantern.structures import Decryption
 
 ShiftOperator = Callable[[int, int], int]
@@ -59,7 +58,7 @@ shift_encrypt_case_english: ShiftFunction = make_shift_function(
 )
 
 
-def crack(ciphertext: Iterable, *fitness_functions: Iterable[ScoreFunction],
+def crack(ciphertext: Iterable, *fitness_functions: Iterable,
           min_key: int = 0, max_key: int = 26,
           shift_function: ShiftFunction = shift_decrypt_case_english) -> List[Decryption]:
     """Break ``ciphertext`` by enumerating keys between ``min_key`` and ``max_key``.

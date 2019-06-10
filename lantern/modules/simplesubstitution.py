@@ -95,4 +95,7 @@ def encrypt(key: str, plaintext: str):
     Returns:
         Encrypted text
     """
-    return decrypt(key, plaintext)
+    key = ''.join(key)
+    alphabet = string.ascii_letters
+    cipher_alphabet = key.lower() + key.upper()
+    return plaintext.translate(str.maketrans(alphabet, cipher_alphabet))

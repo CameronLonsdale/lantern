@@ -1,3 +1,4 @@
 pytest
 pycipher
 tox
+mypy

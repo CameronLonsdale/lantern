@@ -78,6 +78,11 @@ def test_decrypt():
     assert simplesubstitution.decrypt("PQSTUVWXYZCODEBRAKINGFHJLM", "XUOOB") == "HELLO"
 
 
+def test_encrypt():
+    """Test encrypt successfully encrypts plaintext"""
+    assert simplesubstitution.encrypt("PQSTUVWXYZCODEBRAKINGFHJLM", "HELLO") == "XUOOB"
+
+
 def test_decrypt_key_as_list():
     """Test decrypt successfully decrypts ciphertext enciphered with the same key"""
     plaintext = "FLEE AT ONCE. WE ARE DISCOVERED!"
